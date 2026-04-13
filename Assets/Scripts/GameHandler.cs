@@ -45,6 +45,9 @@ public class GameHandler : MonoBehaviour
     private Bug[] allBugs;
     private InputSystem_Actions controls;
 
+    // --- PRIVATE STATE ---
+    private bool trackingBug;
+
     // --- PUBLIC METHODS ---
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -61,6 +64,8 @@ public class GameHandler : MonoBehaviour
         Round = 1;
         // Setup control handling
         this.controls = new InputSystem_Actions();
+        this.controls.Player.Drop.performed += OnDrop;
+        this.controls.Player.Enable();
         StartPlacing();
     }
 
@@ -73,14 +78,15 @@ public class GameHandler : MonoBehaviour
         await this.uiHandler.EnterPlacingState();
 
         (GameObject, Bug.BugInfo) bugPair = SpawnRandomBug();
+        allBugs = FindObjectsOfType<Bug>();
         GameObject bug = bugPair.Item1;
         bug.GetComponent<Rigidbody2D>().simulated = false;
         float safeWidth = edgeX - bugPair.Item2.safeHorizRadius;
+        this.trackingBug = true;
         //await placement
         // while (!Mouse.current.leftButton.wasPressedThisFrame)
-        while (!Mouse.current.leftButton.wasPressedThisFrame)
+        while (trackingBug)
         {
-            print(this.controls.Player.Drop.IsPressed());
             Vector3 mousePos = (Vector3)Mouse.current.position.ReadValue(); 
             mousePos.z = Camera.main.nearClipPlane;
             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePos);
@@ -88,7 +94,14 @@ public class GameHandler : MonoBehaviour
             await Task.Yield();
         }
 
+        bug.GetComponent<Rigidbody2D>().simulated = true;
         await this.uiHandler.ShowNextButton();
+    }
+
+    // Handles Drop input action
+    private void OnDrop(InputAction.CallbackContext context)
+    {
+        trackingBug = false;
     }
 
     // Initiates the scoring phase for a round and handles the flow of state
@@ -105,7 +118,7 @@ public class GameHandler : MonoBehaviour
         {
             await bug.Score();
         }
-        this.uiHandler.ShowNextButton();
+        await this.uiHandler.ShowNextButton();
     }
 
     // Update is called once per frame
