@@ -14,7 +14,7 @@ public class GameHandler : MonoBehaviour
         Placing,
         Scoring,
     }
-    public enum GameState
+    public enum PlayState
     {
         Playing,
         Paused,
@@ -27,7 +27,7 @@ public class GameHandler : MonoBehaviour
     public const int KNOCKOUT_ROUNDS = 20;
 
     // --- GLOBAL STATE ---
-    public static GameState GameState;
+    public static PlayState GameState;
     public static int Round; // starts at 1
     public static Phase CurrentPhase;
     public static int RoundScore;
@@ -49,7 +49,7 @@ public class GameHandler : MonoBehaviour
     {
         GetInitialReferences();
         InitializeBugTypes();
-        GameActive = true;
+        GameState = PlayState.Playing;
         Round = 1;
         StartPlacing();
     }
