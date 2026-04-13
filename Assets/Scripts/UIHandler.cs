@@ -76,7 +76,7 @@ public class UIHandler : MonoBehaviour
 
     public void OnNextButtonClicked()
     {
-        if (GameHandler.Phase == GameHandler.Phase.Placing)
+        if (GameHandler.CurrentPhase == GameHandler.Phase.Placing)
         {
             gameHandler.StartScoring();
         } else
