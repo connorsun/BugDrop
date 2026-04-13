@@ -30,7 +30,7 @@ public class GameHandler : MonoBehaviour
     public const int KNOCKOUT_ROUNDS = 20;
     public float[] rarityChances = {1};
     private const string BUG_PATH = "Prefabs/Bugs";
-    private const float dropY = 7f;
+    private const float dropY = 6.3f;
     private const float edgeX = 13f;
 
     // --- GLOBAL STATE ---
@@ -75,8 +75,10 @@ public class GameHandler : MonoBehaviour
         bug.GetComponent<Rigidbody2D>().simulated = false;
         float safeWidth = edgeX - bugPair.Item2.safeHorizRadius;
         //await placement
-        while (!this.controls.Player.Drop.WasPressedThisFrame())
+        // while (!Mouse.current.leftButton.wasPressedThisFrame)
+        while (!Mouse.current.leftButton.wasPressedThisFrame)
         {
+            print(this.controls.Player.Drop.IsPressed());
             Vector3 mousePos = (Vector3)Mouse.current.position.ReadValue(); 
             mousePos.z = Camera.main.nearClipPlane;
             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePos);
@@ -117,16 +119,21 @@ public class GameHandler : MonoBehaviour
     private void InitializeBugTypes()
     {
         Type bugType = typeof(Bug);
-        Type[] bugSubtypes = (Type[]) bugType.Assembly.GetTypes()
+        var bugSubtypes = bugType.Assembly.GetTypes()
             .Where(t => t.IsSubclassOf(bugType) && !t.IsAbstract);
-        BugTypes = new Bug.BugInfo[bugSubtypes.Length];
-        for (int i = 0; i < bugSubtypes.Length; i++)
+        BugTypes = new Bug.BugInfo[bugSubtypes.Count()];
+        int i = 0;
+        foreach (Type bugSubtype in bugSubtypes)
         {
-            Type bugSubtype = bugSubtypes[i];
             Bug.BugInfo result = (Bug.BugInfo)bugSubtype.GetMethod("GetInfo").Invoke(null, null);
             BugTypes[i] = result;
+            if (!BugRarityTypes.ContainsKey(result.rarity))
+            {
+                BugRarityTypes[result.rarity] = new List<Bug.BugInfo>();
+            }
             List<Bug.BugInfo> infos = BugRarityTypes[result.rarity];
             infos.Add(result);
+            i++;
         }
     }
 

@@ -572,7 +572,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""a35e6687-c418-4516-ab5d-a4d57b9feee5"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""path"": ""<Mouse>/press"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
