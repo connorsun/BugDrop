@@ -61,7 +61,7 @@ public class GameHandler : MonoBehaviour
     {
         InitializeBugTypes();
         GameState = PlayState.Playing;
-        Round = 1;
+        Round = 0;
         // Setup control handling
         this.controls = new InputSystem_Actions();
         this.controls.Player.Drop.performed += OnDrop;
@@ -72,6 +72,7 @@ public class GameHandler : MonoBehaviour
     // Initiates the placing phase for a round
     public async Task StartPlacing()
     {
+        Round++;
         CurrentPhase = Phase.Placing;
         RoundScore = 0;
         IsKnockout = Round % KNOCKOUT_ROUNDS == 0;
