@@ -76,7 +76,14 @@ public class UIHandler : MonoBehaviour
 
     public void OnNextButtonClicked()
     {
-        gameHandler.StartScoring();
+        if (GameHandler.Phase == GameHandler.Phase.Placing)
+        {
+            gameHandler.StartScoring();
+        } else
+        {
+            gameHandler.StartPlacing();
+        }
+        
     }
 
     // Update is called once per frame
