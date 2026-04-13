@@ -106,20 +106,16 @@ public class GameHandler : MonoBehaviour
     // until scoring completes
     public async Task StartScoring() //gets called from button
     {
-        Debug.Log("1");
         CurrentPhase = Phase.Scoring;
         // Reset all bugs for scoring phase
         BroadcastToBugs((bug) => bug.Reset());
-        Debug.Log("2");
         // wait for UI
         await this.uiHandler.StartScoring();
         Bug[] sortedBugs = GetSortedBugs();
-        Debug.Log("3");
         foreach (Bug bug in sortedBugs)
         {
             await bug.Score();
         }
-        Debug.Log("4");
         this.uiHandler.ShowNextButton();
         StartPlacing();
     }
