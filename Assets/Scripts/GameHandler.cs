@@ -1,8 +1,9 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using System;
 using System.Threading.Tasks;
 using System.Linq;
-using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 
 // Handles overarching game systems and flow
@@ -24,7 +25,13 @@ public class GameHandler : MonoBehaviour
     
     // --- CONSTANTS ---
     public static Bug.BugInfo[] BugTypes;
+    public static Dictionary<int, List<Bug.BugInfo>> BugRarityTypes = new Dictionary<int, List<Bug.BugInfo>>();
+    public static Dictionary<string, GameObject> LoadedResources = new Dictionary<string, GameObject>();
     public const int KNOCKOUT_ROUNDS = 20;
+    public float[] rarityChances = {1};
+    private const string BUG_PATH = "Prefabs/Bugs";
+    private const float dropY = 7f;
+    private const float edgeX = 13f;
 
     // --- GLOBAL STATE ---
     public static PlayState GameState;
@@ -34,7 +41,9 @@ public class GameHandler : MonoBehaviour
     public static bool IsKnockout;
 
     // --- OBJECT REFERENCES ---
-    private UIHandler uiHandler;
+    [SerializeField] private UIHandler uiHandler;
+    private Bug[] allBugs;
+    private InputSystem_Actions controls;
 
     // --- PUBLIC METHODS ---
 
@@ -47,10 +56,11 @@ public class GameHandler : MonoBehaviour
     // Initialize game state on startup
     public void Init()
     {
-        GetInitialReferences();
         InitializeBugTypes();
         GameState = PlayState.Playing;
         Round = 1;
+        // Setup control handling
+        this.controls = new InputSystem_Actions();
         StartPlacing();
     }
 
@@ -60,9 +70,20 @@ public class GameHandler : MonoBehaviour
         CurrentPhase = Phase.Placing;
         RoundScore = 0;
         IsKnockout = Round % KNOCKOUT_ROUNDS == 0;
-
+        (GameObject, Bug.BugInfo) bugPair = SpawnRandomBug();
+        GameObject bug = bugPair.Item1;
+        bug.GetComponent<Rigidbody2D>().simulated = false;
+        float safeWidth = edgeX - bugPair.Item2.safeHorizRadius;
         //await placement
-        
+        while (!this.controls.Player.Drop.WasPressedThisFrame())
+        {
+            Vector3 mousePos = (Vector3)Mouse.current.position.ReadValue(); 
+            mousePos.z = Camera.main.nearClipPlane;
+            Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePos);
+            bug.transform.position = new Vector3(Mathf.Clamp(worldPosition.x, -safeWidth, safeWidth), dropY);
+            await Task.Yield();
+        }
+
         this.uiHandler.ShowNextButton();
     }
 
@@ -90,32 +111,66 @@ public class GameHandler : MonoBehaviour
     }
 
     // --- PRIVATE METHODS ---
-    // Get all local references to relevant objects for the game handler on startup
-    private void GetInitialReferences()
-    {
-        this.uiHandler = GameObject.Find("UIHandler")?.GetComponent<UIHandler>();
-    }
 
+    // Initialize the BugTypes and BugRarityTypes collections, which lists all of the info
+    // about every type of bug
     private void InitializeBugTypes()
     {
         Type bugType = typeof(Bug);
-        Type[] bugSubtypes = (Type[]) (bugType.Assembly.GetTypes()
-            .Where(t => t.IsSubclassOf(bugType) && !t.IsAbstract));
-        
+        Type[] bugSubtypes = (Type[]) bugType.Assembly.GetTypes()
+            .Where(t => t.IsSubclassOf(bugType) && !t.IsAbstract);
+        BugTypes = new Bug.BugInfo[bugSubtypes.Length];
+        for (int i = 0; i < bugSubtypes.Length; i++)
+        {
+            Type bugSubtype = bugSubtypes[i];
+            Bug.BugInfo result = (Bug.BugInfo)bugSubtype.GetMethod("GetInfo").Invoke(null, null);
+            BugTypes[i] = result;
+            List<Bug.BugInfo> infos = BugRarityTypes[result.rarity];
+            infos.Add(result);
+        }
+    }
+
+    private (GameObject, Bug.BugInfo) SpawnRandomBug()
+    {
+        System.Random rand = new System.Random();
+        float value = (float)rand.NextDouble();
+        float rarityThreshold = 0f;
+        int rarity;
+        for (rarity = 0; rarity < rarityChances.Length; rarity++)
+        {
+            rarityThreshold += rarityChances[rarity];
+            if (value < rarityThreshold)
+            {
+                break;
+            }
+        }
+        print("Spawning bug of rarity: " + rarity + " due to value: " + value);
+        List<Bug.BugInfo> bugList = BugRarityTypes[rarity + 1];
+        Bug.BugInfo selectedBug = bugList[rand.Next(0, bugList.Count)];
+        GameObject bugResource;
+        if (LoadedResources.ContainsKey(selectedBug.name))
+        {
+            bugResource = LoadedResources[selectedBug.name];
+        } else
+        {
+            bugResource = Resources.Load<GameObject>(BUG_PATH + "/" + selectedBug.name);
+            LoadedResources[selectedBug.name] = bugResource;
+        }
+        GameObject createdBug = Instantiate(bugResource as GameObject);
+        return (createdBug, selectedBug);
     }
     
     // Returns an array of Bug scripts sorted in ascending order of the bug's y position
     // This is the metric used to determine bug scoring order.
     private Bug[] GetSortedBugs()
     {
-        Bug[] allBugs = GameObject.FindObjectsByType<Bug>();
         Array.Sort(allBugs, (x, y) => x.transform.position.y.CompareTo(y.transform.position.y));
         return allBugs;
     }
 
+    // Runs action on all bugs currently in scene
     private void BroadcastToBugs(BugAction action)
     {
-        Bug[] allBugs = GameObject.FindObjectsByType<Bug>();
         foreach (Bug bug in allBugs)
         {
             action(bug);

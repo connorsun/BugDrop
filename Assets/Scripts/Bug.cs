@@ -8,15 +8,16 @@ namespace System.Runtime.CompilerServices
 
 public abstract class Bug : MonoBehaviour
 {
-    public record BugInfo(string name, int rarity);
 
-    // Gets metadata about this bug type
-    public abstract BugInfo GetInfo();
-
+    // All Bug subclasses must implement the GetInfo static method to return their BugInfo!
+    public record BugInfo(string name, int rarity, float safeHorizRadius);
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    protected bool isActive;
+
     void Start()
     {
-        
+        isActive = false;
     }
 
     // Update is called once per frame

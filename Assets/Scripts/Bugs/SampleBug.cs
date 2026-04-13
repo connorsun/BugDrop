@@ -3,9 +3,11 @@ using UnityEngine;
 
 public class SampleBug : Bug
 {
-    public override BugInfo GetInfo()
+
+    // Gets metadata about this bug type
+    public static BugInfo GetInfo()
     {
-        return new BugInfo("SampleBug", 1);
+        return new BugInfo("SampleBug", 1, 1f);
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
