@@ -27,17 +27,22 @@ public class GameHandler : MonoBehaviour
     public static Bug.BugInfo[] BugTypes;
     public static Dictionary<int, List<Bug.BugInfo>> BugRarityTypes = new Dictionary<int, List<Bug.BugInfo>>();
     public static Dictionary<string, GameObject> LoadedResources = new Dictionary<string, GameObject>();
-    public const int KNOCKOUT_ROUNDS = 20;
+    public const int KNOCKOUT_ROUNDS = 3;
     public float[] rarityChances = {1};
+    public const int THRESHOLD_BASE = 100;
+    public const float THRESHOLD_SCALE = 3;
     private const string BUG_PATH = "Prefabs/Bugs";
     private const float dropY = 6.3f;
     private const float edgeX = 13f;
+
+    
 
     // --- GLOBAL STATE ---
     public static PlayState GameState;
     public static int Round; // starts at 1
     public static Phase CurrentPhase;
     public static int RoundScore;
+    public static int ScoreThreshold;
     public static bool IsKnockout;
 
     // --- OBJECT REFERENCES ---
@@ -62,6 +67,7 @@ public class GameHandler : MonoBehaviour
         InitializeBugTypes();
         GameState = PlayState.Playing;
         Round = 0;
+        ScoreThreshold = THRESHOLD_BASE;
         // Setup control handling
         this.controls = new InputSystem_Actions();
         this.controls.Player.Drop.performed += OnDrop;
@@ -120,6 +126,10 @@ public class GameHandler : MonoBehaviour
             await bug.Score();
         }
         await this.uiHandler.ShowNextButton();
+        if (IsKnockout)
+        {
+            ScoreThreshold = (int)(ScoreThreshold * THRESHOLD_SCALE);
+        }
     }
 
     // Update is called once per frame

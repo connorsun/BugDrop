@@ -49,6 +49,18 @@ public class UIHandler : MonoBehaviour
     {
         SetupPlacing();
         nextButton.SetActive(false);
+        roundLabel.text = "Round " + GameHandler.Round;
+        if (GameHandler.Round % GameHandler.KNOCKOUT_ROUNDS == 0)
+        {
+            roundFutureThreshold.text = "Must score " + GameHandler.ScoreThreshold + 
+                " this round.";
+        } else
+        {
+            roundFutureThreshold.text = "Must score " + GameHandler.ScoreThreshold + 
+                " by round " + (GameHandler.Round + GameHandler.KNOCKOUT_ROUNDS
+                - (GameHandler.Round % GameHandler.KNOCKOUT_ROUNDS));
+        }
+        
     }
 
     public async Task EnterScoringState()
@@ -64,14 +76,15 @@ public class UIHandler : MonoBehaviour
         nextButton.SetActive(false);
     }
 
-    public async Task ShowNextButton()
-    {
-        nextButton.SetActive(true);
-    }
-
     public async Task EnterLosingState()
     {
         SetupLosing();
+    }
+
+    // Button
+    public async Task ShowNextButton()
+    {
+        nextButton.SetActive(true);
     }
 
     public void OnNextButtonClicked()
@@ -83,6 +96,12 @@ public class UIHandler : MonoBehaviour
         {
             gameHandler.StartPlacing();
         }
+        
+    }
+
+    // Setters
+    public void SetRoundLabel()
+    {
         
     }
 
