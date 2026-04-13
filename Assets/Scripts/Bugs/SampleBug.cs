@@ -1,7 +1,12 @@
 using UnityEngine;
 
-public class SampleBug : MonoBehaviour
+
+public class SampleBug : Bug
 {
+    public override BugInfo GetInfo()
+    {
+        return new BugInfo("SampleBug", 1);
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
