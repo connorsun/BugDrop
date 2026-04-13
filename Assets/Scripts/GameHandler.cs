@@ -99,8 +99,8 @@ public class GameHandler : MonoBehaviour
     private void InitializeBugTypes()
     {
         Type bugType = typeof(Bug);
-        IEnumerable<Type> bugSubtypes = bugType.Assembly.GetTypes()
-            .Where(t => t.IsSubclassOf(bugType) && !t.IsAbstract);
+        Type[] bugSubtypes = (Type[]) (bugType.Assembly.GetTypes()
+            .Where(t => t.IsSubclassOf(bugType) && !t.IsAbstract));
         
     }
     
