@@ -119,6 +119,43 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &10641765
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 10641766}
+  m_Layer: 5
+  m_Name: Scoring Disable
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &10641766
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 10641765}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1243925553}
+  - {fileID: 1877125209}
+  m_Father: {fileID: 555090407}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &36460378
 GameObject:
   m_ObjectHideFlags: 0
@@ -1003,7 +1040,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameHandler
   rarityChances:
   - 1
-  uiHandler: {fileID: 0}
+  uiHandler: {fileID: 1860098344}
 --- !u!1 &555090406
 GameObject:
   m_ObjectHideFlags: 0
@@ -1034,8 +1071,7 @@ RectTransform:
   m_Children:
   - {fileID: 883381794}
   - {fileID: 114537259}
-  - {fileID: 1243925553}
-  - {fileID: 1877125209}
+  - {fileID: 10641766}
   m_Father: {fileID: 36460379}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1279,7 +1315,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &718246729
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1719,7 +1755,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1243798483}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1860098344}
+        m_TargetAssemblyTypeName: UIHandler, Assembly-CSharp
+        m_MethodName: OnNextButtonClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1243798483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1788,7 +1836,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 555090407}
+  m_Father: {fileID: 10641766}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -1910,7 +1958,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1249918760
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2356,22 +2404,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f30c750c8df34e888decb6fe16c1989, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIHandler
+  gameHandler: {fileID: 519420033}
   generalGroup: {fileID: 36460378}
-  knockoutGroup: {fileID: 1249918759}
+  scoringDisable: {fileID: 10641765}
   knockoutDisable: {fileID: 555090406}
+  knockoutGroup: {fileID: 1249918759}
   loseGroup: {fileID: 718246728}
   roundLabel: {fileID: 838519633}
   roundFutureThreshold: {fileID: 114537260}
   roundScoreNumber: {fileID: 1243925554}
   roundScoreLabel: {fileID: 1877125210}
-  nextButton: {fileID: 1243798482}
+  nextButton: {fileID: 1243798480}
   roundScoreNumberKnockout: {fileID: 2141127911}
   thresholdLabel: {fileID: 2006292881}
   loseTitle: {fileID: 237096177}
   roundLabelLosing: {fileID: 714709411}
   scoreDifference: {fileID: 511466858}
-  retryButton: {fileID: 848012549}
-  quitButton: {fileID: 1821728132}
+  retryButton: {fileID: 848012547}
+  quitButton: {fileID: 1821728130}
 --- !u!1 &1877125208
 GameObject:
   m_ObjectHideFlags: 0
@@ -2402,7 +2452,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 555090407}
+  m_Father: {fileID: 10641766}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}

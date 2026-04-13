@@ -70,6 +70,8 @@ public class GameHandler : MonoBehaviour
         CurrentPhase = Phase.Placing;
         RoundScore = 0;
         IsKnockout = Round % KNOCKOUT_ROUNDS == 0;
+        await this.uiHandler.EnterPlacingState();
+
         (GameObject, Bug.BugInfo) bugPair = SpawnRandomBug();
         GameObject bug = bugPair.Item1;
         bug.GetComponent<Rigidbody2D>().simulated = false;
@@ -86,7 +88,7 @@ public class GameHandler : MonoBehaviour
             await Task.Yield();
         }
 
-        this.uiHandler.ShowNextButton();
+        await this.uiHandler.ShowNextButton();
     }
 
     // Initiates the scoring phase for a round and handles the flow of state
@@ -97,7 +99,7 @@ public class GameHandler : MonoBehaviour
         // Reset all bugs for scoring phase
         BroadcastToBugs((bug) => bug.Reset());
         // wait for UI
-        await this.uiHandler.StartScoring();
+        await this.uiHandler.EnterScoringState();
         Bug[] sortedBugs = GetSortedBugs();
         foreach (Bug bug in sortedBugs)
         {

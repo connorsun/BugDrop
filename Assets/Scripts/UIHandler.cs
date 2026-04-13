@@ -8,10 +8,14 @@ public class UIHandler : MonoBehaviour
 {
     // --- OBJECT REFERENCES ---
 
+    // GameHandler
+    [SerializeField] private GameHandler gameHandler;
+
     // UI Groups
     [SerializeField] private GameObject generalGroup;
-    [SerializeField] private GameObject knockoutGroup;
+    [SerializeField] private GameObject scoringDisable;
     [SerializeField] private GameObject knockoutDisable; // General UI elements to hide when knockout enabled
+    [SerializeField] private GameObject knockoutGroup;
     [SerializeField] private GameObject loseGroup;
 
     // UI Elements - General
@@ -20,7 +24,7 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private TextMeshProUGUI roundFutureThreshold;
     [SerializeField] private TextMeshProUGUI roundScoreNumber;
     [SerializeField] private TextMeshProUGUI roundScoreLabel;
-    [SerializeField] private Button nextButton;
+    [SerializeField] private GameObject nextButton;
 
     // UI Elements - Knockout
     [SerializeField] private TextMeshProUGUI roundScoreNumberKnockout;
@@ -31,37 +35,48 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private TextMeshProUGUI loseTitle;
     [SerializeField] private TextMeshProUGUI roundLabelLosing;
     [SerializeField] private TextMeshProUGUI scoreDifference;
-    [SerializeField] private Button retryButton;
-    [SerializeField] private Button quitButton;
+    [SerializeField] private GameObject retryButton;
+    [SerializeField] private GameObject quitButton;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Start()
     {
-        Init();
+
     }
 
-    // Initialize UI state on startup
-    public void Init()
+    // State Changes
+    public async Task EnterPlacingState()
     {
-        generalGroup.SetActive(true);
-        knockoutGroup.SetActive(false);
-        knockoutDisable.SetActive(true);
-        loseGroup.SetActive(false);
+        SetupPlacing();
+        nextButton.SetActive(false);
     }
 
-    public async Task StartPlacing()
+    public async Task EnterScoringState()
     {
+        if (GameHandler.IsKnockout)
+        {
+            SetupKnockout();
+        } else
+        {
+            SetupScoring();
+        }
         
+        nextButton.SetActive(false);
     }
 
-    public async Task StartScoring()
+    public async Task ShowNextButton()
     {
-        
+        nextButton.SetActive(true);
     }
 
-    public void ShowNextButton()
+    public async Task EnterLosingState()
     {
-        
+        SetupLosing();
+    }
+
+    public void OnNextButtonClicked()
+    {
+        gameHandler.StartScoring();
     }
 
     // Update is called once per frame
@@ -71,6 +86,39 @@ public class UIHandler : MonoBehaviour
     }
 
     // --- PRIVATE METHODS ---
+    private void SetupPlacing()
+    {
+        generalGroup.SetActive(true);
+        knockoutGroup.SetActive(false);
+        loseGroup.SetActive(false);
 
-    
+        knockoutDisable.SetActive(true);
+        scoringDisable.SetActive(false);
+    }
+
+    private void SetupScoring()
+    {
+        generalGroup.SetActive(true);
+        knockoutGroup.SetActive(false);
+        loseGroup.SetActive(false);
+
+        knockoutDisable.SetActive(true);
+        scoringDisable.SetActive(true);
+    }
+
+    private void SetupKnockout()
+    {
+        generalGroup.SetActive(true);
+        knockoutGroup.SetActive(true);
+        loseGroup.SetActive(false);
+
+        knockoutDisable.SetActive(false);
+    }
+
+    private void SetupLosing()
+    {
+        generalGroup.SetActive(false);
+        knockoutGroup.SetActive(false);
+        loseGroup.SetActive(true);
+    }
 }
