@@ -1003,7 +1003,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameHandler
   rarityChances:
   - 1
-  uiHandler: {fileID: 0}
+  uiHandler: {fileID: 1860098344}
 --- !u!1 &555090406
 GameObject:
   m_ObjectHideFlags: 0
