@@ -60,7 +60,6 @@ public class UIHandler : MonoBehaviour
                 " by round " + (GameHandler.Round + GameHandler.KNOCKOUT_ROUNDS
                 - (GameHandler.Round % GameHandler.KNOCKOUT_ROUNDS));
         }
-        
     }
 
     public async Task EnterScoringState()
