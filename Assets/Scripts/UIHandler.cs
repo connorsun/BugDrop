@@ -50,16 +50,13 @@ public class UIHandler : MonoBehaviour
         SetupPlacing();
         nextButton.SetActive(false);
         roundLabel.text = "Round " + GameHandler.Round;
-        if (GameHandler.Round % GameHandler.KNOCKOUT_ROUNDS == 0)
-        {
-            roundFutureThreshold.text = "Must score " + GameHandler.ScoreThreshold + 
-                " this round.";
-        } else
-        {
-            roundFutureThreshold.text = "Must score " + GameHandler.ScoreThreshold + 
-                " by round " + (GameHandler.Round + GameHandler.KNOCKOUT_ROUNDS
-                - (GameHandler.Round % GameHandler.KNOCKOUT_ROUNDS));
-        }
+
+        int nextKnockoutRound = GameHandler.Round + GameHandler.KNOCKOUT_ROUNDS
+            - (GameHandler.Round % GameHandler.KNOCKOUT_ROUNDS);
+        roundFutureThreshold.text = "Must score " + GameHandler.ScoreThreshold + 
+            (GameHandler.Round % GameHandler.KNOCKOUT_ROUNDS == 0?
+                " this round."
+                : " by round " + nextKnockoutRound);
     }
 
     public async Task EnterScoringState()
