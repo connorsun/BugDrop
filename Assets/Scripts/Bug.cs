@@ -35,8 +35,5 @@ public abstract class Bug : MonoBehaviour
     {
         
     }
-    public virtual async Task Score()
-    {
-        
-    }
+    public abstract Task Score();
 }
