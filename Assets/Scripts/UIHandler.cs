@@ -41,7 +41,7 @@ public class UIHandler : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Start()
     {
-
+        UpdateScoreState();
     }
 
     // State Changes
@@ -93,6 +93,12 @@ public class UIHandler : MonoBehaviour
             gameHandler.StartPlacing();
         }
         
+    }
+
+    public void UpdateScoreState()
+    {
+        roundScoreNumber.text = GameHandler.RoundScore + "";
+        roundScoreNumberKnockout.text = GameHandler.RoundScore + "";
     }
 
     // Setters

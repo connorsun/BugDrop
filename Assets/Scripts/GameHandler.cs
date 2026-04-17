@@ -24,16 +24,18 @@ public class GameHandler : MonoBehaviour
     public delegate void BugAction(Bug bug);
     
     // --- CONSTANTS ---
+    public static GameHandler SingletonGameHandler;
+    public static UIHandler SingletonUIHandler;
     public static Bug.BugInfo[] BugTypes;
     public static Dictionary<int, List<Bug.BugInfo>> BugRarityTypes = new Dictionary<int, List<Bug.BugInfo>>();
     public static Dictionary<string, GameObject> LoadedResources = new Dictionary<string, GameObject>();
     public const int KNOCKOUT_ROUNDS = 3;
-    public float[] rarityChances = {1};
+    [SerializeField] private float[] rarityChances = {0.75f, 0.25f};
     public const int THRESHOLD_BASE = 100;
     public const float THRESHOLD_SCALE = 3;
     private const string BUG_PATH = "Prefabs/Bugs";
     private const float dropY = 6.3f;
-    private const float edgeX = 13f;
+    private const float edgeX = 12.5f;
 
     
 
@@ -64,6 +66,8 @@ public class GameHandler : MonoBehaviour
     // Initialize game state on startup
     public void Init()
     {
+        SingletonGameHandler = this;
+        SingletonUIHandler = uiHandler;
         InitializeBugTypes();
         GameState = PlayState.Playing;
         Round = 0;
@@ -72,7 +76,7 @@ public class GameHandler : MonoBehaviour
         this.controls = new InputSystem_Actions();
         this.controls.Player.Drop.performed += OnDrop;
         this.controls.Player.Enable();
-        StartPlacing();
+        _ = StartPlacing();
     }
 
     // Initiates the placing phase for a round
@@ -85,7 +89,7 @@ public class GameHandler : MonoBehaviour
         await this.uiHandler.EnterPlacingState();
 
         (GameObject, Bug.BugInfo) bugPair = SpawnRandomBug();
-        allBugs = FindObjectsOfType<Bug>();
+        allBugs = FindObjectsByType<Bug>(FindObjectsSortMode.None);
         GameObject bug = bugPair.Item1;
         bug.GetComponent<Rigidbody2D>().simulated = false;
         float safeWidth = edgeX - bugPair.Item2.safeHorizRadius;
@@ -123,7 +127,12 @@ public class GameHandler : MonoBehaviour
         Bug[] sortedBugs = GetSortedBugs();
         foreach (Bug bug in sortedBugs)
         {
-            await bug.Score();
+            await bug.Trigger(true);
+        }
+        float timestamp = Time.unscaledTime;
+        while (Time.unscaledTime < timestamp + 0.5f)
+        {
+            await Task.Yield();
         }
         await this.uiHandler.ShowNextButton();
         if (IsKnockout)
@@ -131,6 +140,7 @@ public class GameHandler : MonoBehaviour
             ScoreThreshold = (int)(ScoreThreshold * THRESHOLD_SCALE);
         }
     }
+
 
     // Update is called once per frame
     void Update()
@@ -177,7 +187,6 @@ public class GameHandler : MonoBehaviour
                 break;
             }
         }
-        print("Spawning bug of rarity: " + rarity + " due to value: " + value);
         List<Bug.BugInfo> bugList = BugRarityTypes[rarity + 1];
         Bug.BugInfo selectedBug = bugList[rand.Next(0, bugList.Count)];
         GameObject bugResource;

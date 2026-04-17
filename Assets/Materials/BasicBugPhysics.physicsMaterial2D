@@ -6,7 +6,7 @@ PhysicsMaterial2D:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SampleBugPhysics
+  m_Name: BasicBugPhysics
   serializedVersion: 2
   friction: 0.5
   bounciness: 0.15
