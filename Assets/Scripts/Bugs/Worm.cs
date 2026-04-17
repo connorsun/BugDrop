@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 
 public class Worm : Bug
@@ -11,7 +12,7 @@ public class Worm : Bug
     // Gets metadata about this bug type
     public static BugInfo GetInfo()
     {
-        return new BugInfo("Worm", 2, 1, 4.5f);
+        return new BugInfo("Worm", 2, 0, 4.5f);
     }
 
     // --- PUBLIC METHODS ---
@@ -24,17 +25,32 @@ public class Worm : Bug
     protected override async Task Score()
     {
         base.Score();
+        float timestamp = Time.unscaledTime;
+        while (Time.unscaledTime < timestamp + 0.3f)
+        {
+            await Task.Yield();
+        }
         ContactPoint2D[] contacts = this.GetContacts();
         print(contacts.Length);
+        List<Bug> bugsToTrigger = new List<Bug>();
         foreach (ContactPoint2D contact in contacts)
         {
             print(contact.collider?.gameObject);
             Bug otherBug = contact.collider?.gameObject?.GetComponent<Bug>();
             print(otherBug);
-            if (otherBug != null)
+            if (otherBug != null && !otherBug.secondaryTriggered)
             {
-                otherBug.Trigger(false);
-                return;
+                bugsToTrigger.Add(otherBug);
+            }
+        }
+        for (int i = 0; i < bugsToTrigger.Count; i++)
+        {
+            if (i == bugsToTrigger.Count - 1)
+            {
+                await bugsToTrigger[i].Trigger(false, transform.position);
+            } else
+            {
+                _ = bugsToTrigger[i].Trigger(false, transform.position);
             }
         }
     }

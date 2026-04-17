@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Threading.Tasks;
+using System.Linq;
+using System;
 
 namespace System.Runtime.CompilerServices
 {
@@ -18,8 +20,8 @@ public abstract class Bug : MonoBehaviour
 
     protected bool isActive;
     protected BugInfo thisBugInfo;
-    protected bool primaryTriggered;
-    protected bool secondaryTriggered;
+    public bool primaryTriggered;
+    public bool secondaryTriggered;
     // --- OBJECT REFERENCES ---
     [SerializeField] protected Collider2D collider;
 
@@ -49,8 +51,21 @@ public abstract class Bug : MonoBehaviour
         this.secondaryTriggered = false;
     }
 
-    public virtual async Task Trigger(bool isPrimary)
+    public virtual async Task Trigger(bool isPrimary, Vector3 prevPos)
     {
+        try {
+            GameObject zap = Instantiate(GameHandler.GetResource("Prefabs/TriggerZap") as GameObject);
+            Color zapColor = isPrimary? Color.yellow : Color.blue;
+            zap.GetComponent<LineRenderer>().startColor = zapColor;
+            zap.GetComponent<LineRenderer>().endColor = zapColor;
+            TriggerZap tZap = zap.GetComponent<TriggerZap>();
+            tZap.start = (Vector2) prevPos;
+            tZap.end = (Vector2) transform.position;
+            tZap.timeToLive = 0.3f;
+            tZap.Init();
+        } catch (Exception e) {
+            Debug.LogError($"Async error: {e.Message}");
+        }
         if (isPrimary)
         {
             if (this.primaryTriggered)
@@ -71,6 +86,14 @@ public abstract class Bug : MonoBehaviour
         while (Time.unscaledTime < timestamp + 0.5f)
         {
             await Task.Yield();
+        }
+        foreach (Bug bug in GetClosestBugs())
+        {
+            if (!bug.primaryTriggered)
+            {
+                await bug.Trigger(true, transform.position);
+                return;
+            }
         }
     }
 
@@ -99,5 +122,10 @@ public abstract class Bug : MonoBehaviour
             numFilled = collider.GetContacts(contacts);
         }
         return contacts;
+    }
+
+    private Bug[] GetClosestBugs()
+    {
+        return GameHandler.AllBugs.OrderBy(x => (x.transform.position - transform.position).magnitude).ToArray();
     }
 }

@@ -29,6 +29,7 @@ public class GameHandler : MonoBehaviour
     public static Bug.BugInfo[] BugTypes;
     public static Dictionary<int, List<Bug.BugInfo>> BugRarityTypes = new Dictionary<int, List<Bug.BugInfo>>();
     public static Dictionary<string, GameObject> LoadedResources = new Dictionary<string, GameObject>();
+    public static Bug[] AllBugs;
     public const int KNOCKOUT_ROUNDS = 3;
     [SerializeField] private float[] rarityChances = {0.75f, 0.25f};
     public const int THRESHOLD_BASE = 100;
@@ -36,7 +37,7 @@ public class GameHandler : MonoBehaviour
     private const string BUG_PATH = "Prefabs/Bugs";
     private const float dropY = 6.3f;
     private const float edgeX = 12.5f;
-
+    private Vector3 zapperPos = new Vector3(0f, -7.5f, 0f);
     
 
     // --- GLOBAL STATE ---
@@ -49,7 +50,6 @@ public class GameHandler : MonoBehaviour
 
     // --- OBJECT REFERENCES ---
     [SerializeField] private UIHandler uiHandler;
-    private Bug[] allBugs;
     private InputSystem_Actions controls;
 
     // --- PRIVATE STATE ---
@@ -89,7 +89,7 @@ public class GameHandler : MonoBehaviour
         await this.uiHandler.EnterPlacingState();
 
         (GameObject, Bug.BugInfo) bugPair = SpawnRandomBug();
-        allBugs = FindObjectsByType<Bug>(FindObjectsSortMode.None);
+        AllBugs = FindObjectsByType<Bug>(FindObjectsSortMode.None);
         GameObject bug = bugPair.Item1;
         bug.GetComponent<Rigidbody2D>().simulated = false;
         float safeWidth = edgeX - bugPair.Item2.safeHorizRadius;
@@ -124,10 +124,10 @@ public class GameHandler : MonoBehaviour
         BroadcastToBugs((bug) => bug.Reset());
         // wait for UI
         await this.uiHandler.EnterScoringState();
-        Bug[] sortedBugs = GetSortedBugs();
-        foreach (Bug bug in sortedBugs)
+        Bug[] sortedBugs = GetClosestBugs();
+        if (sortedBugs.Length > 0)
         {
-            await bug.Trigger(true);
+            await sortedBugs[0].Trigger(true, zapperPos);
         }
         float timestamp = Time.unscaledTime;
         while (Time.unscaledTime < timestamp + 0.5f)
@@ -189,33 +189,37 @@ public class GameHandler : MonoBehaviour
         }
         List<Bug.BugInfo> bugList = BugRarityTypes[rarity + 1];
         Bug.BugInfo selectedBug = bugList[rand.Next(0, bugList.Count)];
-        GameObject bugResource;
-        if (LoadedResources.ContainsKey(selectedBug.name))
-        {
-            bugResource = LoadedResources[selectedBug.name];
-        } else
-        {
-            bugResource = Resources.Load<GameObject>(BUG_PATH + "/" + selectedBug.name);
-            LoadedResources[selectedBug.name] = bugResource;
-        }
-        GameObject createdBug = Instantiate(bugResource as GameObject);
+        GameObject createdBug = Instantiate(GetResource(BUG_PATH + "/" + selectedBug.name) as GameObject);
         return (createdBug, selectedBug);
     }
     
-    // Returns an array of Bug scripts sorted in ascending order of the bug's y position
+    // Returns an array of Bug scripts sorted in closest order to zap pos
     // This is the metric used to determine bug scoring order.
-    private Bug[] GetSortedBugs()
+    private Bug[] GetClosestBugs()
     {
-        Array.Sort(allBugs, (x, y) => x.transform.position.y.CompareTo(y.transform.position.y));
-        return allBugs;
+        return GameHandler.AllBugs.OrderBy(x => (x.transform.position - zapperPos).magnitude).ToArray();
     }
 
     // Runs action on all bugs currently in scene
     private void BroadcastToBugs(BugAction action)
     {
-        foreach (Bug bug in allBugs)
+        foreach (Bug bug in AllBugs)
         {
             action(bug);
         }
+    }
+    // --- STATIC HELPERS ---
+    public static GameObject GetResource(string path)
+    {
+        GameObject resource;
+        if (LoadedResources.ContainsKey(path))
+        {
+            resource = LoadedResources[path];
+        } else
+        {
+            resource = Resources.Load<GameObject>(path);
+            LoadedResources[path] = resource;
+        }
+        return resource;
     }
 }
