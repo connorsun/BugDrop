@@ -18,7 +18,7 @@ public abstract class Bug : MonoBehaviour
     private const int CONTACT_ARRAY_SIZE = 10;
 
     // Recursive secondary triggering - if we want retriggers to be really strong
-    public const bool RECURSIVE_SECONDARIES = false;
+    public const bool RECURSIVE_SECONDARIES = true;
     // --- PRIVATE STATE ---
 
     protected bool isActive;
