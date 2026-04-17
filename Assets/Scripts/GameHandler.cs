@@ -91,7 +91,7 @@ public class GameHandler : MonoBehaviour
         (GameObject, Bug.BugInfo) bugPair = SpawnRandomBug();
         AllBugs = FindObjectsByType<Bug>(FindObjectsSortMode.None);
         GameObject bug = bugPair.Item1;
-        bug.GetComponent<Rigidbody2D>().simulated = false;
+        bug.GetComponent<Bug>().SetSimulated(false);
         float safeWidth = edgeX - bugPair.Item2.safeHorizRadius;
         this.trackingBug = true;
         //await placement
@@ -105,7 +105,7 @@ public class GameHandler : MonoBehaviour
             await Task.Yield();
         }
 
-        bug.GetComponent<Rigidbody2D>().simulated = true;
+        bug.GetComponent<Bug>().SetSimulated(true);
         await this.uiHandler.ShowNextButton();
     }
 
@@ -188,7 +188,7 @@ public class GameHandler : MonoBehaviour
             }
         }
         List<Bug.BugInfo> bugList = BugRarityTypes[rarity + 1];
-        Bug.BugInfo selectedBug = bugList[rand.Next(0, bugList.Count)];
+        Bug.BugInfo selectedBug = bugList[0]; //bugList[rand.Next(0, bugList.Count)];
         GameObject createdBug = Instantiate(GetResource(BUG_PATH + "/" + selectedBug.name) as GameObject);
         return (createdBug, selectedBug);
     }

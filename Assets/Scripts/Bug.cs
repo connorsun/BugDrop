@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Threading.Tasks;
 using System.Linq;
 using System;
+using System.Collections.Generic;
 
 namespace System.Runtime.CompilerServices
 {
@@ -26,7 +27,8 @@ public abstract class Bug : MonoBehaviour
     public bool primaryTriggered;
     public bool secondaryTriggered;
     // --- OBJECT REFERENCES ---
-    [SerializeField] protected Collider2D collider;
+    [SerializeField] protected Collider2D[] colliders;
+    [SerializeField] protected Rigidbody2D[] rigidbodies;
 
     public virtual void Start()
     {
@@ -109,6 +111,15 @@ public abstract class Bug : MonoBehaviour
         ScorePoints(this.thisBugInfo.baseScore);
     }
 
+    // Turns on and off simulation for this bug's rigidbodies
+    public virtual void SetSimulated(bool isSimulated)
+    {
+        foreach (Rigidbody2D rb in rigidbodies)
+        {
+            rb.simulated = isSimulated;
+        }
+    }
+
     // --- PRIVATE METHODS ---
 
     // Scores a specific number of points for this round.
@@ -120,14 +131,49 @@ public abstract class Bug : MonoBehaviour
 
     protected ContactPoint2D[] GetContacts()
     {
-        int size = CONTACT_ARRAY_SIZE;
-        ContactPoint2D[] contacts = new ContactPoint2D[size];
-        int numFilled = size + 1;
-        while (numFilled > size) {
-            contacts = new ContactPoint2D[size];
-            numFilled = collider.GetContacts(contacts);
+        // Dictionary ensures there is only 1 contact point stored per other bug
+        Dictionary<Bug, ContactPoint2D> bugContacts = new Dictionary<Bug, ContactPoint2D>();
+        List<ContactPoint2D> otherContacts = new List<ContactPoint2D>();
+
+        // Iterate over all child colliders
+        foreach (Collider2D col in colliders)
+        {
+            int size = CONTACT_ARRAY_SIZE;
+            ContactPoint2D[] contacts = new ContactPoint2D[size];
+            int numFilled = size + 1;
+
+            while (numFilled > size) {
+                contacts = new ContactPoint2D[size];
+                numFilled = GetComponent<Collider2D>().GetContacts(contacts);
+            }
+
+            // Discern which type of contact point this is
+            for (int i = 0; i < numFilled; i++)
+            {
+                ContactPoint2D contact = contacts[i];
+                Bug other = contact.otherCollider.GetComponentInParent<Bug>();
+                
+                if (other == this) continue;
+
+                if (other == null)
+                {
+                    otherContacts.Add(contact);
+                    continue;
+                }
+
+                if (!bugContacts.ContainsKey(other))
+                {
+                    bugContacts[other] = contact;
+                }
+            }
         }
-        return contacts;
+
+        // Merge unique bug contact points with all other contacts (walls, floor, etc.)
+        ContactPoint2D[] result = new ContactPoint2D[bugContacts.Count + otherContacts.Count];
+        bugContacts.Values.CopyTo(result, 0);
+        otherContacts.CopyTo(result, bugContacts.Count);
+        
+        return result;
     }
 
     private Bug[] GetClosestBugs()
