@@ -16,6 +16,9 @@ public abstract class Bug : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     // --- CONSTANTS ---
     private const int CONTACT_ARRAY_SIZE = 10;
+
+    // Recursive secondary triggering - if we want retriggers to be really strong
+    public const bool RECURSIVE_SECONDARIES = false;
     // --- PRIVATE STATE ---
 
     protected bool isActive;
@@ -53,19 +56,6 @@ public abstract class Bug : MonoBehaviour
 
     public virtual async Task Trigger(bool isPrimary, Vector3 prevPos)
     {
-        try {
-            GameObject zap = Instantiate(GameHandler.GetResource("Prefabs/TriggerZap") as GameObject);
-            Color zapColor = isPrimary? Color.yellow : Color.blue;
-            zap.GetComponent<LineRenderer>().startColor = zapColor;
-            zap.GetComponent<LineRenderer>().endColor = zapColor;
-            TriggerZap tZap = zap.GetComponent<TriggerZap>();
-            tZap.start = (Vector2) prevPos;
-            tZap.end = (Vector2) transform.position;
-            tZap.timeToLive = 0.3f;
-            tZap.Init();
-        } catch (Exception e) {
-            Debug.LogError($"Async error: {e.Message}");
-        }
         if (isPrimary)
         {
             if (this.primaryTriggered)
@@ -73,6 +63,11 @@ public abstract class Bug : MonoBehaviour
                 return;
             }
             this.primaryTriggered = true;
+            if (RECURSIVE_SECONDARIES)
+            {
+                GameHandler.BroadcastToBugs((Bug bug) => bug.secondaryTriggered = false);
+                this.secondaryTriggered = true;
+            }
         } else
         {
             if (this.secondaryTriggered)
@@ -81,6 +76,15 @@ public abstract class Bug : MonoBehaviour
             }
             this.secondaryTriggered = true;
         }
+        GameObject zap = Instantiate(GameHandler.GetResource("Prefabs/TriggerZap") as GameObject);
+        Color zapColor = isPrimary? Color.yellow : Color.blue;
+        zap.GetComponent<LineRenderer>().startColor = zapColor;
+        zap.GetComponent<LineRenderer>().endColor = zapColor;
+        TriggerZap tZap = zap.GetComponent<TriggerZap>();
+        tZap.start = (Vector2) prevPos;
+        tZap.end = (Vector2) transform.position;
+        tZap.timeToLive = 0.3f;
+        tZap.Init();
         await this.Score();
         if (isPrimary) {
             float timestamp = Time.unscaledTime;

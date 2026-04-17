@@ -199,16 +199,16 @@ public class GameHandler : MonoBehaviour
     {
         return GameHandler.AllBugs.OrderBy(x => (x.transform.position - zapperPos).magnitude).ToArray();
     }
+    // --- STATIC HELPERS ---
 
     // Runs action on all bugs currently in scene
-    private void BroadcastToBugs(BugAction action)
+    public static void BroadcastToBugs(BugAction action)
     {
         foreach (Bug bug in AllBugs)
         {
             action(bug);
         }
     }
-    // --- STATIC HELPERS ---
     public static GameObject GetResource(string path)
     {
         GameObject resource;
