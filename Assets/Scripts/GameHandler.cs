@@ -188,7 +188,7 @@ public class GameHandler : MonoBehaviour
             }
         }
         List<Bug.BugInfo> bugList = BugRarityTypes[rarity + 1];
-        Bug.BugInfo selectedBug = bugList[0]; //bugList[rand.Next(0, bugList.Count)];
+        Bug.BugInfo selectedBug = bugList[rand.Next(0, bugList.Count)];
         GameObject createdBug = Instantiate(GetResource(BUG_PATH + "/" + selectedBug.name) as GameObject);
         return (createdBug, selectedBug);
     }
