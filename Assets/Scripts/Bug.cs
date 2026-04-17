@@ -16,6 +16,9 @@ public abstract class Bug : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     // --- CONSTANTS ---
     private const int CONTACT_ARRAY_SIZE = 10;
+
+    // Recursive secondary triggering - if we want retriggers to be really strong
+    public const bool RECURSIVE_SECONDARIES = false;
     // --- PRIVATE STATE ---
 
     protected bool isActive;
@@ -60,6 +63,11 @@ public abstract class Bug : MonoBehaviour
                 return;
             }
             this.primaryTriggered = true;
+            if (RECURSIVE_SECONDARIES)
+            {
+                GameHandler.BroadcastToBugs((Bug bug) => bug.secondaryTriggered = false);
+                this.secondaryTriggered = true;
+            }
         } else
         {
             if (this.secondaryTriggered)
