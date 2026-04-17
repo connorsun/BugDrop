@@ -32,7 +32,7 @@ public class Worm : Bug
         }
         ContactPoint2D[] contacts = this.GetContacts();
         print(contacts.Length);
-        List<Bug> bugsToTrigger = new List<Bug>();
+        List<Task> bugsToTrigger = new List<Task>();
         foreach (ContactPoint2D contact in contacts)
         {
             print(contact.collider?.gameObject);
@@ -40,18 +40,9 @@ public class Worm : Bug
             print(otherBug);
             if (otherBug != null && !otherBug.secondaryTriggered)
             {
-                bugsToTrigger.Add(otherBug);
+                bugsToTrigger.Add(otherBug.Trigger(false, transform.position));
             }
         }
-        for (int i = 0; i < bugsToTrigger.Count; i++)
-        {
-            if (i == bugsToTrigger.Count - 1)
-            {
-                await bugsToTrigger[i].Trigger(false, transform.position);
-            } else
-            {
-                _ = bugsToTrigger[i].Trigger(false, transform.position);
-            }
-        }
+        await Task.WhenAll(bugsToTrigger);
     }
 }
