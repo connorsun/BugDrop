@@ -82,17 +82,19 @@ public abstract class Bug : MonoBehaviour
             this.secondaryTriggered = true;
         }
         await this.Score();
-        float timestamp = Time.unscaledTime;
-        while (Time.unscaledTime < timestamp + 0.5f)
-        {
-            await Task.Yield();
-        }
-        foreach (Bug bug in GetClosestBugs())
-        {
-            if (!bug.primaryTriggered)
+        if (isPrimary) {
+            float timestamp = Time.unscaledTime;
+            while (Time.unscaledTime < timestamp + 0.5f)
             {
-                await bug.Trigger(true, transform.position);
-                return;
+                await Task.Yield();
+            }
+            foreach (Bug bug in GetClosestBugs())
+            {
+                if (!bug.primaryTriggered)
+                {
+                    await bug.Trigger(true, transform.position);
+                    return;
+                }
             }
         }
     }
