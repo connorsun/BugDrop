@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.Threading.Tasks;
+using System;
 using TMPro;
 
 // Provides methods for rendering UI changes based on state in GameHandler
@@ -49,7 +50,15 @@ public class UIHandler : MonoBehaviour
     public async Task EnterPlacingState()
     {
         SetupPlacing();
-        nextButton.SetActive(false);
+        try
+        {
+            await nextButton.GetComponent<UIAnimatable>().Hide();
+        }
+        catch (Exception e)
+        {
+            print(e.Message);
+            return;
+        }
         roundLabel.text = "Round " + GameHandler.Round;
 
         int nextKnockoutRound = GameHandler.Round + GameHandler.KNOCKOUT_ROUNDS
@@ -70,7 +79,7 @@ public class UIHandler : MonoBehaviour
             SetupScoring();
         }
         
-        nextButton.SetActive(false);
+        await nextButton.GetComponent<UIAnimatable>().Hide();
     }
 
     public async Task EnterLosingState()
@@ -81,7 +90,7 @@ public class UIHandler : MonoBehaviour
     // Button
     public async Task ShowNextButton()
     {
-        nextButton.SetActive(true);
+        await nextButton.GetComponent<UIAnimatable>().Show();
     }
 
     public void OnNextButtonClicked()
