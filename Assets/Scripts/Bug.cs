@@ -90,11 +90,7 @@ public abstract class Bug : MonoBehaviour
         tZap.Init();
         await this.Score();
         if (isPrimary) {
-            float timestamp = Time.unscaledTime;
-            while (Time.unscaledTime < timestamp + 0.5f)
-            {
-                await Task.Yield();
-            }
+            await Task.Delay(TimeSpan.FromSeconds(0.4f * 1/GameHandler.GameSpeed));
             foreach (Bug bug in GetClosestBugs())
             {
                 if (!bug.primaryTriggered)

@@ -47,6 +47,7 @@ public class GameHandler : MonoBehaviour
     public static int RoundScore;
     public static int ScoreThreshold;
     public static bool IsKnockout;
+    public static float GameSpeed;
 
     // --- OBJECT REFERENCES ---
     [SerializeField] private UIHandler uiHandler;
@@ -72,6 +73,7 @@ public class GameHandler : MonoBehaviour
         GameState = PlayState.Playing;
         Round = 0;
         ScoreThreshold = THRESHOLD_BASE;
+        GameSpeed = 1;
         // Setup control handling
         this.controls = new InputSystem_Actions();
         this.controls.Player.Drop.performed += OnDrop;
@@ -90,6 +92,7 @@ public class GameHandler : MonoBehaviour
 
         (GameObject, Bug.BugInfo) bugPair = SpawnRandomBug();
         AllBugs = FindObjectsByType<Bug>(FindObjectsSortMode.None);
+        GameSpeed = 1 + AllBugs.Length * 0.2f;
         GameObject bug = bugPair.Item1;
         bug.GetComponent<Bug>().SetSimulated(false);
         float safeWidth = edgeX - bugPair.Item2.safeHorizRadius;

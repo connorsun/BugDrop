@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System;
 
 
 public class Worm : Bug
@@ -26,10 +27,7 @@ public class Worm : Bug
     {
         base.Score();
         float timestamp = Time.unscaledTime;
-        while (Time.unscaledTime < timestamp + 0.3f)
-        {
-            await Task.Yield();
-        }
+        await Task.Delay(TimeSpan.FromSeconds(0.2f * 1/GameHandler.GameSpeed));
         ContactPoint2D[] contacts = this.GetContacts();
         print(contacts.Length);
         List<Task> bugsToTrigger = new List<Task>();
