@@ -144,7 +144,7 @@ public abstract class Bug : MonoBehaviour
 
             while (numFilled > size) {
                 contacts = new ContactPoint2D[size];
-                numFilled = GetComponent<Collider2D>().GetContacts(contacts);
+                numFilled = col.GetContacts(contacts);
             }
 
             // Discern which type of contact point this is
