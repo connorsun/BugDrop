@@ -13,7 +13,7 @@ public abstract class Bug : MonoBehaviour
 {
 
     // All Bug subclasses must implement the GetInfo static method to return their BugInfo!
-    public record BugInfo(string name, int rarity, int baseScore, float safeHorizRadius);
+    public record BugInfo(string name, int rarity, int baseScore, float safeHorizRadius, float safeVertRadius);
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     // --- CONSTANTS ---
     private const int CONTACT_ARRAY_SIZE = 10;
@@ -127,6 +127,7 @@ public abstract class Bug : MonoBehaviour
     {
         GameHandler.RoundScore += score;
         GameHandler.SingletonUIHandler.UpdateScoreState();
+        GameHandler.SingletonUIHandler.CreateScoreGraphic(center.transform.position + new Vector3(this.thisBugInfo.safeHorizRadius / 2f, this.thisBugInfo.safeVertRadius), score);
     }
 
     protected ContactPoint2D[] GetContacts()
@@ -141,9 +142,7 @@ public abstract class Bug : MonoBehaviour
             int size = CONTACT_ARRAY_SIZE;
             ContactPoint2D[] contacts = new ContactPoint2D[size];
             int numFilled = size + 1;
-            print("collider " + col.gameObject.name);
             while (numFilled > size) {
-                print(size);
                 if (size != CONTACT_ARRAY_SIZE)
                 {
                     size *= 2;
@@ -177,7 +176,6 @@ public abstract class Bug : MonoBehaviour
         ContactPoint2D[] result = new ContactPoint2D[bugContacts.Count + otherContacts.Count];
         bugContacts.Values.CopyTo(result, 0);
         otherContacts.CopyTo(result, bugContacts.Count);
-        print(string.Join(",", result));
         
         return result;
     }

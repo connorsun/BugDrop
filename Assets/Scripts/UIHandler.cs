@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 using System.Threading.Tasks;
 using TMPro;
 
@@ -93,6 +94,22 @@ public class UIHandler : MonoBehaviour
             gameHandler.StartPlacing();
         }
         
+    }
+    public void CreateScoreGraphic(Vector3 worldPos, int score)
+    {
+        try {
+            GameObject scoreGraphic = Instantiate(GameHandler.GetResource("Prefabs/UI/ScoreGraphic") as GameObject);
+            scoreGraphic.transform.SetParent(transform);
+            scoreGraphic.transform.position = Camera.main.WorldToScreenPoint(worldPos);
+            TextMeshProUGUI scoreText = scoreGraphic.GetComponent<TextMeshProUGUI>();
+            scoreText.text = (score >= 0? "+" : "-") + score;
+            ScoreGraphic graphic = scoreGraphic.GetComponent<ScoreGraphic>();
+            graphic.timeToLive = 0.5f;
+            graphic.Init();
+        } catch (Exception e)
+        {
+            Debug.LogError(e);
+        }
     }
 
     public void UpdateScoreState()
