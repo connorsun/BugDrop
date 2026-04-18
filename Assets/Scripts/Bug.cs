@@ -27,6 +27,9 @@ public abstract class Bug : MonoBehaviour
     public bool primaryTriggered;
     public bool secondaryTriggered;
     // --- OBJECT REFERENCES ---
+
+    // Center must be used as the main transform to get the position of the bug, as the
+    // parent object this script is on does not follow the position of the child segments
     [SerializeField] protected Transform center;
     [SerializeField] protected Collider2D[] colliders;
     [SerializeField] protected Rigidbody2D[] rigidbodies;
