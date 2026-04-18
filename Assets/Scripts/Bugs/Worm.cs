@@ -40,7 +40,7 @@ public class Worm : Bug
             print(otherBug);
             if (otherBug != null && !otherBug.secondaryTriggered)
             {
-                bugsToTrigger.Add(otherBug.Trigger(false, transform.position));
+                bugsToTrigger.Add(otherBug.Trigger(false, this.center.position));
             }
         }
         await Task.WhenAll(bugsToTrigger);
