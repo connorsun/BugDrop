@@ -36,7 +36,7 @@ public class Worm : Bug
         foreach (ContactPoint2D contact in contacts)
         {
             print(contact.collider?.gameObject);
-            Bug otherBug = contact.collider?.gameObject?.GetComponent<Bug>();
+            Bug otherBug = contact.collider?.gameObject?.GetComponentInParent<Bug>();
             print(otherBug);
             if (otherBug != null && !otherBug.secondaryTriggered)
             {

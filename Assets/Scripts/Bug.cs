@@ -157,7 +157,7 @@ public abstract class Bug : MonoBehaviour
             for (int i = 0; i < numFilled; i++)
             {
                 ContactPoint2D contact = contacts[i];
-                Bug other = contact.otherCollider.GetComponentInParent<Bug>();
+                Bug other = contact.collider.GetComponentInParent<Bug>();
                 
                 if (other == this) continue;
 
