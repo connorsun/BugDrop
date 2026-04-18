@@ -69,7 +69,7 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.14}
   m_Radius: 0.5
 --- !u!212 &892888193322803731
 SpriteRenderer:
@@ -475,6 +475,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SampleBug
   primaryTriggered: 0
   secondaryTriggered: 0
+  center: {fileID: 2005542484965195087}
   colliders:
   - {fileID: 5967429908595475017}
   - {fileID: 5018472113738727710}
@@ -551,7 +552,7 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.14}
   m_Radius: 0.5
 --- !u!212 &8792619243018849150
 SpriteRenderer:
