@@ -27,6 +27,7 @@ public abstract class Bug : MonoBehaviour
     public bool primaryTriggered;
     public bool secondaryTriggered;
     // --- OBJECT REFERENCES ---
+    [SerializeField] protected Transform center;
     [SerializeField] protected Collider2D[] colliders;
     [SerializeField] protected Rigidbody2D[] rigidbodies;
 
@@ -84,7 +85,7 @@ public abstract class Bug : MonoBehaviour
         zap.GetComponent<LineRenderer>().endColor = zapColor;
         TriggerZap tZap = zap.GetComponent<TriggerZap>();
         tZap.start = (Vector2) prevPos;
-        tZap.end = (Vector2) transform.position;
+        tZap.end = (Vector2) center.position;
         tZap.timeToLive = 0.3f;
         tZap.Init();
         await this.Score();
@@ -98,7 +99,7 @@ public abstract class Bug : MonoBehaviour
             {
                 if (!bug.primaryTriggered)
                 {
-                    await bug.Trigger(true, transform.position);
+                    await bug.Trigger(true, center.position);
                     return;
                 }
             }
@@ -178,6 +179,6 @@ public abstract class Bug : MonoBehaviour
 
     private Bug[] GetClosestBugs()
     {
-        return GameHandler.AllBugs.OrderBy(x => (x.transform.position - transform.position).magnitude).ToArray();
+        return GameHandler.AllBugs.OrderBy(x => (x.center.position - center.position).magnitude).ToArray();
     }
 }

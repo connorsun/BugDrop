@@ -1185,6 +1185,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Worm
   primaryTriggered: 0
   secondaryTriggered: 0
+  center: {fileID: 7889512994731030152}
   colliders:
   - {fileID: 1634385740110865725}
   - {fileID: 7346994476653208451}
