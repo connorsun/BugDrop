@@ -11,7 +11,7 @@ public class Fly : Bug
     // Gets metadata about this bug type
     public static BugInfo GetInfo()
     {
-        return new BugInfo("Fly", 1, 1, 1.5f);
+        return new BugInfo("Fly", 1, 1, 1.5f, 0.5f);
     }
 
     // --- PUBLIC METHODS ---
