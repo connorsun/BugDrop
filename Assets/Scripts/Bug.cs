@@ -90,7 +90,7 @@ public abstract class Bug : MonoBehaviour
                 return;
             }
             this.secondaryTriggered = true;
-            await Task.Delay(TimeSpan.FromSeconds(2f * 1/GameHandler.GameSpeed));
+            await Task.Delay(TimeSpan.FromSeconds(0.4f * 1/GameHandler.GameSpeed));
         }
         GameObject zap = Instantiate(GameHandler.GetResource("Prefabs/TriggerZap") as GameObject);
         Color zapColor = isPrimary? GameHandler.PRIMARY_COLOR : GameHandler.SECONDARY_COLOR;
@@ -99,11 +99,11 @@ public abstract class Bug : MonoBehaviour
         TriggerZap tZap = zap.GetComponent<TriggerZap>();
         tZap.start = (Vector2) prevPos;
         tZap.end = (Vector2) center.position;
-        tZap.timeToLive = 0.6f * 1/GameHandler.GameSpeed;
+        tZap.timeToLive = isPrimary? 0.6f * 1/GameHandler.GameSpeed : 0.4f * 1/GameHandler.GameSpeed;
         tZap.Init();
         await this.Score(isPrimary);
         if (isPrimary) {
-            await Task.Delay(TimeSpan.FromSeconds(2f * 1/GameHandler.GameSpeed));
+            await Task.Delay(TimeSpan.FromSeconds(0.6f * 1/GameHandler.GameSpeed));
             foreach (Bug bug in GetClosestBugs())
             {
                 if (!bug.primaryTriggered)
