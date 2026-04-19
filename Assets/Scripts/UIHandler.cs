@@ -99,6 +99,9 @@ public class UIHandler : MonoBehaviour
 
     public async Task EnterLosingState()
     {
+        roundLabelLosing.text = "Round " + GameHandler.Round;
+
+        scoreDifference.text = "Score: " + GameHandler.RoundScore + " Needed: " + GameHandler.ScoreThreshold;
         await RenderState(UIState.Lose, HideNextButton());
     }
 
