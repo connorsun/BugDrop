@@ -25,7 +25,6 @@ public class Worm : Bug
 
     protected override async Task Score()
     {
-        base.Score();
         float timestamp = Time.unscaledTime;
         await Task.Delay(TimeSpan.FromSeconds(0.2f * 1/GameHandler.GameSpeed));
         ContactPoint2D[] contacts = this.GetContacts();

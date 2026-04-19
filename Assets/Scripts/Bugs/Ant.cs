@@ -23,15 +23,15 @@ public class Ant : Bug
 
     protected override async Task Score()
     {
-        base.Score();
         ContactPoint2D[] contacts = this.GetContacts();
         foreach (ContactPoint2D contact in contacts)
         {
             if (contact.collider?.gameObject.CompareTag("Ground") == true)
             {
-                ScorePoints(2);
+                ScorePoints(this.thisBugInfo.baseScore + 2);
                 return;
             }
         }
+        ScorePoints(this.thisBugInfo.baseScore);
     }
 }

@@ -23,16 +23,16 @@ public class Fly : Bug
 
     protected override async Task Score()
     {
-        base.Score();
         ContactPoint2D[] contacts = this.GetContacts();
         foreach (ContactPoint2D contact in contacts)
         {
             if (contact.collider?.gameObject.CompareTag("Ground") == true)
             {
+                ScorePoints(this.thisBugInfo.baseScore);
                 return;
             }
         }
         // if not touching ground
-        ScorePoints(3);
+        ScorePoints(this.thisBugInfo.baseScore + 3);
     }
 }

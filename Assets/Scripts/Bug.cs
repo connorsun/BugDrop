@@ -145,10 +145,7 @@ public abstract class Bug : MonoBehaviour
     // --- PRIVATE METHODS ---
 
     // Scores this bug. Runs all operations for scoring this bug's turn before returning.
-    protected virtual async Task Score()
-    {
-        ScorePoints(this.thisBugInfo.baseScore);
-    }
+    protected abstract Task Score();
 
 
     // Scores a specific number of points for this round.
