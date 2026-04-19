@@ -21,7 +21,6 @@ public class Tooltip : MonoBehaviour
         foreach (Collider2D col in overlapColliders)
         {
             Bug bug = col.gameObject?.GetComponentInParent<Bug>();
-            print(bug);
             if (bug != null)
             {
                 tooltipText.text = "[" + bug.thisBugInfo.baseScore + "] " + bug.thisBugInfo.tooltip;

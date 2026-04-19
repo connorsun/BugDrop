@@ -163,7 +163,7 @@ public abstract class Bug : MonoBehaviour
                     new Vector3(this.thisBugInfo.safeHorizRadius / 2f, this.thisBugInfo.safeVertRadius) +
                     new Vector3(UnityEngine.Random.Range(-0.1f, 0.1f), UnityEngine.Random.Range(-0.1f, 0.1f), 0f),
             score, isPrimary);
-        //GameHandler.PlaySound("TextboxSkip");
+        GameHandler.PlaySound("TextboxSkip");
     }
 
     protected ContactPoint2D[] GetContacts()

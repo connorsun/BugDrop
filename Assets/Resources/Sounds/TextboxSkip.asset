@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 6794ceaa0b097486ca74c9bf3094f538, type: 3}
   m_Name: TextboxSkip
   m_EditorClassIdentifier: Assembly-CSharp::Sound
   clip: {fileID: 8300000, guid: a11b7cb064a87435eb17e2b541d5fbde, type: 3}
