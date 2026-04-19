@@ -143,7 +143,7 @@ public class UIHandler : MonoBehaviour
     {
         GameHandler.BroadcastToBugs((Bug bug) => bug.Destroy());
         GameHandler.AllBugs = new Bug[0];
-        print(GameHandler.AllBugs.Length);
+        //print(GameHandler.AllBugs.Length);
         gameHandler.Init();
     }
 
@@ -161,7 +161,7 @@ public class UIHandler : MonoBehaviour
     }
 
     // -- INSTANTIATE WORLD SPACE UI --
-    public void CreateScoreGraphic(Vector3 worldPos, int score)
+    public void CreateScoreGraphic(Vector3 worldPos, int score, bool isPrimary)
     {
         try {
             GameObject scoreGraphic = Instantiate(GameHandler.GetResource("Prefabs/UI/ScoreGraphic") as GameObject);
@@ -172,9 +172,12 @@ public class UIHandler : MonoBehaviour
             scoreGraphic.GetComponent<UIAnimatable>().SetOriginalPosition(
                 scoreGraphic.GetComponent<RectTransform>().anchoredPosition
             );
-            
+
             TextMeshProUGUI scoreText = scoreGraphic.GetComponent<TextMeshProUGUI>();
-            scoreText.text = (score >= 0? "+" : "-") + score;
+            scoreText.text = (score >= 0 ? "+" : "-") + score;
+
+            scoreText.color = isPrimary ? GameHandler.PRIMARY_COLOR : GameHandler.SECONDARY_COLOR;
+            //print(scoreText.color);
             //ScoreGraphic graphic = scoreGraphic.GetComponent<ScoreGraphic>();
             //graphic.timeToLive = 0.5f;
             //graphic.Init();

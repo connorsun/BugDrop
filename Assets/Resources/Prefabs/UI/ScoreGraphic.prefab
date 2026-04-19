@@ -171,3 +171,5 @@ MonoBehaviour:
   hideDuration: 0.2
   slideOffset: {x: 0, y: -6}
   scaleFactor: 0.8
+  hasOriginalPosition: 0
+  originalPosition: {x: -Infinity, y: -Infinity}

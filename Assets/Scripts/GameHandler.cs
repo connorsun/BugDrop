@@ -40,6 +40,8 @@ public class GameHandler : MonoBehaviour
     private const float dropY = 6.3f;
     private const float edgeX = 12.5f;
     private Vector3 zapperPos = new Vector3(0f, -7.5f, 0f);
+    public static Color PRIMARY_COLOR = new Color(255f / 255f, 240f / 255f, 137f / 255f);
+    public static Color SECONDARY_COLOR = new Color(115f / 255f, 239f / 255f, 232f / 255f);
     
 
     // --- GLOBAL STATE ---
@@ -121,7 +123,7 @@ public class GameHandler : MonoBehaviour
         BroadcastToBugs((Bug bug) => bug.StartPlacing());
         while (true) {
             try {
-            print(AllBugs.Length);
+            //print(AllBugs.Length);
             bool allStationary = true;
             foreach (Bug eachBug in AllBugs)
             {

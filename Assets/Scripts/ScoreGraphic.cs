@@ -9,6 +9,7 @@ public class ScoreGraphic : MonoBehaviour
     // private const float Y_SPEED = 15f;
 
     private UIAnimatable anim;
+    private bool outline;
 
     public void Init()
     {
@@ -20,7 +21,7 @@ public class ScoreGraphic : MonoBehaviour
     {
         anim = GetComponent<UIAnimatable>();
         await Animate();
-        //Destroy(gameObject);
+        Destroy(gameObject);
     }
 
     // Update is called once per frame
