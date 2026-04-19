@@ -65,6 +65,11 @@ public class UIHandler : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Start()
     {
+        Init();
+    }
+
+    public void Init()
+    {
         SetRoundLabel();
         SetFutureThreshold();
         UpdateScoreState();
@@ -136,6 +141,19 @@ public class UIHandler : MonoBehaviour
         {
             gameHandler.StartPlacing();
         }
+    }
+
+    public void OnRetryButtonClicked()
+    {
+        GameHandler.BroadcastToBugs((Bug bug) => bug.Destroy());
+        GameHandler.AllBugs = new Bug[0];
+        print(GameHandler.AllBugs.Length);
+        gameHandler.Init();
+    }
+
+    public void OnQuitButtonClicked()
+    {
+        Application.Quit();
     }
 
     // Score UI
