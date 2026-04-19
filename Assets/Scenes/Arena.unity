@@ -937,9 +937,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 1.2792363
-    width: 1.1114094
-    height: 1.1115752
+    y: 0
+    width: 1
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -1222,7 +1222,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1860098344}
         m_TargetAssemblyTypeName: UIHandler, Assembly-CSharp
-        m_MethodName: OnNextButtonClicked
+        m_MethodName: OnRetryButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4015,7 +4015,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1860098344}
         m_TargetAssemblyTypeName: UIHandler, Assembly-CSharp
-        m_MethodName: OnNextButtonClicked
+        m_MethodName: OnQuitButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

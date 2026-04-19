@@ -32,9 +32,7 @@ public class Worm : Bug
         List<Task> bugsToTrigger = new List<Task>();
         foreach (ContactPoint2D contact in contacts)
         {
-            print(contact.collider?.gameObject);
             Bug otherBug = contact.collider?.gameObject?.GetComponentInParent<Bug>();
-            print(otherBug);
             if (otherBug != null && !otherBug.secondaryTriggered)
             {
                 bugsToTrigger.Add(otherBug.Trigger(false, this.center.position));

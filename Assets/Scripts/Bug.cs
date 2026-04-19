@@ -141,6 +141,11 @@ public abstract class Bug : MonoBehaviour
         }
     }
 
+    public virtual void Destroy()
+    {
+        DestroyImmediate(gameObject);
+    }
+
     // --- PRIVATE METHODS ---
 
     // Scores this bug. Runs all operations for scoring this bug's turn before returning.

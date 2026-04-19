@@ -43,6 +43,11 @@ public class UIHandler : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Start()
     {
+        Init();
+    }
+
+    public void Init()
+    {
         UpdateScoreState();
     }
 
@@ -52,7 +57,9 @@ public class UIHandler : MonoBehaviour
         SetupPlacing();
         try
         {
-            await nextButton.GetComponent<UIAnimatable>().Hide();
+            if (GameHandler.Round > 1) {
+                await nextButton.GetComponent<UIAnimatable>().Hide();
+            }
         }
         catch (Exception e)
         {
@@ -85,6 +92,10 @@ public class UIHandler : MonoBehaviour
     public async Task EnterLosingState()
     {
         SetupLosing();
+
+        roundLabelLosing.text = "Round " + GameHandler.Round;
+        
+        scoreDifference.text = "Score: " + GameHandler.RoundScore + " Needed: " + GameHandler.ScoreThreshold;
     }
 
     // Button
@@ -102,7 +113,19 @@ public class UIHandler : MonoBehaviour
         {
             gameHandler.StartPlacing();
         }
-        
+    }
+
+    public void OnRetryButtonClicked()
+    {
+        GameHandler.BroadcastToBugs((Bug bug) => bug.Destroy());
+        GameHandler.AllBugs = new Bug[0];
+        print(GameHandler.AllBugs.Length);
+        gameHandler.Init();
+    }
+
+    public void OnQuitButtonClicked()
+    {
+        Application.Quit();
     }
     public void CreateScoreGraphic(Vector3 worldPos, int score)
     {

@@ -32,7 +32,7 @@ public class GameHandler : MonoBehaviour
     public static Bug[] AllBugs;
     public const int KNOCKOUT_ROUNDS = 3;
     [SerializeField] private float[] rarityChances = {0.75f, 0.25f};
-    public const int THRESHOLD_BASE = 100;
+    public const int THRESHOLD_BASE = 10;
     public const float THRESHOLD_SCALE = 3;
     private const string BUG_PATH = "Prefabs/Bugs";
     private const float dropY = 6.3f;
@@ -61,12 +61,18 @@ public class GameHandler : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Start()
     {
+        // Setup control handling
+        this.controls = new InputSystem_Actions();
+        this.controls.Player.Drop.performed += OnDrop;
+        this.controls.Player.Enable();
         Init();
     }
 
     // Initialize game state on startup
     public void Init()
     {
+        AllBugs = new Bug[0];
+        LoadedResources = new Dictionary<string, GameObject>();
         SingletonGameHandler = this;
         SingletonUIHandler = uiHandler;
         InitializeBugTypes();
@@ -74,10 +80,8 @@ public class GameHandler : MonoBehaviour
         Round = 0;
         ScoreThreshold = THRESHOLD_BASE;
         GameSpeed = 1;
-        // Setup control handling
-        this.controls = new InputSystem_Actions();
-        this.controls.Player.Drop.performed += OnDrop;
-        this.controls.Player.Enable();
+        RoundScore = 0;
+        uiHandler.Init();
         _ = StartPlacing();
     }
 
@@ -113,6 +117,8 @@ public class GameHandler : MonoBehaviour
         // wait until all bugs are stationary
         BroadcastToBugs((Bug bug) => bug.StartPlacing());
         while (true) {
+            try {
+            print(AllBugs.Length);
             bool allStationary = true;
             foreach (Bug eachBug in AllBugs)
             {
@@ -125,6 +131,10 @@ public class GameHandler : MonoBehaviour
             if (allStationary)
             {
                 break;
+            }
+            } catch (Exception e)
+            {
+                Debug.LogError(e);
             }
             await Task.Yield();
         }
@@ -156,9 +166,16 @@ public class GameHandler : MonoBehaviour
         {
             await Task.Yield();
         }
+        // check for lose condition
+        if (IsKnockout && RoundScore < ScoreThreshold)
+        {
+            await uiHandler.EnterLosingState();
+            return;
+        }
         await this.uiHandler.ShowNextButton();
         if (IsKnockout)
         {
+            // set up for next knockout round
             ScoreThreshold = (int)(ScoreThreshold * THRESHOLD_SCALE);
         }
     }
