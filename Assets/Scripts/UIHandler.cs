@@ -27,11 +27,7 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private GameHandler gameHandler;
 
     // UI Groups
-    [SerializeField] private GameObject generalGroup;
-    [SerializeField] private GameObject scoringDisable;
-    [SerializeField] private GameObject knockoutDisable; // General UI elements to hide when knockout enabled
-    [SerializeField] private GameObject knockoutGroup;
-    [SerializeField] private GameObject loseGroup;
+    [SerializeField] private GameObject worldspaceCanvas;
 
     // UI Elements - General
     [SerializeField] private TextMeshProUGUI roundLabel;
@@ -99,9 +95,6 @@ public class UIHandler : MonoBehaviour
 
     public async Task EnterLosingState()
     {
-        roundLabelLosing.text = "Round " + GameHandler.Round;
-
-        scoreDifference.text = "Score: " + GameHandler.RoundScore + " Needed: " + GameHandler.ScoreThreshold;
         await RenderState(UIState.Lose, HideNextButton());
     }
 
@@ -172,9 +165,14 @@ public class UIHandler : MonoBehaviour
     {
         try {
             GameObject scoreGraphic = Instantiate(GameHandler.GetResource("Prefabs/UI/ScoreGraphic") as GameObject);
-            scoreGraphic.transform.SetParent(transform);
-            scoreGraphic.transform.position = Camera.main.WorldToScreenPoint(worldPos);
-            scoreGraphic.GetComponent<UIAnimatable>().SetOriginalPosition(scoreGraphic.GetComponent<RectTransform>().position);
+            scoreGraphic.transform.SetParent(worldspaceCanvas.transform, false);
+
+            scoreGraphic.transform.position = worldPos;
+
+            scoreGraphic.GetComponent<UIAnimatable>().SetOriginalPosition(
+                scoreGraphic.GetComponent<RectTransform>().anchoredPosition
+            );
+            
             TextMeshProUGUI scoreText = scoreGraphic.GetComponent<TextMeshProUGUI>();
             scoreText.text = (score >= 0? "+" : "-") + score;
             //ScoreGraphic graphic = scoreGraphic.GetComponent<ScoreGraphic>();
