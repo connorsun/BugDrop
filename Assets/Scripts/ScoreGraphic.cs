@@ -9,7 +9,7 @@ public class ScoreGraphic : MonoBehaviour
     // private const float Y_SPEED = 15f;
 
     private UIAnimatable anim;
-    private bool outline;
+    private boolean outline;
 
     public void Init()
     {
