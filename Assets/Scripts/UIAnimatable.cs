@@ -54,6 +54,16 @@ public class UIAnimatable : MonoBehaviour
         {
             cg = gameObject.AddComponent<CanvasGroup>();
         }
+
+        if (showAnimation == AnimationType.Fade || showAnimation == AnimationType.FadeAndSlide)
+        {
+            cg.alpha = 0f;
+        }
+
+        if (showAnimation == AnimationType.Slide || showAnimation == AnimationType.FadeAndSlide)
+        {
+            rt.anchoredPosition = originalPosition + slideOffset;
+        }
     }
 
     public async Task Show()

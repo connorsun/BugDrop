@@ -128,8 +128,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 10641766}
+  - component: {fileID: 10641767}
   m_Layer: 5
-  m_Name: Scoring Disable
+  m_Name: Score
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -156,6 +157,26 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &10641767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 10641765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c53bb23157fc94171b771e139378f123, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIAnimatable
+  showAnimation: 0
+  showEasing: 0
+  showDuration: 0.25
+  hideAnimation: 0
+  hideEasing: 1
+  hideDuration: 0.25
+  slideOffset: {x: 0, y: -80}
+  scaleFactor: 0.8
 --- !u!1 &36460378
 GameObject:
   m_ObjectHideFlags: 0
@@ -205,6 +226,7 @@ GameObject:
   - component: {fileID: 114537259}
   - component: {fileID: 114537261}
   - component: {fileID: 114537260}
+  - component: {fileID: 114537262}
   m_Layer: 5
   m_Name: Future Threshold
   m_TagString: Untagged
@@ -334,6 +356,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 114537258}
   m_CullTransparentMesh: 1
+--- !u!114 &114537262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 114537258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c53bb23157fc94171b771e139378f123, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIAnimatable
+  showAnimation: 0
+  showEasing: 0
+  showDuration: 0.25
+  hideAnimation: 0
+  hideEasing: 1
+  hideDuration: 0.25
+  slideOffset: {x: 0, y: -80}
+  scaleFactor: 0.8
 --- !u!1 &237096175
 GameObject:
   m_ObjectHideFlags: 0
@@ -345,6 +387,7 @@ GameObject:
   - component: {fileID: 237096176}
   - component: {fileID: 237096178}
   - component: {fileID: 237096177}
+  - component: {fileID: 237096179}
   m_Layer: 5
   m_Name: Title
   m_TagString: Untagged
@@ -471,6 +514,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 237096175}
   m_CullTransparentMesh: 1
+--- !u!114 &237096179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 237096175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c53bb23157fc94171b771e139378f123, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIAnimatable
+  showAnimation: 0
+  showEasing: 0
+  showDuration: 0.25
+  hideAnimation: 0
+  hideEasing: 1
+  hideDuration: 0.25
+  slideOffset: {x: 0, y: -80}
+  scaleFactor: 0.8
 --- !u!1 &268878203
 GameObject:
   m_ObjectHideFlags: 0
@@ -710,6 +773,7 @@ GameObject:
   - component: {fileID: 511466857}
   - component: {fileID: 511466859}
   - component: {fileID: 511466858}
+  - component: {fileID: 511466860}
   m_Layer: 5
   m_Name: Score Difference
   m_TagString: Untagged
@@ -836,6 +900,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 511466856}
   m_CullTransparentMesh: 1
+--- !u!114 &511466860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 511466856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c53bb23157fc94171b771e139378f123, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIAnimatable
+  showAnimation: 0
+  showEasing: 0
+  showDuration: 0.25
+  hideAnimation: 0
+  hideEasing: 1
+  hideDuration: 0.25
+  slideOffset: {x: 0, y: -80}
+  scaleFactor: 0.8
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -937,9 +1021,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 1.2792363
-    width: 1.1114094
-    height: 1.1115752
+    y: 1.8527778
+    width: 1.0609375
+    height: 1.0609375
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -1149,6 +1233,7 @@ GameObject:
   - component: {fileID: 686455034}
   - component: {fileID: 686455033}
   - component: {fileID: 686455032}
+  - component: {fileID: 686455035}
   m_Layer: 5
   m_Name: Retry Button
   m_TagString: Untagged
@@ -1270,6 +1355,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 686455030}
   m_CullTransparentMesh: 1
+--- !u!114 &686455035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 686455030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c53bb23157fc94171b771e139378f123, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIAnimatable
+  showAnimation: 0
+  showEasing: 0
+  showDuration: 0.25
+  hideAnimation: 0
+  hideEasing: 1
+  hideDuration: 0.25
+  slideOffset: {x: 0, y: -80}
+  scaleFactor: 0.8
 --- !u!1 &718246728
 GameObject:
   m_ObjectHideFlags: 0
@@ -1285,7 +1390,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &718246729
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1321,6 +1426,7 @@ GameObject:
   - component: {fileID: 814544686}
   - component: {fileID: 814544688}
   - component: {fileID: 814544687}
+  - component: {fileID: 814544689}
   m_Layer: 5
   m_Name: Round Score
   m_TagString: Untagged
@@ -1449,6 +1555,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 814544685}
   m_CullTransparentMesh: 1
+--- !u!114 &814544689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 814544685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c53bb23157fc94171b771e139378f123, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIAnimatable
+  showAnimation: 0
+  showEasing: 0
+  showDuration: 0.25
+  hideAnimation: 0
+  hideEasing: 1
+  hideDuration: 0.25
+  slideOffset: {x: 0, y: -80}
+  scaleFactor: 0.8
 --- !u!1 &838519631
 GameObject:
   m_ObjectHideFlags: 0
@@ -1460,6 +1586,7 @@ GameObject:
   - component: {fileID: 838519632}
   - component: {fileID: 838519634}
   - component: {fileID: 838519633}
+  - component: {fileID: 838519635}
   m_Layer: 5
   m_Name: Round
   m_TagString: Untagged
@@ -1588,6 +1715,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 838519631}
   m_CullTransparentMesh: 1
+--- !u!114 &838519635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 838519631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c53bb23157fc94171b771e139378f123, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIAnimatable
+  showAnimation: 0
+  showEasing: 0
+  showDuration: 0.25
+  hideAnimation: 0
+  hideEasing: 1
+  hideDuration: 0.25
+  slideOffset: {x: 0, y: -80}
+  scaleFactor: 0.8
 --- !u!1 &883381793
 GameObject:
   m_ObjectHideFlags: 0
@@ -1599,6 +1746,7 @@ GameObject:
   - component: {fileID: 883381794}
   - component: {fileID: 883381796}
   - component: {fileID: 883381795}
+  - component: {fileID: 883381797}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -1663,6 +1811,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 883381793}
   m_CullTransparentMesh: 1
+--- !u!114 &883381797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 883381793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c53bb23157fc94171b771e139378f123, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIAnimatable
+  showAnimation: 0
+  showEasing: 0
+  showDuration: 0.25
+  hideAnimation: 0
+  hideEasing: 1
+  hideDuration: 0.25
+  slideOffset: {x: 0, y: -80}
+  scaleFactor: 0.8
 --- !u!1 &1243798480
 GameObject:
   m_ObjectHideFlags: 0
@@ -1682,7 +1850,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1243798481
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1971,7 +2139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1249918760
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3942,6 +4110,7 @@ GameObject:
   - component: {fileID: 1380421618}
   - component: {fileID: 1380421617}
   - component: {fileID: 1380421616}
+  - component: {fileID: 1380421619}
   m_Layer: 5
   m_Name: Quit Button
   m_TagString: Untagged
@@ -4063,6 +4232,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1380421614}
   m_CullTransparentMesh: 1
+--- !u!114 &1380421619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1380421614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c53bb23157fc94171b771e139378f123, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIAnimatable
+  showAnimation: 0
+  showEasing: 0
+  showDuration: 0.25
+  hideAnimation: 0
+  hideEasing: 1
+  hideDuration: 0.25
+  slideOffset: {x: 0, y: -80}
+  scaleFactor: 0.8
 --- !u!1 &1476114831
 GameObject:
   m_ObjectHideFlags: 0
@@ -4074,6 +4263,7 @@ GameObject:
   - component: {fileID: 1476114832}
   - component: {fileID: 1476114834}
   - component: {fileID: 1476114833}
+  - component: {fileID: 1476114835}
   m_Layer: 5
   m_Name: Round
   m_TagString: Untagged
@@ -4202,6 +4392,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1476114831}
   m_CullTransparentMesh: 1
+--- !u!114 &1476114835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1476114831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c53bb23157fc94171b771e139378f123, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIAnimatable
+  showAnimation: 0
+  showEasing: 0
+  showDuration: 0.25
+  hideAnimation: 0
+  hideEasing: 1
+  hideDuration: 0.25
+  slideOffset: {x: 0, y: -80}
+  scaleFactor: 0.8
 --- !u!1 &1526553904
 GameObject:
   m_ObjectHideFlags: 0
@@ -4658,6 +4868,26 @@ MonoBehaviour:
   scoreDifference: {fileID: 511466858}
   retryButton: {fileID: 686455030}
   quitButton: {fileID: 1380421614}
+  placingElements:
+  - {fileID: 838519635}
+  - {fileID: 883381797}
+  - {fileID: 114537262}
+  scoringElements:
+  - {fileID: 838519635}
+  - {fileID: 883381797}
+  - {fileID: 114537262}
+  - {fileID: 10641767}
+  scoringKnockoutElements:
+  - {fileID: 838519635}
+  - {fileID: 814544689}
+  - {fileID: 2084325513}
+  - {fileID: 2006292883}
+  loseElements:
+  - {fileID: 237096179}
+  - {fileID: 1476114835}
+  - {fileID: 511466860}
+  - {fileID: 686455035}
+  - {fileID: 1380421619}
 --- !u!1 &1877125208
 GameObject:
   m_ObjectHideFlags: 0
@@ -4885,6 +5115,7 @@ GameObject:
   - component: {fileID: 2006292880}
   - component: {fileID: 2006292882}
   - component: {fileID: 2006292881}
+  - component: {fileID: 2006292883}
   m_Layer: 5
   m_Name: Threshold
   m_TagString: Untagged
@@ -5013,6 +5244,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2006292879}
   m_CullTransparentMesh: 1
+--- !u!114 &2006292883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2006292879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c53bb23157fc94171b771e139378f123, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIAnimatable
+  showAnimation: 0
+  showEasing: 0
+  showDuration: 0.25
+  hideAnimation: 0
+  hideEasing: 1
+  hideDuration: 0.25
+  slideOffset: {x: 0, y: -80}
+  scaleFactor: 0.8
 --- !u!1 &2082689909
 GameObject:
   m_ObjectHideFlags: 0
@@ -6117,6 +6368,7 @@ GameObject:
   - component: {fileID: 2084325510}
   - component: {fileID: 2084325512}
   - component: {fileID: 2084325511}
+  - component: {fileID: 2084325513}
   m_Layer: 5
   m_Name: Progress Bar
   m_TagString: Untagged
@@ -6181,6 +6433,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2084325509}
   m_CullTransparentMesh: 1
+--- !u!114 &2084325513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2084325509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c53bb23157fc94171b771e139378f123, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIAnimatable
+  showAnimation: 0
+  showEasing: 0
+  showDuration: 0.25
+  hideAnimation: 0
+  hideEasing: 1
+  hideDuration: 0.25
+  slideOffset: {x: 0, y: -80}
+  scaleFactor: 0.8
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
