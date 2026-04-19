@@ -90,7 +90,7 @@ public abstract class Bug : MonoBehaviour
                 return;
             }
             this.secondaryTriggered = true;
-            await Task.Delay(TimeSpan.FromSeconds(0.3f * GameHandler.GameSpeed));
+            await Task.Delay(TimeSpan.FromSeconds(0.4f * GameHandler.GameSpeed));
         }
         GameObject zap = Instantiate(GameHandler.GetResource("Prefabs/TriggerZap") as GameObject);
         Color zapColor = isPrimary? GameHandler.PRIMARY_COLOR : GameHandler.SECONDARY_COLOR;
@@ -99,19 +99,22 @@ public abstract class Bug : MonoBehaviour
         TriggerZap tZap = zap.GetComponent<TriggerZap>();
         tZap.start = (Vector2) prevPos;
         tZap.end = (Vector2) center.position;
-        tZap.timeToLive = 0.6f * GameHandler.GameSpeed;
+        tZap.timeToLive = isPrimary? 0.6f * GameHandler.GameSpeed : 0.4f * GameHandler.GameSpeed;
         tZap.Init();
         await this.Score(isPrimary);
         if (isPrimary) {
             Bug[] closest = GetClosestBugs();
             if (closest.Length > 0) {
-                await Task.Delay(TimeSpan.FromSeconds(0.4f * GameHandler.GameSpeed));
+                await Task.Delay(TimeSpan.FromSeconds(0.6f * GameHandler.GameSpeed));
                 foreach (Bug bug in closest)
                 {
                     if (!bug.primaryTriggered)
                     {
-                        await bug.Trigger(true, center.position);
-                        return;
+                        if (!bug.primaryTriggered)
+                        {
+                            await bug.Trigger(true, center.position);
+                            return;
+                        }
                     }
                 }
             }
@@ -163,7 +166,8 @@ public abstract class Bug : MonoBehaviour
         GameHandler.SingletonUIHandler.UpdateScoreState();
         GameHandler.SingletonUIHandler.CreateScoreGraphic(
             center.transform.position + 
-                    new Vector3(this.thisBugInfo.safeHorizRadius / 2f, this.thisBugInfo.safeVertRadius) +
+                    new Vector3(0.5f, 0.5f) +
+                    //new Vector3(this.thisBugInfo.safeHorizRadius / 2f, this.thisBugInfo.safeVertRadius) +
                     new Vector3(UnityEngine.Random.Range(-0.1f, 0.1f), UnityEngine.Random.Range(-0.1f, 0.1f), 0f),
             score, isPrimary);
         GameHandler.PlaySound("TextboxSkip");
