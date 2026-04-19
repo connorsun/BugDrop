@@ -26,9 +26,11 @@ public class GameHandler : MonoBehaviour
     // --- CONSTANTS ---
     public static GameHandler SingletonGameHandler;
     public static UIHandler SingletonUIHandler;
+    public static AudioSource SingletonSFXSource;
     public static Bug.BugInfo[] BugTypes;
     public static Dictionary<int, List<Bug.BugInfo>> BugRarityTypes = new Dictionary<int, List<Bug.BugInfo>>();
     public static Dictionary<string, GameObject> LoadedResources = new Dictionary<string, GameObject>();
+    public static Dictionary<string, Sound> LoadedSounds = new Dictionary<string, Sound>();
     public static Bug[] AllBugs;
     public const int KNOCKOUT_ROUNDS = 3;
     [SerializeField] private float[] rarityChances = {0.75f, 0.25f};
@@ -51,6 +53,7 @@ public class GameHandler : MonoBehaviour
 
     // --- OBJECT REFERENCES ---
     [SerializeField] private UIHandler uiHandler;
+    [SerializeField] private AudioSource audioSource;
     private InputSystem_Actions controls;
 
     // --- PRIVATE STATE ---
@@ -75,6 +78,7 @@ public class GameHandler : MonoBehaviour
         LoadedResources = new Dictionary<string, GameObject>();
         SingletonGameHandler = this;
         SingletonUIHandler = uiHandler;
+        SingletonSFXSource = audioSource;
         InitializeBugTypes();
         GameState = PlayState.Playing;
         Round = 0;
@@ -261,5 +265,24 @@ public class GameHandler : MonoBehaviour
             LoadedResources[path] = resource;
         }
         return resource;
+    }
+
+    public static Sound GetSound(string path)
+    {
+        Sound resource;
+        if (LoadedSounds.ContainsKey(path))
+        {
+            resource = LoadedSounds[path];
+        } else
+        {
+            resource = Resources.Load<Sound>(path);
+            LoadedSounds[path] = resource;
+        }
+        return resource;
+    }
+    public static void PlaySound(string sound)
+    {
+        Sound s = GetSound("Sounds/" + sound);
+        SingletonSFXSource.PlayOneShot(s.clip);
     }
 }

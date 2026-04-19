@@ -158,6 +158,12 @@ public abstract class Bug : MonoBehaviour
         GameHandler.RoundScore += score;
         GameHandler.SingletonUIHandler.UpdateScoreState();
         GameHandler.SingletonUIHandler.CreateScoreGraphic(center.transform.position + new Vector3(this.thisBugInfo.safeHorizRadius / 2f, this.thisBugInfo.safeVertRadius), score);
+        try {
+        GameHandler.PlaySound("TextboxSkip");
+        } catch (Exception e)
+        {
+            Debug.LogError(e);
+        }
     }
 
     protected ContactPoint2D[] GetContacts()
