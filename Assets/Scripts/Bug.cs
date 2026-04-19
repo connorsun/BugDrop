@@ -17,6 +17,8 @@ public abstract class Bug : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     // --- CONSTANTS ---
     private const int CONTACT_ARRAY_SIZE = 10;
+    private const float STATIONARY_MAG_THRESHOLD = 0.05f;
+    private const int STATIONARY_FRAMES_THRESHOLD = 15;
 
     // Recursive secondary triggering - if we want retriggers to be really strong
     public const bool RECURSIVE_SECONDARIES = true;
@@ -26,6 +28,7 @@ public abstract class Bug : MonoBehaviour
     protected BugInfo thisBugInfo;
     public bool primaryTriggered;
     public bool secondaryTriggered;
+    private int stationaryFrames;
     // --- OBJECT REFERENCES ---
 
     // Center must be used as the main transform to get the position of the bug, as the
@@ -51,8 +54,14 @@ public abstract class Bug : MonoBehaviour
     {
         this.primaryTriggered = false;
         this.secondaryTriggered = false;
+        this.stationaryFrames = 0;
     }
 
+    // Reset round state on the start of a scoring round
+    public virtual void StartPlacing()
+    {
+        this.stationaryFrames = 0;
+    }
     // Reset round state on the start of a scoring round
     public virtual void StartScoring()
     {
@@ -105,10 +114,23 @@ public abstract class Bug : MonoBehaviour
         }
     }
 
-    // Scores this bug. Runs all operations for scoring this bug's turn before returning.
-    protected virtual async Task Score()
+    // Checks if this bug is stationary
+    public virtual bool IsStationary()
     {
-        ScorePoints(this.thisBugInfo.baseScore);
+        Rigidbody2D centerRb = center.gameObject.GetComponent<Rigidbody2D>();
+        print(centerRb.linearVelocity.magnitude);
+        if (centerRb.linearVelocity.magnitude < STATIONARY_MAG_THRESHOLD)
+        {
+            stationaryFrames++;
+            if (stationaryFrames >= STATIONARY_FRAMES_THRESHOLD)
+            {
+                return true;
+            }
+        } else
+        {
+            stationaryFrames = 0;
+        }
+        return false;
     }
 
     // Turns on and off simulation for this bug's rigidbodies
@@ -121,6 +143,13 @@ public abstract class Bug : MonoBehaviour
     }
 
     // --- PRIVATE METHODS ---
+
+    // Scores this bug. Runs all operations for scoring this bug's turn before returning.
+    protected virtual async Task Score()
+    {
+        ScorePoints(this.thisBugInfo.baseScore);
+    }
+
 
     // Scores a specific number of points for this round.
     protected void ScorePoints(int score)

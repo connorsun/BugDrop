@@ -107,8 +107,27 @@ public class GameHandler : MonoBehaviour
             bug.transform.position = new Vector3(Mathf.Clamp(worldPosition.x, -safeWidth, safeWidth), dropY);
             await Task.Yield();
         }
-
         bug.GetComponent<Bug>().SetSimulated(true);
+        // give the bug some time to start dropping
+        await Task.Delay(TimeSpan.FromSeconds(0.2f));
+        // wait until all bugs are stationary
+        BroadcastToBugs((Bug bug) => bug.StartPlacing());
+        while (true) {
+            bool allStationary = true;
+            foreach (Bug eachBug in AllBugs)
+            {
+                // cannot break for efficiency - need to check IsStationary on all bugs so all bugs do their frame checks
+                if (!eachBug.IsStationary())
+                {
+                    allStationary = false;
+                }
+            }
+            if (allStationary)
+            {
+                break;
+            }
+            await Task.Yield();
+        }
         await this.uiHandler.ShowNextButton();
     }
 
