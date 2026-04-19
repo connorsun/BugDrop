@@ -2,12 +2,25 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using System;
 using TMPro;
+using System.Linq;
 
 // Provides methods for rendering UI changes based on state in GameHandler
 public class UIHandler : MonoBehaviour
 {
+    // -- TYPES --
+
+    private enum UIState
+    {
+        Placing,
+        Scoring,
+        ScoringKnockout,
+        Lose,
+        None
+    }
+
     // --- OBJECT REFERENCES ---
 
     // GameHandler
@@ -40,6 +53,15 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private GameObject retryButton;
     [SerializeField] private GameObject quitButton;
 
+    // UI Groups
+    [SerializeField] private UIAnimatable[] placingElements;
+    [SerializeField] private UIAnimatable[] scoringElements;
+    [SerializeField] private UIAnimatable[] scoringKnockoutElements;
+    [SerializeField] private UIAnimatable[] loseElements;
+
+    private UIState uiState = UIState.None;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Start()
     {
@@ -48,10 +70,13 @@ public class UIHandler : MonoBehaviour
 
     public void Init()
     {
+        SetRoundLabel();
+        SetFutureThreshold();
         UpdateScoreState();
     }
 
-    // State Changes
+    // -- OVERARCHING UI STATE CHANGES --
+
     public async Task EnterPlacingState()
     {
         SetupPlacing();
@@ -66,8 +91,40 @@ public class UIHandler : MonoBehaviour
             print(e.Message);
             return;
         }
-        roundLabel.text = "Round " + GameHandler.Round;
+        SetRoundLabel();
+        SetFutureThreshold();
+    
+        await RenderState(UIState.Placing, HideNextButton());
+    }
 
+    public async Task EnterScoringState()
+    {
+        UpdateScoreState();
+        if (GameHandler.IsKnockout)
+        {
+            await RenderState(UIState.ScoringKnockout, HideNextButton());
+        } else
+        {
+            await RenderState(UIState.Scoring, HideNextButton());
+        }
+    }
+
+    public async Task EnterLosingState()
+    {
+        await RenderState(UIState.Lose, HideNextButton());
+    }
+
+    // -- SETTERS/LOGIC FOR INDIVIDUAL ELEMENTS --
+
+    // Round Label
+    public void SetRoundLabel()
+    {
+        roundLabel.text = "Round " + GameHandler.Round;
+    }
+
+    // Future Threshold
+    public void SetFutureThreshold()
+    {
         int nextKnockoutRound = GameHandler.Round + GameHandler.KNOCKOUT_ROUNDS
             - (GameHandler.Round % GameHandler.KNOCKOUT_ROUNDS);
         roundFutureThreshold.text = "Must score " + GameHandler.ScoreThreshold + 
@@ -104,6 +161,11 @@ public class UIHandler : MonoBehaviour
         await nextButton.GetComponent<UIAnimatable>().Show();
     }
 
+    public async Task HideNextButton()
+    {
+        await nextButton.GetComponent<UIAnimatable>().Hide();
+    }
+
     public void OnNextButtonClicked()
     {
         if (GameHandler.CurrentPhase == GameHandler.Phase.Placing)
@@ -127,6 +189,15 @@ public class UIHandler : MonoBehaviour
     {
         Application.Quit();
     }
+
+    // Score UI
+    public void UpdateScoreState()
+    {
+        roundScoreNumber.text = GameHandler.RoundScore + "";
+        roundScoreNumberKnockout.text = GameHandler.RoundScore + "";
+    }
+
+    // -- INSTANTIATE WORLD SPACE UI --
     public void CreateScoreGraphic(Vector3 worldPos, int score)
     {
         try {
@@ -143,18 +214,7 @@ public class UIHandler : MonoBehaviour
             Debug.LogError(e);
         }
     }
-
-    public void UpdateScoreState()
-    {
-        roundScoreNumber.text = GameHandler.RoundScore + "";
-        roundScoreNumberKnockout.text = GameHandler.RoundScore + "";
-    }
-
-    // Setters
-    public void SetRoundLabel()
-    {
-        
-    }
+    
 
     // Update is called once per frame
     void Update()
@@ -163,39 +223,58 @@ public class UIHandler : MonoBehaviour
     }
 
     // --- PRIVATE METHODS ---
-    private void SetupPlacing()
-    {
-        generalGroup.SetActive(true);
-        knockoutGroup.SetActive(false);
-        loseGroup.SetActive(false);
 
-        knockoutDisable.SetActive(true);
-        scoringDisable.SetActive(false);
+    // Shows and hides elements based on UI Group Arrays assigned in editor
+    private async Task RenderState(UIState newState, Task additionalTask = null)
+    {
+        if (newState == uiState)
+        {
+            return;
+        }
+        
+        UIAnimatable[] prevElements = GetUIElements(uiState);
+        UIAnimatable[] newElements = GetUIElements(newState);
+
+        UIAnimatable[] hideElements = prevElements.Except(newElements).ToArray();
+        UIAnimatable[] showElements = newElements.Except(prevElements).ToArray();
+
+        List<Task> animations = new();
+
+        foreach (UIAnimatable element in hideElements)
+        {
+            animations.Add(element.Hide());
+        }
+
+        foreach (UIAnimatable element in showElements)
+        {
+            animations.Add(element.Show());
+        }
+
+        if (additionalTask != null)
+        {
+            animations.Add(additionalTask);
+        }
+
+        await Task.WhenAll(animations);
+
+        uiState = newState;
     }
 
-    private void SetupScoring()
+    // Defines which enum values correspond to which UI Group Arrays for RenderState method
+    private UIAnimatable[] GetUIElements(UIState state)
     {
-        generalGroup.SetActive(true);
-        knockoutGroup.SetActive(false);
-        loseGroup.SetActive(false);
-
-        knockoutDisable.SetActive(true);
-        scoringDisable.SetActive(true);
-    }
-
-    private void SetupKnockout()
-    {
-        generalGroup.SetActive(true);
-        knockoutGroup.SetActive(true);
-        loseGroup.SetActive(false);
-
-        knockoutDisable.SetActive(false);
-    }
-
-    private void SetupLosing()
-    {
-        generalGroup.SetActive(false);
-        knockoutGroup.SetActive(false);
-        loseGroup.SetActive(true);
+        switch (state)
+        {
+            case UIState.Placing:
+                return placingElements;
+            case UIState.Scoring:
+                return scoringElements;
+            case UIState.ScoringKnockout:
+                return scoringKnockoutElements;
+            case UIState.Lose:
+                return loseElements;
+            default:
+                return new UIAnimatable[0];
+        }
     }
 }
