@@ -32,7 +32,6 @@ public class Worm : Bug
         foreach (ContactPoint2D contact in contacts)
         {
             Bug otherBug = contact.collider?.gameObject?.GetComponentInParent<Bug>();
-            //await Task.Delay(TimeSpan.FromSeconds(0.2f * 1/GameHandler.GameSpeed));
             if (otherBug != null && !otherBug.secondaryTriggered)
             {
                 bugsToTrigger.Add(otherBug.Trigger(false, this.center.position));

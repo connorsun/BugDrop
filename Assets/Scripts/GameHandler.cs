@@ -103,7 +103,9 @@ public class GameHandler : MonoBehaviour
 
         (GameObject, Bug.BugInfo) bugPair = SpawnRandomBug();
         AllBugs = FindObjectsByType<Bug>(FindObjectsSortMode.None);
-        GameSpeed = 1 + AllBugs.Length * 0.04f;
+        // 1 - 0.6/(1+e^(4-0.4x))
+        GameSpeed = 1 - 0.6f / (1 + Mathf.Exp(4 - AllBugs.Length * 0.2f));
+        print("Game Speed: " + GameSpeed);
         GameObject bug = bugPair.Item1;
         bug.GetComponent<Bug>().SetSimulated(false);
         float safeWidth = edgeX - bugPair.Item2.safeHorizRadius;
