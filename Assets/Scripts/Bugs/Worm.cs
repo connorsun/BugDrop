@@ -13,7 +13,7 @@ public class Worm : Bug
     // Gets metadata about this bug type
     public static BugInfo GetInfo()
     {
-        return new BugInfo("Worm", 2, 0, 3f, 0.5f, "Retriggers all adjacent bugs");
+        return new BugInfo("Worm", 2, 0, 3f, 0.5f, "Totals the base score of all adjacent bugs");
     }
 
     // --- PUBLIC METHODS ---
@@ -22,21 +22,38 @@ public class Worm : Bug
         this.thisBugInfo = GetInfo();
         base.Start();
     }
-
-    protected override async Task Score(bool isPrimary)
+    
+    public override int CalculateOverallScore()
     {
-        ScorePoints(this.baseScore, isPrimary);
         ContactPoint2D[] contacts = this.GetContacts();
-        //print(contacts.Length);
-        List<Task> bugsToTrigger = new List<Task>();
+        int totalScore = this.baseScore;
         foreach (ContactPoint2D contact in contacts)
         {
             Bug otherBug = contact.collider?.gameObject?.GetComponentInParent<Bug>();
-            if (otherBug != null && !otherBug.secondaryTriggered)
+            if (otherBug != null)
             {
-                bugsToTrigger.Add(otherBug.Trigger(false, this.center.position));
+                totalScore += otherBug.baseScore;
             }
         }
-        await Task.WhenAll(bugsToTrigger);
+        return totalScore;
+    }
+
+    protected override async Task Score(bool isPrimary)
+    {
+
+        ScorePoints(CalculateOverallScore(), isPrimary);
+
+        // [OLD] retrigger logic. use for future retriggering bugs
+        // ContactPoint2D[] contacts = this.GetContacts();
+        // List<Task> bugsToTrigger = new List<Task>();
+        // foreach (ContactPoint2D contact in contacts)
+        // {
+        //     Bug otherBug = contact.collider?.gameObject?.GetComponentInParent<Bug>();
+        //     if (otherBug != null && !otherBug.secondaryTriggered)
+        //     {
+        //         bugsToTrigger.Add(otherBug.Trigger(false, this.center.position));
+        //     }
+        // }
+        // await Task.WhenAll(bugsToTrigger);
     }
 }

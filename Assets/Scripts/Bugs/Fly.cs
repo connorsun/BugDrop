@@ -21,18 +21,22 @@ public class Fly : Bug
         base.Start();
     }
 
-    protected override async Task Score(bool isPrimary)
+    public override int CalculateOverallScore()
     {
         ContactPoint2D[] contacts = this.GetContacts();
         foreach (ContactPoint2D contact in contacts)
         {
             if (contact.collider?.gameObject.CompareTag("Ground") == true)
             {
-                ScorePoints(this.baseScore, isPrimary);
-                return;
+                return this.baseScore;
             }
         }
+        return this.baseScore + 3;
+    }
+
+    protected override async Task Score(bool isPrimary)
+    {
         // if not touching ground
-        ScorePoints(this.baseScore + 3, isPrimary);
+        ScorePoints(CalculateOverallScore(), isPrimary);
     }
 }

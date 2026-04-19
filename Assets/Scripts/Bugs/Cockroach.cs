@@ -23,18 +23,23 @@ public class Cockroach : Bug
         base.Start();
     }
 
-    protected override async Task Score(bool isPrimary)
+    public override int CalculateOverallScore()
     {
         ContactPoint2D[] contacts = this.GetContacts();
-        int additionalScore = 0;
+        int totalScore = this.baseScore;
         foreach (ContactPoint2D contact in contacts)
         {
             Bug otherCockroach = contact.collider?.gameObject?.GetComponentInParent<Cockroach>();
             if (otherCockroach != null)
             {
-                additionalScore += 2;
+                totalScore += 2;
             }
         }
-        ScorePoints(this.baseScore + additionalScore, isPrimary);
+        return totalScore;
+    }
+
+    protected override async Task Score(bool isPrimary)
+    {
+        ScorePoints(CalculateOverallScore(), isPrimary);
     }
 }

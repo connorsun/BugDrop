@@ -57,6 +57,7 @@ public abstract class Bug : MonoBehaviour
         this.stationaryFrames = 0;
         this.baseScore = this.thisBugInfo.baseScore;
     }
+    
     // Reset round state on the start of a scoring round
     public virtual void StartScoring()
     {
@@ -74,6 +75,8 @@ public abstract class Bug : MonoBehaviour
         this.baseScore = this.thisBugInfo.baseScore;
     }
 
+    // Triggers this bug, resulting in the bug being scored. This sets it to this bug's
+    // turn if it's a primary trigger.
     public virtual async Task Trigger(bool isPrimary, Vector3 prevPos)
     {
         if (isPrimary)
@@ -153,10 +156,14 @@ public abstract class Bug : MonoBehaviour
         }
     }
 
+    // Destroys this bug.
     public virtual void Destroy()
     {
         DestroyImmediate(gameObject);
     }
+
+    // Determines the overall final score for this bug without performing any triggering logic.
+    public abstract int CalculateOverallScore();
 
     // --- PRIVATE METHODS ---
 

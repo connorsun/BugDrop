@@ -11,7 +11,7 @@ public class Ant : Bug
     // Gets metadata about this bug type
     public static BugInfo GetInfo()
     {
-        return new BugInfo("Ant", 1, 1, 1.5f, 0.5f, "+2 if touching ground");
+        return new BugInfo("Ant", 1, 1, 1.5f, 0.5f, "+3 if touching ground");
     }
 
     // --- PUBLIC METHODS ---
@@ -21,17 +21,21 @@ public class Ant : Bug
         base.Start();
     }
 
-    protected override async Task Score(bool isPrimary)
+    public override int CalculateOverallScore()
     {
         ContactPoint2D[] contacts = this.GetContacts();
         foreach (ContactPoint2D contact in contacts)
         {
             if (contact.collider?.gameObject.CompareTag("Ground") == true)
             {
-                ScorePoints(this.baseScore + 2, isPrimary);
-                return;
+                return this.baseScore + 3;
             }
         }
-        ScorePoints(this.baseScore, isPrimary);
+        return this.baseScore;
+    }
+
+    protected override async Task Score(bool isPrimary)
+    {
+        ScorePoints(CalculateOverallScore(), isPrimary);
     }
 }

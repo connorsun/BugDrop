@@ -105,7 +105,6 @@ public class GameHandler : MonoBehaviour
         AllBugs = FindObjectsByType<Bug>(FindObjectsSortMode.None);
         // 1 - 0.6/(1+e^(4-0.4x))
         GameSpeed = 1 - 0.6f / (1 + Mathf.Exp(4 - AllBugs.Length * 0.2f));
-        print("Game Speed: " + GameSpeed);
         GameObject bug = bugPair.Item1;
         bug.GetComponent<Bug>().SetSimulated(false);
         float safeWidth = edgeX - bugPair.Item2.safeHorizRadius;
@@ -226,6 +225,7 @@ public class GameHandler : MonoBehaviour
         float value = (float)rand.NextDouble();
         float rarityThreshold = 0f;
         int rarity;
+        print("Random value: " + value);
         for (rarity = 0; rarity < rarityChances.Length; rarity++)
         {
             rarityThreshold += rarityChances[rarity];

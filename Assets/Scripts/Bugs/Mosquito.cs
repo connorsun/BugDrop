@@ -21,6 +21,11 @@ public class Mosquito : Bug
         base.Start();
     }
 
+    public override int CalculateOverallScore()
+    {
+        return this.baseScore;
+    }
+
     public override void StartScoring()
     {
         base.StartScoring();
@@ -46,6 +51,6 @@ public class Mosquito : Bug
 
     protected override async Task Score(bool isPrimary)
     {
-        ScorePoints(this.baseScore, isPrimary);
+        ScorePoints(CalculateOverallScore(), isPrimary);
     }
 }
