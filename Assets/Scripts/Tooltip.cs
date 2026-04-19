@@ -23,7 +23,7 @@ public class Tooltip : MonoBehaviour
             Bug bug = col.gameObject?.GetComponentInParent<Bug>();
             if (bug != null)
             {
-                tooltipText.text = "[" + bug.thisBugInfo.baseScore + "] " + bug.thisBugInfo.tooltip;
+                tooltipText.text = "[" + bug.baseScore + "] " + bug.thisBugInfo.tooltip;
                 transform.position = mouseWorldPos;
                 return;
             }

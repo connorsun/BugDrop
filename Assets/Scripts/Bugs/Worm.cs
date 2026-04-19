@@ -19,12 +19,13 @@ public class Worm : Bug
     // --- PUBLIC METHODS ---
     public override void Start()
     {
-        base.Start();
         this.thisBugInfo = GetInfo();
+        base.Start();
     }
 
     protected override async Task Score(bool isPrimary)
     {
+        ScorePoints(this.baseScore, isPrimary);
         float timestamp = Time.unscaledTime;
         ContactPoint2D[] contacts = this.GetContacts();
         //print(contacts.Length);

@@ -23,11 +23,13 @@ public abstract class Bug : MonoBehaviour
     // Recursive secondary triggering - if we want retriggers to be really strong
     public const bool RECURSIVE_SECONDARIES = true;
     public BugInfo thisBugInfo;
+    // --- PUBLIC STATE ---
+    public bool primaryTriggered;
+    public bool secondaryTriggered;
+    public int baseScore;
     // --- PRIVATE STATE ---
 
     protected bool isActive;
-    public bool primaryTriggered;
-    public bool secondaryTriggered;
     private int stationaryFrames;
     // --- OBJECT REFERENCES ---
 
@@ -55,18 +57,21 @@ public abstract class Bug : MonoBehaviour
         this.primaryTriggered = false;
         this.secondaryTriggered = false;
         this.stationaryFrames = 0;
+        this.baseScore = this.thisBugInfo.baseScore;
     }
 
-    // Reset round state on the start of a scoring round
+    // Reset round state on the start of a placing round
     public virtual void StartPlacing()
     {
         this.stationaryFrames = 0;
+        this.baseScore = this.thisBugInfo.baseScore;
     }
     // Reset round state on the start of a scoring round
     public virtual void StartScoring()
     {
         this.primaryTriggered = false;
         this.secondaryTriggered = false;
+        this.stationaryFrames = 0;
     }
 
     public virtual async Task Trigger(bool isPrimary, Vector3 prevPos)

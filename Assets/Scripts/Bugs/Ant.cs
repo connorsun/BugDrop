@@ -17,8 +17,8 @@ public class Ant : Bug
     // --- PUBLIC METHODS ---
     public override void Start()
     {
-        base.Start();
         this.thisBugInfo = GetInfo();
+        base.Start();
     }
 
     protected override async Task Score(bool isPrimary)
@@ -28,10 +28,10 @@ public class Ant : Bug
         {
             if (contact.collider?.gameObject.CompareTag("Ground") == true)
             {
-                ScorePoints(this.thisBugInfo.baseScore + 2, isPrimary);
+                ScorePoints(this.baseScore + 2, isPrimary);
                 return;
             }
         }
-        ScorePoints(this.thisBugInfo.baseScore, isPrimary);
+        ScorePoints(this.baseScore, isPrimary);
     }
 }

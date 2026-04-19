@@ -17,8 +17,8 @@ public class Fly : Bug
     // --- PUBLIC METHODS ---
     public override void Start()
     {
-        base.Start();
         this.thisBugInfo = GetInfo();
+        base.Start();
     }
 
     protected override async Task Score(bool isPrimary)
@@ -28,11 +28,11 @@ public class Fly : Bug
         {
             if (contact.collider?.gameObject.CompareTag("Ground") == true)
             {
-                ScorePoints(this.thisBugInfo.baseScore, isPrimary);
+                ScorePoints(this.baseScore, isPrimary);
                 return;
             }
         }
         // if not touching ground
-        ScorePoints(this.thisBugInfo.baseScore + 3, isPrimary);
+        ScorePoints(this.baseScore + 3, isPrimary);
     }
 }

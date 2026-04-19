@@ -159,8 +159,8 @@ public class GameHandler : MonoBehaviour
     public async Task StartScoring() //gets called from button
     {
         CurrentPhase = Phase.Scoring;
-        // Reset all bugs for scoring phase
-        BroadcastToBugs((bug) => bug.Reset());
+        // Set all bugs to scoring phase
+        BroadcastToBugs((bug) => bug.StartScoring());
         // wait for UI
         await this.uiHandler.EnterScoringState();
         Bug[] sortedBugs = GetClosestBugs();
