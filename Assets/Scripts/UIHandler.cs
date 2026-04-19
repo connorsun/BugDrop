@@ -173,10 +173,10 @@ public class UIHandler : MonoBehaviour
                 scoreGraphic.GetComponent<RectTransform>().anchoredPosition
             );
 
-            TextMeshProUGUI scoreText = scoreGraphic.GetComponent<TextMeshProUGUI>();
-            scoreText.text = (score >= 0 ? "+" : "-") + score;
+            ScoreGraphic sg = scoreGraphic.GetComponent<ScoreGraphic>();
+            sg.SetText(score);
+            sg.SetColor(isPrimary);
 
-            scoreText.color = isPrimary ? GameHandler.PRIMARY_COLOR : GameHandler.SECONDARY_COLOR;
             //print(scoreText.color);
             //ScoreGraphic graphic = scoreGraphic.GetComponent<ScoreGraphic>();
             //graphic.timeToLive = 0.5f;

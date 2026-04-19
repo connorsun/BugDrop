@@ -90,7 +90,7 @@ public abstract class Bug : MonoBehaviour
                 return;
             }
             this.secondaryTriggered = true;
-            await Task.Delay(TimeSpan.FromSeconds(0.15f * 1/GameHandler.GameSpeed));
+            await Task.Delay(TimeSpan.FromSeconds(2f * 1/GameHandler.GameSpeed));
         }
         GameObject zap = Instantiate(GameHandler.GetResource("Prefabs/TriggerZap") as GameObject);
         Color zapColor = isPrimary? GameHandler.PRIMARY_COLOR : GameHandler.SECONDARY_COLOR;
@@ -103,7 +103,7 @@ public abstract class Bug : MonoBehaviour
         tZap.Init();
         await this.Score(isPrimary);
         if (isPrimary) {
-            await Task.Delay(TimeSpan.FromSeconds(0.4f * 1/GameHandler.GameSpeed));
+            await Task.Delay(TimeSpan.FromSeconds(2f * 1/GameHandler.GameSpeed));
             foreach (Bug bug in GetClosestBugs())
             {
                 if (!bug.primaryTriggered)
@@ -160,7 +160,8 @@ public abstract class Bug : MonoBehaviour
         GameHandler.SingletonUIHandler.UpdateScoreState();
         GameHandler.SingletonUIHandler.CreateScoreGraphic(
             center.transform.position + 
-                    new Vector3(this.thisBugInfo.safeHorizRadius / 2f, this.thisBugInfo.safeVertRadius) +
+                    new Vector3(0.5f, 0.5f) +
+                    //new Vector3(this.thisBugInfo.safeHorizRadius / 2f, this.thisBugInfo.safeVertRadius) +
                     new Vector3(UnityEngine.Random.Range(-0.1f, 0.1f), UnityEngine.Random.Range(-0.1f, 0.1f), 0f),
             score, isPrimary);
         //GameHandler.PlaySound("TextboxSkip");
