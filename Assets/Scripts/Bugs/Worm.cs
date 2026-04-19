@@ -28,13 +28,13 @@ public class Worm : Bug
         float timestamp = Time.unscaledTime;
         await Task.Delay(TimeSpan.FromSeconds(0.2f * 1/GameHandler.GameSpeed));
         ContactPoint2D[] contacts = this.GetContacts();
-        print(contacts.Length);
+        //print(contacts.Length);
         List<Task> bugsToTrigger = new List<Task>();
         foreach (ContactPoint2D contact in contacts)
         {
-            print(contact.collider?.gameObject);
+            //print(contact.collider?.gameObject);
             Bug otherBug = contact.collider?.gameObject?.GetComponentInParent<Bug>();
-            print(otherBug);
+            //print(otherBug);
             if (otherBug != null && !otherBug.secondaryTriggered)
             {
                 bugsToTrigger.Add(otherBug.Trigger(false, this.center.position));

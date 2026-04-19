@@ -152,11 +152,12 @@ public class UIHandler : MonoBehaviour
             GameObject scoreGraphic = Instantiate(GameHandler.GetResource("Prefabs/UI/ScoreGraphic") as GameObject);
             scoreGraphic.transform.SetParent(transform);
             scoreGraphic.transform.position = Camera.main.WorldToScreenPoint(worldPos);
+            scoreGraphic.GetComponent<UIAnimatable>().SetOriginalPosition(scoreGraphic.GetComponent<RectTransform>().position);
             TextMeshProUGUI scoreText = scoreGraphic.GetComponent<TextMeshProUGUI>();
             scoreText.text = (score >= 0? "+" : "-") + score;
-            ScoreGraphic graphic = scoreGraphic.GetComponent<ScoreGraphic>();
-            graphic.timeToLive = 0.5f;
-            graphic.Init();
+            //ScoreGraphic graphic = scoreGraphic.GetComponent<ScoreGraphic>();
+            //graphic.timeToLive = 0.5f;
+            //graphic.Init();
         } catch (Exception e)
         {
             Debug.LogError(e);

@@ -66,6 +66,18 @@ public class UIAnimatable : MonoBehaviour
         }
     }
 
+    public void SetOriginalPosition(Vector2 position)
+    {
+        originalPosition = position;
+        if (showAnimation == AnimationType.Slide || showAnimation == AnimationType.FadeAndSlide)
+        {
+            rt.anchoredPosition = originalPosition + slideOffset;
+        } else
+        {
+            rt.anchoredPosition = originalPosition;
+        }
+    }
+
     public async Task Show()
     {
         await ShowRoutine();

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4674800495107691757}
   - component: {fileID: 7184537826825657310}
   - component: {fileID: -634285932442877974}
+  - component: {fileID: 2488926943782328149}
   m_Layer: 5
   m_Name: ScoreGraphic
   m_TagString: Untagged
@@ -93,8 +94,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 32
-  m_fontSizeBase: 32
+  m_fontSize: 16
+  m_fontSizeBase: 16
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 0
@@ -151,3 +152,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   timeToLive: 0
+--- !u!114 &2488926943782328149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6487088004396438131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c53bb23157fc94171b771e139378f123, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIAnimatable
+  showAnimation: 2
+  showEasing: 2
+  showDuration: 0.2
+  hideAnimation: 0
+  hideEasing: 1
+  hideDuration: 0.25
+  slideOffset: {x: 0, y: -20}
+  scaleFactor: 0.8
