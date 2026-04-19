@@ -39,7 +39,8 @@ public class UIAnimatable : MonoBehaviour
     private CanvasGroup cg;
     private RectTransform rt;
 
-    private Vector2 originalPosition;
+    [SerializeField] private bool hasOriginalPosition = false;
+    [SerializeField] private Vector2 originalPosition = Vector2.negativeInfinity;
 
     // -- PUBLIC METHODS --
 
@@ -47,7 +48,10 @@ public class UIAnimatable : MonoBehaviour
     {
         cg = GetComponent<CanvasGroup>();
         rt = GetComponent<RectTransform>();
-        originalPosition = rt.anchoredPosition;
+        if (hasOriginalPosition)
+        {
+            originalPosition = rt.anchoredPosition;
+        }
 
         if (cg == null && (showAnimation == AnimationType.Fade || showAnimation == AnimationType.FadeAndSlide
                 || hideAnimation == AnimationType.Fade || hideAnimation == AnimationType.FadeAndSlide))

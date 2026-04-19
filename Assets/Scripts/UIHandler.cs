@@ -177,7 +177,7 @@ public class UIHandler : MonoBehaviour
             scoreText.text = (score >= 0 ? "+" : "-") + score;
 
             scoreText.color = isPrimary ? GameHandler.PRIMARY_COLOR : GameHandler.SECONDARY_COLOR;
-            print(scoreText.color);
+            //print(scoreText.color);
             //ScoreGraphic graphic = scoreGraphic.GetComponent<ScoreGraphic>();
             //graphic.timeToLive = 0.5f;
             //graphic.Init();
