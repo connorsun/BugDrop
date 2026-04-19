@@ -118,7 +118,6 @@ public abstract class Bug : MonoBehaviour
     public virtual bool IsStationary()
     {
         Rigidbody2D centerRb = center.gameObject.GetComponent<Rigidbody2D>();
-        print(centerRb.linearVelocity.magnitude);
         if (centerRb.linearVelocity.magnitude < STATIONARY_MAG_THRESHOLD)
         {
             stationaryFrames++;
