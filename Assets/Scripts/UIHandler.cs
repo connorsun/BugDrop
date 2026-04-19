@@ -79,18 +79,6 @@ public class UIHandler : MonoBehaviour
 
     public async Task EnterPlacingState()
     {
-        SetupPlacing();
-        try
-        {
-            if (GameHandler.Round > 1) {
-                await nextButton.GetComponent<UIAnimatable>().Hide();
-            }
-        }
-        catch (Exception e)
-        {
-            print(e.Message);
-            return;
-        }
         SetRoundLabel();
         SetFutureThreshold();
     
@@ -131,28 +119,6 @@ public class UIHandler : MonoBehaviour
             (GameHandler.Round % GameHandler.KNOCKOUT_ROUNDS == 0?
                 " this round."
                 : " by round " + nextKnockoutRound);
-    }
-
-    public async Task EnterScoringState()
-    {
-        if (GameHandler.IsKnockout)
-        {
-            SetupKnockout();
-        } else
-        {
-            SetupScoring();
-        }
-        
-        await nextButton.GetComponent<UIAnimatable>().Hide();
-    }
-
-    public async Task EnterLosingState()
-    {
-        SetupLosing();
-
-        roundLabelLosing.text = "Round " + GameHandler.Round;
-        
-        scoreDifference.text = "Score: " + GameHandler.RoundScore + " Needed: " + GameHandler.ScoreThreshold;
     }
 
     // Button
