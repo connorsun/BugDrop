@@ -13,7 +13,7 @@ public abstract class Bug : MonoBehaviour
 {
 
     // All Bug subclasses must implement the GetInfo static method to return their BugInfo!
-    public record BugInfo(string name, int rarity, int baseScore, float safeHorizRadius, float safeVertRadius);
+    public record BugInfo(string name, int rarity, int baseScore, float safeHorizRadius, float safeVertRadius, string tooltip);
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     // --- CONSTANTS ---
     private const int CONTACT_ARRAY_SIZE = 10;
@@ -22,10 +22,10 @@ public abstract class Bug : MonoBehaviour
 
     // Recursive secondary triggering - if we want retriggers to be really strong
     public const bool RECURSIVE_SECONDARIES = true;
+    public BugInfo thisBugInfo;
     // --- PRIVATE STATE ---
 
     protected bool isActive;
-    protected BugInfo thisBugInfo;
     public bool primaryTriggered;
     public bool secondaryTriggered;
     private int stationaryFrames;

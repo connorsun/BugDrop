@@ -35,7 +35,7 @@ public class GameHandler : MonoBehaviour
     public const int KNOCKOUT_ROUNDS = 3;
     [SerializeField] private float[] rarityChances = {0.75f, 0.25f};
     public const int THRESHOLD_BASE = 1;
-    public const float THRESHOLD_SCALE = 1.1;
+    public const float THRESHOLD_SCALE = 1.1f;
     private const string BUG_PATH = "Prefabs/Bugs";
     private const float dropY = 6.3f;
     private const float edgeX = 12.5f;
@@ -110,9 +110,7 @@ public class GameHandler : MonoBehaviour
         // while (!Mouse.current.leftButton.wasPressedThisFrame)
         while (trackingBug)
         {
-            Vector3 mousePos = (Vector3)Mouse.current.position.ReadValue(); 
-            mousePos.z = Camera.main.nearClipPlane;
-            Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePos);
+            Vector3 worldPosition = GetMouseWorldPos();
             bug.transform.position = new Vector3(Mathf.Clamp(worldPosition.x, -safeWidth, safeWidth), dropY);
             await Task.Yield();
         }
@@ -286,5 +284,12 @@ public class GameHandler : MonoBehaviour
     {
         Sound s = GetSound("Sounds/" + sound);
         SingletonSFXSource.PlayOneShot(s.clip);
+    }
+
+    public static Vector3 GetMouseWorldPos()
+    {
+        Vector3 mousePos = (Vector3)Mouse.current.position.ReadValue(); 
+        mousePos.z = Camera.main.nearClipPlane;
+        return Camera.main.ScreenToWorldPoint(mousePos);
     }
 }

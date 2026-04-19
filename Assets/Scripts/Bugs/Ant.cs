@@ -11,7 +11,7 @@ public class Ant : Bug
     // Gets metadata about this bug type
     public static BugInfo GetInfo()
     {
-        return new BugInfo("Ant", 1, 1, 1.5f, 0.5f);
+        return new BugInfo("Ant", 1, 1, 1.5f, 0.5f, "+2 if touching ground");
     }
 
     // --- PUBLIC METHODS ---
