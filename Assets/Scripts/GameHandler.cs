@@ -112,9 +112,7 @@ public class GameHandler : MonoBehaviour
         // while (!Mouse.current.leftButton.wasPressedThisFrame)
         while (trackingBug)
         {
-            Vector3 mousePos = (Vector3)Mouse.current.position.ReadValue(); 
-            mousePos.z = Camera.main.nearClipPlane;
-            Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePos);
+            Vector3 worldPosition = GetMouseWorldPos();
             bug.transform.position = new Vector3(Mathf.Clamp(worldPosition.x, -safeWidth, safeWidth), dropY);
             await Task.Yield();
         }
@@ -288,5 +286,12 @@ public class GameHandler : MonoBehaviour
     {
         Sound s = GetSound("Sounds/" + sound);
         SingletonSFXSource.PlayOneShot(s.clip);
+    }
+
+    public static Vector3 GetMouseWorldPos()
+    {
+        Vector3 mousePos = (Vector3)Mouse.current.position.ReadValue(); 
+        mousePos.z = Camera.main.nearClipPlane;
+        return Camera.main.ScreenToWorldPoint(mousePos);
     }
 }
