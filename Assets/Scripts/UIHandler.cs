@@ -157,6 +157,7 @@ public class UIHandler : MonoBehaviour
     {
         roundScoreNumber.text = GameHandler.RoundScore + "";
         roundScoreNumberKnockout.text = GameHandler.RoundScore + "";
+        thresholdLabel.text = GameHandler.ScoreThreshold + "";
     }
 
     // -- INSTANTIATE WORLD SPACE UI --
