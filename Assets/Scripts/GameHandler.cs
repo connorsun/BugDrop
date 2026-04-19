@@ -91,6 +91,7 @@ public class GameHandler : MonoBehaviour
         Round++;
         CurrentPhase = Phase.Placing;
         RoundScore = 0;
+        uiHandler.UpdateScoreState();
         IsKnockout = Round % KNOCKOUT_ROUNDS == 0;
         await this.uiHandler.EnterPlacingState();
 
