@@ -51,15 +51,6 @@ public abstract class Bug : MonoBehaviour
         
     }
 
-    // Reset overall state to initial spawn
-    public virtual void Reset()
-    {
-        this.primaryTriggered = false;
-        this.secondaryTriggered = false;
-        this.stationaryFrames = 0;
-        this.baseScore = this.thisBugInfo.baseScore;
-    }
-
     // Reset round state on the start of a placing round
     public virtual void StartPlacing()
     {
@@ -72,6 +63,15 @@ public abstract class Bug : MonoBehaviour
         this.primaryTriggered = false;
         this.secondaryTriggered = false;
         this.stationaryFrames = 0;
+    }
+
+    // Reset overall state at the end of scoring round
+    public virtual void Reset()
+    {
+        this.primaryTriggered = false;
+        this.secondaryTriggered = false;
+        this.stationaryFrames = 0;
+        this.baseScore = this.thisBugInfo.baseScore;
     }
 
     public virtual async Task Trigger(bool isPrimary, Vector3 prevPos)

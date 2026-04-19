@@ -33,7 +33,7 @@ public class GameHandler : MonoBehaviour
     public static Dictionary<string, Sound> LoadedSounds = new Dictionary<string, Sound>();
     public static Bug[] AllBugs;
     public const int KNOCKOUT_ROUNDS = 3;
-    [SerializeField] private float[] rarityChances = {0.75f, 0.25f};
+    [SerializeField] private float[] rarityChances = {0.8f, 0.2f};
     public const int THRESHOLD_BASE = 1;
     public const float THRESHOLD_SCALE = 1.1f;
     private const string BUG_PATH = "Prefabs/Bugs";
@@ -179,6 +179,7 @@ public class GameHandler : MonoBehaviour
             await uiHandler.EnterLosingState();
             return;
         }
+        BroadcastToBugs((Bug bug) => bug.Reset());
         await this.uiHandler.ShowNextButton();
         if (IsKnockout)
         {

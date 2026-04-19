@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System;
 
 
-public class Worm : Bug
+public class Cockroach : Bug
 {
     // --- CONSTANTS ---
     // --- OBJECT REFERENCES --- 
@@ -13,7 +13,7 @@ public class Worm : Bug
     // Gets metadata about this bug type
     public static BugInfo GetInfo()
     {
-        return new BugInfo("Worm", 2, 0, 3f, 0.5f, "Retriggers all adjacent bugs");
+        return new BugInfo("Cockroach", 1, 2, 3f, 0.5f, "+2 for each adjacent Cockroach");
     }
 
     // --- PUBLIC METHODS ---
@@ -25,18 +25,16 @@ public class Worm : Bug
 
     protected override async Task Score(bool isPrimary)
     {
-        ScorePoints(this.baseScore, isPrimary);
         ContactPoint2D[] contacts = this.GetContacts();
-        //print(contacts.Length);
-        List<Task> bugsToTrigger = new List<Task>();
+        int additionalScore = 0;
         foreach (ContactPoint2D contact in contacts)
         {
-            Bug otherBug = contact.collider?.gameObject?.GetComponentInParent<Bug>();
-            if (otherBug != null && !otherBug.secondaryTriggered)
+            Bug otherCockroach = contact.collider?.gameObject?.GetComponentInParent<Cockroach>();
+            if (otherCockroach != null)
             {
-                bugsToTrigger.Add(otherBug.Trigger(false, this.center.position));
+                additionalScore += 2;
             }
         }
-        await Task.WhenAll(bugsToTrigger);
+        ScorePoints(this.baseScore + additionalScore, isPrimary);
     }
 }
