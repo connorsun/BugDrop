@@ -32,7 +32,7 @@ public class GameHandler : MonoBehaviour
     public static Bug[] AllBugs;
     public const int KNOCKOUT_ROUNDS = 3;
     [SerializeField] private float[] rarityChances = {0.75f, 0.25f};
-    public const int THRESHOLD_BASE = 10;
+    public const int THRESHOLD_BASE = 1;
     public const float THRESHOLD_SCALE = 3;
     private const string BUG_PATH = "Prefabs/Bugs";
     private const float dropY = 6.3f;

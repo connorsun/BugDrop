@@ -157,7 +157,11 @@ public abstract class Bug : MonoBehaviour
     {
         GameHandler.RoundScore += score;
         GameHandler.SingletonUIHandler.UpdateScoreState();
-        GameHandler.SingletonUIHandler.CreateScoreGraphic(center.transform.position + new Vector3(this.thisBugInfo.safeHorizRadius / 2f, this.thisBugInfo.safeVertRadius), score);
+        GameHandler.SingletonUIHandler.CreateScoreGraphic(
+            center.transform.position + 
+                    new Vector3(this.thisBugInfo.safeHorizRadius / 2f, this.thisBugInfo.safeVertRadius) +
+                    new Vector3(UnityEngine.Random.Range(-0.1f, 0.1f), UnityEngine.Random.Range(-0.1f, 0.1f), 0f),
+            score);
     }
 
     protected ContactPoint2D[] GetContacts()
