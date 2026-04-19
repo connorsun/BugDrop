@@ -33,7 +33,7 @@ public class GameHandler : MonoBehaviour
     public const int KNOCKOUT_ROUNDS = 3;
     [SerializeField] private float[] rarityChances = {0.75f, 0.25f};
     public const int THRESHOLD_BASE = 1;
-    public const float THRESHOLD_SCALE = 3;
+    public const float THRESHOLD_SCALE = 1.1;
     private const string BUG_PATH = "Prefabs/Bugs";
     private const float dropY = 6.3f;
     private const float edgeX = 12.5f;
@@ -230,6 +230,8 @@ public class GameHandler : MonoBehaviour
         List<Bug.BugInfo> bugList = BugRarityTypes[rarity + 1];
         Bug.BugInfo selectedBug = bugList[rand.Next(0, bugList.Count)];
         GameObject createdBug = Instantiate(GetResource(BUG_PATH + "/" + selectedBug.name) as GameObject);
+        createdBug.transform.localScale = new Vector3(UnityEngine.Random.value > 0.5f ? -1 : 1, 
+                createdBug.transform.localScale.y, createdBug.transform.localScale.z);
         return (createdBug, selectedBug);
     }
     
