@@ -90,17 +90,18 @@ public abstract class Bug : MonoBehaviour
                 return;
             }
             this.secondaryTriggered = true;
+            await Task.Delay(TimeSpan.FromSeconds(0.15f * 1/GameHandler.GameSpeed));
         }
         GameObject zap = Instantiate(GameHandler.GetResource("Prefabs/TriggerZap") as GameObject);
-        Color zapColor = isPrimary? Color.yellow : Color.blue;
+        Color zapColor = isPrimary? GameHandler.PRIMARY_COLOR : GameHandler.SECONDARY_COLOR;
         zap.GetComponent<LineRenderer>().startColor = zapColor;
         zap.GetComponent<LineRenderer>().endColor = zapColor;
         TriggerZap tZap = zap.GetComponent<TriggerZap>();
         tZap.start = (Vector2) prevPos;
         tZap.end = (Vector2) center.position;
-        tZap.timeToLive = 0.3f;
+        tZap.timeToLive = 0.6f * 1/GameHandler.GameSpeed;
         tZap.Init();
-        await this.Score();
+        await this.Score(isPrimary);
         if (isPrimary) {
             await Task.Delay(TimeSpan.FromSeconds(0.4f * 1/GameHandler.GameSpeed));
             foreach (Bug bug in GetClosestBugs())
@@ -149,11 +150,11 @@ public abstract class Bug : MonoBehaviour
     // --- PRIVATE METHODS ---
 
     // Scores this bug. Runs all operations for scoring this bug's turn before returning.
-    protected abstract Task Score();
+    protected abstract Task Score(bool isPrimary);
 
 
     // Scores a specific number of points for this round.
-    protected void ScorePoints(int score)
+    protected void ScorePoints(int score, bool isPrimary)
     {
         GameHandler.RoundScore += score;
         GameHandler.SingletonUIHandler.UpdateScoreState();
@@ -161,7 +162,7 @@ public abstract class Bug : MonoBehaviour
             center.transform.position + 
                     new Vector3(this.thisBugInfo.safeHorizRadius / 2f, this.thisBugInfo.safeVertRadius) +
                     new Vector3(UnityEngine.Random.Range(-0.1f, 0.1f), UnityEngine.Random.Range(-0.1f, 0.1f), 0f),
-            score);
+            score, isPrimary);
     }
 
     protected ContactPoint2D[] GetContacts()

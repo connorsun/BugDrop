@@ -23,17 +23,16 @@ public class Worm : Bug
         this.thisBugInfo = GetInfo();
     }
 
-    protected override async Task Score()
+    protected override async Task Score(bool isPrimary)
     {
         float timestamp = Time.unscaledTime;
-        await Task.Delay(TimeSpan.FromSeconds(0.2f * 1/GameHandler.GameSpeed));
         ContactPoint2D[] contacts = this.GetContacts();
         //print(contacts.Length);
         List<Task> bugsToTrigger = new List<Task>();
         foreach (ContactPoint2D contact in contacts)
         {
             Bug otherBug = contact.collider?.gameObject?.GetComponentInParent<Bug>();
-
+            //await Task.Delay(TimeSpan.FromSeconds(0.2f * 1/GameHandler.GameSpeed));
             if (otherBug != null && !otherBug.secondaryTriggered)
             {
                 bugsToTrigger.Add(otherBug.Trigger(false, this.center.position));

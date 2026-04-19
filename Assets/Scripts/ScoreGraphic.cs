@@ -20,7 +20,7 @@ public class ScoreGraphic : MonoBehaviour
     {
         anim = GetComponent<UIAnimatable>();
         await Animate();
-        //Destroy(gameObject);
+        Destroy(gameObject);
     }
 
     // Update is called once per frame
