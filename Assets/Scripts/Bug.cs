@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Threading.Tasks;
 using System.Linq;
 using System;
+using System.Threading;
 using System.Collections.Generic;
 
 namespace System.Runtime.CompilerServices
@@ -36,8 +37,19 @@ public abstract class Bug : MonoBehaviour
     // Center must be used as the main transform to get the position of the bug, as the
     // parent object this script is on does not follow the position of the child segments
     [SerializeField] protected Transform center;
-    [SerializeField] protected Collider2D[] colliders;
-    [SerializeField] protected Rigidbody2D[] rigidbodies;
+    [SerializeField] protected GameObject[] segments;
+    private Collider2D[] colliders;
+    private Rigidbody2D[] rigidbodies;
+    private Material[] materials;
+
+    private static readonly int FlashColorID = Shader.PropertyToID("_FlashColor");
+    private static readonly int FlashIntensityID = Shader.PropertyToID("_FlashIntensity");
+    private CancellationTokenSource _flashCTS;
+
+    public void Awake()
+    {
+        Init();
+    }
 
     public virtual void Start()
     {
@@ -49,6 +61,19 @@ public abstract class Bug : MonoBehaviour
     void Update()
     {
         
+    }
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public void Init()
+    {
+        colliders = segments.Select(seg => seg.GetComponent<Collider2D>()).ToArray();
+        rigidbodies = segments.Select(seg => seg.GetComponent<Rigidbody2D>()).ToArray();
+        materials = segments.Select(seg => seg.GetComponent<SpriteRenderer>().material).ToArray();
+        for (int i = 0; i < materials.Length; i++)
+        {
+            materials[i].SetColor(FlashColorID, Color.white);
+            materials[i].SetFloat(FlashIntensityID, 0f);
+        }
     }
 
     // Reset round state on the start of a placing round
@@ -109,7 +134,12 @@ public abstract class Bug : MonoBehaviour
         tZap.end = (Vector2) center.position;
         tZap.timeToLive = isPrimary? 0.6f * GameHandler.GameSpeed : 0.4f * GameHandler.GameSpeed;
         tZap.Init();
+        _flashCTS?.Cancel();
+        _flashCTS = new CancellationTokenSource();
+        _ = Flash(isPrimary ? GameHandler.PRIMARY_COLOR : GameHandler.SECONDARY_COLOR, 0.3f, isPrimary, _flashCTS.Token);
         await this.Score(isPrimary);
+        _flashCTS.Cancel();
+        _ = LerpIntensityToZero(0.2f);
         if (isPrimary) {
             Bug[] closest = GetClosestBugs();
             if (closest.Length > 0) {
@@ -121,6 +151,7 @@ public abstract class Bug : MonoBehaviour
                         if (!bug.primaryTriggered)
                         {
                             await bug.Trigger(true, center.position);
+                            
                             return;
                         }
                     }
@@ -238,5 +269,56 @@ public abstract class Bug : MonoBehaviour
     private Bug[] GetClosestBugs()
     {
         return GameHandler.AllBugs.OrderBy(x => (x.center.position - center.position).magnitude).ToArray();
+    }
+
+    private async Task Flash(Color flashColor, float flashDuration, bool myTurn, CancellationToken ct = default)
+    {
+        foreach(Material mat in materials)
+        {
+            mat.SetColor(FlashColorID, flashColor);
+            mat.SetFloat(FlashIntensityID, 1f);
+        }
+        
+        float elapsed = 0f;
+        while (elapsed < flashDuration)
+        {
+            if (ct.IsCancellationRequested) return;
+            elapsed += Time.deltaTime;
+            float intensity = Mathf.Lerp(1f, myTurn? 0.3f : 0f, elapsed / flashDuration); // ADD MYTURN TERNARY
+            foreach(Material mat in materials)
+            {
+                mat.SetFloat(FlashIntensityID, intensity);
+            }
+
+            await Task.Yield();
+        }
+
+        foreach(Material mat in materials)
+        {
+            mat.SetColor(FlashColorID, flashColor);
+            mat.SetFloat(FlashIntensityID, myTurn? 0.3f : 0f); // ADD MYTURN TERNARY
+        }
+    }
+
+    private async Task LerpIntensityToZero(float duration)
+    {
+        float elapsed = 0f;
+        float startIntensity = materials[0].GetFloat(FlashIntensityID);
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float intensity = Mathf.Lerp(startIntensity, 0f, elapsed / duration);
+            foreach (Material mat in materials)
+            {
+                mat.SetFloat(FlashIntensityID, intensity);
+            }
+
+            await Task.Yield();
+        }
+
+        foreach (Material mat in materials)
+        {
+            mat.SetFloat(FlashIntensityID, 0f);
+        }
     }
 }

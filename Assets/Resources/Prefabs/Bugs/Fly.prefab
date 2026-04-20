@@ -61,7 +61,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: -876546973899608171, guid: c00792580e7c745cabb06427746886c6, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -135,11 +135,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Fly
   primaryTriggered: 0
   secondaryTriggered: 0
+  baseScore: 0
   center: {fileID: 850153518807848515}
-  colliders:
-  - {fileID: -7063600259111642731}
-  rigidbodies:
-  - {fileID: 9066889142742530601}
+  segments:
+  - {fileID: 6312744160267363254}
 --- !u!70 &-7063600259111642731
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

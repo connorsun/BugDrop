@@ -236,7 +236,7 @@ public class GameHandler : MonoBehaviour
         float value = (float)rand.NextDouble();
         float rarityThreshold = 0f;
         int rarity;
-        print("Random value: " + value);
+        //print("Random value: " + value);
         for (rarity = 0; rarity < rarityChances.Length; rarity++)
         {
             rarityThreshold += rarityChances[rarity];

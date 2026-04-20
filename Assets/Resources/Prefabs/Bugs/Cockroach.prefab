@@ -61,7 +61,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  - {fileID: -876546973899608171, guid: c00792580e7c745cabb06427746886c6, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -245,7 +245,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  - {fileID: -876546973899608171, guid: c00792580e7c745cabb06427746886c6, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -479,14 +479,10 @@ MonoBehaviour:
   secondaryTriggered: 0
   baseScore: 0
   center: {fileID: 9206874823697127683}
-  colliders:
-  - {fileID: 5349732942190496437}
-  - {fileID: 1645186932015938659}
-  - {fileID: 4379765178514078618}
-  rigidbodies:
-  - {fileID: 9120791267671700374}
-  - {fileID: 4448453824115343322}
-  - {fileID: 4455985505866894732}
+  segments:
+  - {fileID: 4376688469383872990}
+  - {fileID: 627027869656635002}
+  - {fileID: 6581445316669771129}
 --- !u!1 &6581445316669771129
 GameObject:
   m_ObjectHideFlags: 0
@@ -547,7 +543,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  - {fileID: -876546973899608171, guid: c00792580e7c745cabb06427746886c6, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
