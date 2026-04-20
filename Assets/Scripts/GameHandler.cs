@@ -50,6 +50,7 @@ public class GameHandler : MonoBehaviour
     public static int Round; // starts at 1
     public static Phase CurrentPhase;
     public static int RoundScore;
+    public static int LastRoundScore;
     public static int ScoreThreshold;
     public static bool IsKnockout;
     public static bool FastForward;
@@ -94,6 +95,7 @@ public class GameHandler : MonoBehaviour
         ScoreThreshold = THRESHOLD_BASE;
         DefaultGameSpeed = 1;
         RoundScore = 0;
+        LastRoundScore = 0;
         uiHandler.Init();
         _ = StartPlacing();
     }
@@ -104,6 +106,7 @@ public class GameHandler : MonoBehaviour
         BroadcastToBugs((Bug bug) => bug.Reset());
         Round++;
         CurrentPhase = Phase.Placing;
+        LastRoundScore = RoundScore;
         RoundScore = 0;
         uiHandler.UpdateScoreState();
         IsKnockout = Round % KNOCKOUT_ROUNDS == 0;
