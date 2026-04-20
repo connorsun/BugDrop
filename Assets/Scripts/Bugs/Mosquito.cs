@@ -30,11 +30,11 @@ public class Mosquito : Bug
     {
         base.StartScoring();
         ContactPoint2D[] contacts = this.GetContacts();
-        print("reducing contacts" + contacts.Length);
+        //print("reducing contacts" + contacts.Length);
         foreach (ContactPoint2D contact in contacts)
         {
             Bug otherBug = contact.collider?.gameObject?.GetComponentInParent<Bug>();
-            print(otherBug);
+            //print(otherBug);
             if (otherBug != null)
             {
                 otherBug.baseScore--;

@@ -97,7 +97,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  - {fileID: -876546973899608171, guid: c00792580e7c745cabb06427746886c6, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -280,7 +280,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  - {fileID: -876546973899608171, guid: c00792580e7c745cabb06427746886c6, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -475,15 +475,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SampleBug
   primaryTriggered: 0
   secondaryTriggered: 0
+  baseScore: 0
   center: {fileID: 2005542484965195087}
-  colliders:
-  - {fileID: 5967429908595475017}
-  - {fileID: 5018472113738727710}
-  - {fileID: 8457315121222663057}
-  rigidbodies:
-  - {fileID: 9120791267671700374}
-  - {fileID: 4045189854147663046}
-  - {fileID: 4455985505866894732}
+  segments:
+  - {fileID: 4376688469383872990}
+  - {fileID: 1824072311017214948}
+  - {fileID: 6581445316669771129}
 --- !u!1 &6581445316669771129
 GameObject:
   m_ObjectHideFlags: 0
@@ -580,7 +577,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  - {fileID: -876546973899608171, guid: c00792580e7c745cabb06427746886c6, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -36,8 +36,18 @@ public abstract class Bug : MonoBehaviour
     // Center must be used as the main transform to get the position of the bug, as the
     // parent object this script is on does not follow the position of the child segments
     [SerializeField] protected Transform center;
-    [SerializeField] protected Collider2D[] colliders;
-    [SerializeField] protected Rigidbody2D[] rigidbodies;
+    [SerializeField] protected GameObject[] segments;
+    private Collider2D[] colliders;
+    private Rigidbody2D[] rigidbodies;
+    private Material[] materials;
+
+    private static readonly int FlashColorID = Shader.PropertyToID("_FlashColor");
+    private static readonly int FlashIntensityID = Shader.PropertyToID("_FlashIntensity");
+
+    public void Awake()
+    {
+        Init();
+    }
 
     public virtual void Start()
     {
@@ -49,6 +59,19 @@ public abstract class Bug : MonoBehaviour
     void Update()
     {
         
+    }
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public void Init()
+    {
+        colliders = segments.Select(seg => seg.GetComponent<Collider2D>()).ToArray();
+        rigidbodies = segments.Select(seg => seg.GetComponent<Rigidbody2D>()).ToArray();
+        materials = segments.Select(seg => seg.GetComponent<SpriteRenderer>().material).ToArray();
+        for (int i = 0; i < materials.Length; i++)
+        {
+            materials[i].SetColor(FlashColorID, Color.white);
+            materials[i].SetFloat(FlashIntensityID, 0f);
+        }
     }
 
     // Reset round state on the start of a placing round
@@ -109,6 +132,7 @@ public abstract class Bug : MonoBehaviour
         tZap.end = (Vector2) center.position;
         tZap.timeToLive = isPrimary? 0.6f * GameHandler.GameSpeed : 0.4f * GameHandler.GameSpeed;
         tZap.Init();
+        _ = Flash(isPrimary ? GameHandler.PRIMARY_COLOR : GameHandler.SECONDARY_COLOR, 0.3f);
         await this.Score(isPrimary);
         if (isPrimary) {
             Bug[] closest = GetClosestBugs();
@@ -238,5 +262,33 @@ public abstract class Bug : MonoBehaviour
     private Bug[] GetClosestBugs()
     {
         return GameHandler.AllBugs.OrderBy(x => (x.center.position - center.position).magnitude).ToArray();
+    }
+
+    private async Task Flash(Color flashColor, float flashDuration)
+    {
+        foreach(Material mat in materials)
+        {
+            mat.SetColor(FlashColorID, flashColor);
+            mat.SetFloat(FlashIntensityID, 1f);
+        }
+        
+        float elapsed = 0f;
+        while (elapsed < flashDuration)
+        {
+            elapsed += Time.deltaTime;
+            float intensity = Mathf.Lerp(1f, 0f, elapsed / flashDuration); // ADD MYTURN TERNARY
+            foreach(Material mat in materials)
+            {
+                mat.SetFloat(FlashIntensityID, intensity);
+            }
+
+            await Task.Yield();
+        }
+
+        foreach(Material mat in materials)
+        {
+            mat.SetColor(FlashColorID, flashColor);
+            mat.SetFloat(FlashIntensityID, 0f); // ADD MYTURN TERNARY
+        }
     }
 }
