@@ -35,6 +35,7 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private TextMeshProUGUI roundFutureThreshold;
     [SerializeField] private TextMeshProUGUI roundScoreNumber;
     [SerializeField] private TextMeshProUGUI roundScoreLabel;
+    [SerializeField] private TextMeshProUGUI currentBugTooltip;
     [SerializeField] private GameObject nextButton;
 
     // UI Elements - Knockout
@@ -78,6 +79,7 @@ public class UIHandler : MonoBehaviour
     {
         SetRoundLabel();
         SetFutureThreshold();
+        
     
         await RenderState(UIState.Placing, HideNextButton());
     }
@@ -171,6 +173,14 @@ public class UIHandler : MonoBehaviour
         roundScoreNumber.text = GameHandler.RoundScore + "";
         roundScoreNumberKnockout.text = GameHandler.RoundScore + "";
         thresholdLabel.text = GameHandler.ScoreThreshold + "";
+    }
+    public void ClearCurrentBugTooltip()
+    {
+        currentBugTooltip.text = "";
+    }
+    public void SetCurrentBugTooltip(Bug.BugInfo bugInfo)
+    {
+        currentBugTooltip.text = bugInfo.name + "\n[" + bugInfo.baseScore + "] " + bugInfo.tooltip;
     }
 
     // -- INSTANTIATE WORLD SPACE UI --

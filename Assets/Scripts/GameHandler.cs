@@ -33,7 +33,7 @@ public class GameHandler : MonoBehaviour
     public static Dictionary<string, Sound> LoadedSounds = new Dictionary<string, Sound>();
     public static Bug[] AllBugs;
     public const int KNOCKOUT_ROUNDS = 3;
-    [SerializeField] private float[] rarityChances = {0.8f, 0.2f};
+    private float[] rarityChances = {0.8f, 0.2f};
     public const int THRESHOLD_BASE = 1;
     public const float THRESHOLD_SCALE = 1.1f;
     private const string BUG_PATH = "Prefabs/Bugs";
@@ -99,22 +99,29 @@ public class GameHandler : MonoBehaviour
     // Initiates the placing phase for a round
     public async Task StartPlacing()
     {
+        BroadcastToBugs((Bug bug) => bug.Reset());
         Round++;
         CurrentPhase = Phase.Placing;
         RoundScore = 0;
         uiHandler.UpdateScoreState();
         IsKnockout = Round % KNOCKOUT_ROUNDS == 0;
         try {
+        Bug.BugInfo selectedBug = PickRandomBug();
+        this.uiHandler.SetCurrentBugTooltip(selectedBug);
         await this.uiHandler.EnterPlacingState();
 
-        (GameObject, Bug.BugInfo) bugPair = SpawnRandomBug();
+        // Spawn next bug in
+        GameObject bug = Instantiate(GetResource(BUG_PATH + "/" + selectedBug.name) as GameObject);
+        bug.transform.localScale = new Vector3(UnityEngine.Random.value > 0.5f ? -1 : 1, 
+        bug.transform.localScale.y, bug.transform.localScale.z);
         AllBugs = FindObjectsByType<Bug>(FindObjectsSortMode.None);
+
         // 1 - 0.6/(1+e^(4-0.4x))
         DefaultGameSpeed = 1 - 0.6f / (1 + Mathf.Exp(4 - AllBugs.Length * 0.2f));
-        GameObject bug = bugPair.Item1;
         bug.GetComponent<Bug>().SetSimulated(false);
-        float safeWidth = EDGE_X - bugPair.Item2.safeHorizRadius;
+        float safeWidth = EDGE_X - selectedBug.safeHorizRadius;
         this.trackingBug = true;
+
         //await placement
         // while (!Mouse.current.leftButton.wasPressedThisFrame)
         while (trackingBug)
@@ -183,7 +190,6 @@ public class GameHandler : MonoBehaviour
             await uiHandler.EnterLosingState();
             return;
         }
-        BroadcastToBugs((Bug bug) => bug.Reset());
         await this.uiHandler.ShowNextButton();
         if (IsKnockout)
         {
@@ -224,7 +230,7 @@ public class GameHandler : MonoBehaviour
         }
     }
 
-    private (GameObject, Bug.BugInfo) SpawnRandomBug()
+    private Bug.BugInfo PickRandomBug()
     {
         System.Random rand = new System.Random();
         float value = (float)rand.NextDouble();
@@ -234,17 +240,15 @@ public class GameHandler : MonoBehaviour
         for (rarity = 0; rarity < rarityChances.Length; rarity++)
         {
             rarityThreshold += rarityChances[rarity];
-            if (value < rarityThreshold)
+            print(rarityThreshold);
+            if (rarityThreshold > value)
             {
                 break;
             }
         }
         List<Bug.BugInfo> bugList = BugRarityTypes[rarity + 1];
         Bug.BugInfo selectedBug = bugList[rand.Next(0, bugList.Count)];
-        GameObject createdBug = Instantiate(GetResource(BUG_PATH + "/" + selectedBug.name) as GameObject);
-        createdBug.transform.localScale = new Vector3(UnityEngine.Random.value > 0.5f ? -1 : 1, 
-                createdBug.transform.localScale.y, createdBug.transform.localScale.z);
-        return (createdBug, selectedBug);
+        return selectedBug;
     }
     
     // Returns an array of Bug scripts sorted in closest order to zap pos
