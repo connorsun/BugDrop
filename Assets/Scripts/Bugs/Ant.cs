@@ -11,7 +11,7 @@ public class Ant : Bug
     // Gets metadata about this bug type
     public static BugInfo GetInfo()
     {
-        return new BugInfo("Ant", 1, 1, 1.5f, 0.5f, "+3 if touching ground");
+        return new BugInfo("Ant", 1, 1, 1.5f, 0.5f, "+4 if touching ground");
     }
 
     // --- PUBLIC METHODS ---
@@ -28,7 +28,7 @@ public class Ant : Bug
         {
             if (contact.collider?.gameObject.CompareTag("Ground") == true)
             {
-                return this.baseScore + 3;
+                return this.baseScore + 4;
             }
         }
         return this.baseScore;

@@ -36,7 +36,7 @@ public abstract class Bug : MonoBehaviour
 
     // Center must be used as the main transform to get the position of the bug, as the
     // parent object this script is on does not follow the position of the child segments
-    [SerializeField] protected Transform center;
+    [SerializeField] public Transform center;
     [SerializeField] protected GameObject[] segments;
     private Collider2D[] colliders;
     private Rigidbody2D[] rigidbodies;

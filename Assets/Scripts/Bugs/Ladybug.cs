@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Threading.Tasks;
 
 
-public class Fly : Bug
+public class Ladybug : Bug
 {
     // --- CONSTANTS ---
     // --- OBJECT REFERENCES --- 
@@ -11,7 +11,7 @@ public class Fly : Bug
     // Gets metadata about this bug type
     public static BugInfo GetInfo()
     {
-        return new BugInfo("Fly", 1, 1, 1.5f, 0.5f, "+2 if not touching ground");
+        return new BugInfo("Ladybug", 1, 1, 1.5f, 0.5f, "+1 for every 4 cm away from the lightning rod");
     }
 
     // --- PUBLIC METHODS ---
@@ -23,20 +23,11 @@ public class Fly : Bug
 
     public override int CalculateOverallScore()
     {
-        ContactPoint2D[] contacts = this.GetContacts();
-        foreach (ContactPoint2D contact in contacts)
-        {
-            if (contact.collider?.gameObject.CompareTag("Ground") == true)
-            {
-                return this.baseScore;
-            }
-        }
-        return this.baseScore + 2;
+        return this.baseScore + (int)(((Vector2)this.center.position - (Vector2)GameHandler.ZapperPos).magnitude / 4f);
     }
 
     protected override async Task Score(bool isPrimary)
     {
-        // if not touching ground
         ScorePoints(CalculateOverallScore(), isPrimary);
     }
 }
