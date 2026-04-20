@@ -33,12 +33,13 @@ public class GameHandler : MonoBehaviour
     public static Dictionary<string, Sound> LoadedSounds = new Dictionary<string, Sound>();
     public static Bug[] AllBugs;
     public const int KNOCKOUT_ROUNDS = 3;
-    [SerializeField] private float[] rarityChances = {0.8f, 0.2f};
+    private float[] rarityChances = {0.8f, 0.2f};
     public const int THRESHOLD_BASE = 1;
     public const float THRESHOLD_SCALE = 1.1f;
     private const string BUG_PATH = "Prefabs/Bugs";
-    private const float dropY = 6.3f;
-    private const float edgeX = 12.5f;
+    public const float FAST_GAME_SPEED = 0.2f;
+    private const float DROP_Y = 6.3f;
+    private const float EDGE_X = 12.5f;
     private Vector3 zapperPos = new Vector3(0f, -7.5f, 0f);
     public static Color PRIMARY_COLOR = new Color(255f / 255f, 240f / 255f, 137f / 255f);
     public static Color SECONDARY_COLOR = new Color(115f / 255f, 239f / 255f, 232f / 255f);
@@ -51,6 +52,8 @@ public class GameHandler : MonoBehaviour
     public static int RoundScore;
     public static int ScoreThreshold;
     public static bool IsKnockout;
+    public static bool FastForward;
+    public static float DefaultGameSpeed;
     public static float GameSpeed;
 
     // --- OBJECT REFERENCES ---
@@ -70,6 +73,8 @@ public class GameHandler : MonoBehaviour
         this.controls = new InputSystem_Actions();
         this.controls.Player.Drop.performed += OnDrop;
         this.controls.Player.Enable();
+        GameSpeed = 1;
+        FastForward = false;
         Init();
     }
 
@@ -85,7 +90,7 @@ public class GameHandler : MonoBehaviour
         GameState = PlayState.Playing;
         Round = 0;
         ScoreThreshold = THRESHOLD_BASE;
-        GameSpeed = 1;
+        DefaultGameSpeed = 1;
         RoundScore = 0;
         uiHandler.Init();
         _ = StartPlacing();
@@ -94,27 +99,35 @@ public class GameHandler : MonoBehaviour
     // Initiates the placing phase for a round
     public async Task StartPlacing()
     {
+        BroadcastToBugs((Bug bug) => bug.Reset());
         Round++;
         CurrentPhase = Phase.Placing;
         RoundScore = 0;
         uiHandler.UpdateScoreState();
         IsKnockout = Round % KNOCKOUT_ROUNDS == 0;
+        try {
+        Bug.BugInfo selectedBug = PickRandomBug();
+        this.uiHandler.SetCurrentBugTooltip(selectedBug);
         await this.uiHandler.EnterPlacingState();
 
-        (GameObject, Bug.BugInfo) bugPair = SpawnRandomBug();
+        // Spawn next bug in
+        GameObject bug = Instantiate(GetResource(BUG_PATH + "/" + selectedBug.name) as GameObject);
+        bug.transform.localScale = new Vector3(UnityEngine.Random.value > 0.5f ? -1 : 1, 
+        bug.transform.localScale.y, bug.transform.localScale.z);
         AllBugs = FindObjectsByType<Bug>(FindObjectsSortMode.None);
+
         // 1 - 0.6/(1+e^(4-0.4x))
-        GameSpeed = 1 - 0.6f / (1 + Mathf.Exp(4 - AllBugs.Length * 0.2f));
-        GameObject bug = bugPair.Item1;
+        DefaultGameSpeed = 1 - 0.6f / (1 + Mathf.Exp(4 - AllBugs.Length * 0.2f));
         bug.GetComponent<Bug>().SetSimulated(false);
-        float safeWidth = edgeX - bugPair.Item2.safeHorizRadius;
+        float safeWidth = EDGE_X - selectedBug.safeHorizRadius;
         this.trackingBug = true;
+
         //await placement
         // while (!Mouse.current.leftButton.wasPressedThisFrame)
         while (trackingBug)
         {
             Vector3 worldPosition = GetMouseWorldPos();
-            bug.transform.position = new Vector3(Mathf.Clamp(worldPosition.x, -safeWidth, safeWidth), dropY);
+            bug.transform.position = new Vector3(Mathf.Clamp(worldPosition.x, -safeWidth, safeWidth), DROP_Y);
             await Task.Yield();
         }
         bug.GetComponent<Bug>().SetSimulated(true);
@@ -123,7 +136,6 @@ public class GameHandler : MonoBehaviour
         // wait until all bugs are stationary
         BroadcastToBugs((Bug bug) => bug.StartPlacing());
         while (true) {
-            try {
             //print(AllBugs.Length);
             bool allStationary = true;
             foreach (Bug eachBug in AllBugs)
@@ -138,13 +150,13 @@ public class GameHandler : MonoBehaviour
             {
                 break;
             }
-            } catch (Exception e)
-            {
-                Debug.LogError(e);
-            }
             await Task.Yield();
         }
         await this.uiHandler.ShowNextButton();
+        } catch (Exception e)
+        {
+            Debug.LogError(e);
+        }
     }
 
     // Handles Drop input action
@@ -178,7 +190,6 @@ public class GameHandler : MonoBehaviour
             await uiHandler.EnterLosingState();
             return;
         }
-        BroadcastToBugs((Bug bug) => bug.Reset());
         await this.uiHandler.ShowNextButton();
         if (IsKnockout)
         {
@@ -219,7 +230,7 @@ public class GameHandler : MonoBehaviour
         }
     }
 
-    private (GameObject, Bug.BugInfo) SpawnRandomBug()
+    private Bug.BugInfo PickRandomBug()
     {
         System.Random rand = new System.Random();
         float value = (float)rand.NextDouble();
@@ -229,17 +240,15 @@ public class GameHandler : MonoBehaviour
         for (rarity = 0; rarity < rarityChances.Length; rarity++)
         {
             rarityThreshold += rarityChances[rarity];
-            if (value < rarityThreshold)
+            print(rarityThreshold);
+            if (rarityThreshold > value)
             {
                 break;
             }
         }
         List<Bug.BugInfo> bugList = BugRarityTypes[rarity + 1];
         Bug.BugInfo selectedBug = bugList[rand.Next(0, bugList.Count)];
-        GameObject createdBug = Instantiate(GetResource(BUG_PATH + "/" + selectedBug.name) as GameObject);
-        createdBug.transform.localScale = new Vector3(UnityEngine.Random.value > 0.5f ? -1 : 1, 
-                createdBug.transform.localScale.y, createdBug.transform.localScale.z);
-        return (createdBug, selectedBug);
+        return selectedBug;
     }
     
     // Returns an array of Bug scripts sorted in closest order to zap pos
