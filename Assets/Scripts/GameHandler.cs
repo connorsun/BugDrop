@@ -40,7 +40,7 @@ public class GameHandler : MonoBehaviour
     public const float FAST_GAME_SPEED = 0.2f;
     private const float DROP_Y = 6.3f;
     private const float EDGE_X = 12.5f;
-    private Vector3 zapperPos = new Vector3(0f, -7.5f, 0f);
+    private Vector3 zapperPos = new Vector3(0f, -7f, 0f);
     public static Color PRIMARY_COLOR = new Color(255f / 255f, 240f / 255f, 137f / 255f);
     public static Color SECONDARY_COLOR = new Color(115f / 255f, 239f / 255f, 232f / 255f);
     
