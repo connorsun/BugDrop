@@ -1,0 +1,33 @@
+using UnityEngine;
+using System.Threading.Tasks;
+
+
+public class Ladybug : Bug
+{
+    // --- CONSTANTS ---
+    // --- OBJECT REFERENCES --- 
+
+    // --- STATIC METADATA ---
+    // Gets metadata about this bug type
+    public static BugInfo GetInfo()
+    {
+        return new BugInfo("Ladybug", 1, 1, 1.5f, 0.5f, "+1 for every 4 cm away from the lightning rod");
+    }
+
+    // --- PUBLIC METHODS ---
+    public override void Start()
+    {
+        this.thisBugInfo = GetInfo();
+        base.Start();
+    }
+
+    public override int CalculateOverallScore()
+    {
+        return this.baseScore + (int)(((Vector2)this.center.position - (Vector2)GameHandler.ZapperPos).magnitude / 4f);
+    }
+
+    protected override async Task Score(bool isPrimary)
+    {
+        ScorePoints(CalculateOverallScore(), isPrimary);
+    }
+}

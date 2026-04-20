@@ -40,7 +40,7 @@ public class GameHandler : MonoBehaviour
     public const float FAST_GAME_SPEED = 0.2f;
     private const float DROP_Y = 6.3f;
     private const float EDGE_X = 12.5f;
-    private Vector3 zapperPos = new Vector3(0f, -7f, 0f);
+    public static Vector3 ZapperPos = new Vector3(0f, -7f, 0f);
     public static Color PRIMARY_COLOR = new Color(255f / 255f, 240f / 255f, 137f / 255f);
     public static Color SECONDARY_COLOR = new Color(115f / 255f, 239f / 255f, 232f / 255f);
     
@@ -179,7 +179,7 @@ public class GameHandler : MonoBehaviour
         Bug[] sortedBugs = GetClosestBugs();
         if (sortedBugs.Length > 0)
         {
-            await sortedBugs[0].Trigger(true, zapperPos);
+            await sortedBugs[0].Trigger(true, ZapperPos);
         }
         float timestamp = Time.unscaledTime;
         while (Time.unscaledTime < timestamp + 0.5f)
@@ -283,7 +283,7 @@ public class GameHandler : MonoBehaviour
     // This is the metric used to determine bug scoring order.
     private Bug[] GetClosestBugs()
     {
-        return GameHandler.AllBugs.OrderBy(x => (x.transform.position - zapperPos).magnitude).ToArray();
+        return GameHandler.AllBugs.OrderBy(x => (x.center.position - ZapperPos).magnitude).ToArray();
     }
     // --- STATIC HELPERS ---
 
