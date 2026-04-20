@@ -45,6 +45,8 @@ public abstract class Bug : MonoBehaviour
     private static readonly int FlashColorID = Shader.PropertyToID("_FlashColor");
     private static readonly int FlashIntensityID = Shader.PropertyToID("_FlashIntensity");
     private CancellationTokenSource _flashCTS;
+    private Task _flashTask;
+    private Task _lerpTask;
 
     public void Awake()
     {
@@ -142,10 +144,12 @@ public abstract class Bug : MonoBehaviour
 
         _flashCTS?.Cancel();
         _flashCTS = new CancellationTokenSource();
-        _ = Flash(isPrimary ? GameHandler.PRIMARY_COLOR : GameHandler.SECONDARY_COLOR, 0.2f, 0.1f, isPrimary, _flashCTS.Token);
+        _flashTask = Flash(isPrimary ? GameHandler.PRIMARY_COLOR : GameHandler.SECONDARY_COLOR, 0.2f, 0.1f, isPrimary, _flashCTS.Token);
+
         await this.Score(isPrimary);
         _flashCTS.Cancel();
-        _ = LerpIntensityToZero(0.2f);
+
+        _lerpTask = LerpIntensityToZero(0.2f);
         if (isPrimary) {
             Bug[] closest = GetClosestBugs();
             if (closest.Length > 0) {
@@ -163,6 +167,20 @@ public abstract class Bug : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+
+    public async Task Hover(bool on)
+    {
+        if (_flashTask != null && !_flashTask.IsCompleted)
+            await _flashTask;
+        if (_lerpTask != null && !_lerpTask.IsCompleted)
+            await _lerpTask;
+
+        for (int i = 0; i < materials.Length; i++)
+        {
+            materials[i].SetColor(FlashColorID, Color.white);
+            materials[i].SetFloat(FlashIntensityID, on? 0.3f : 0f);
         }
     }
 

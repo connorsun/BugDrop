@@ -35,7 +35,9 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private TextMeshProUGUI roundFutureThreshold;
     [SerializeField] private TextMeshProUGUI roundScoreNumber;
     [SerializeField] private TextMeshProUGUI roundScoreLabel;
-    [SerializeField] private TextMeshProUGUI currentBugTooltip;
+    [SerializeField] private RectTransform tooltipRectTransform;
+    [SerializeField] private TextMeshProUGUI currentBugTooltipTitle;
+    [SerializeField] private TextMeshProUGUI currentBugTooltipDescription;
     [SerializeField] private GameObject nextButton;
 
     // UI Elements - Knockout
@@ -174,13 +176,24 @@ public class UIHandler : MonoBehaviour
         roundScoreNumberKnockout.text = GameHandler.RoundScore + "";
         thresholdLabel.text = GameHandler.ScoreThreshold + "";
     }
-    public void ClearCurrentBugTooltip()
-    {
-        currentBugTooltip.text = "";
-    }
+
+    // public void ClearCurrentBugTooltip()
+    // {
+    //     currentBugTooltipTitle.text = "";
+    // }
+
     public void SetCurrentBugTooltip(Bug.BugInfo bugInfo)
     {
-        currentBugTooltip.text = bugInfo.name + "\n[" + bugInfo.baseScore + "] " + bugInfo.tooltip;
+        currentBugTooltipTitle.text = bugInfo.name;
+        currentBugTooltipDescription.text = "[" + bugInfo.baseScore + "] " + bugInfo.tooltip;
+        currentBugTooltipDescription.ForceMeshUpdate(true);
+        int lineCount = currentBugTooltipDescription.textInfo.lineCount;
+        tooltipRectTransform.sizeDelta = new Vector2(tooltipRectTransform.sizeDelta.x, 25 + (lineCount * 8));
+    }
+
+    public async Task HideCurrentBugTooltip()
+    {
+        await tooltipRectTransform.gameObject.GetComponent<UIAnimatable>().Hide();
     }
 
     // -- INSTANTIATE WORLD SPACE UI --

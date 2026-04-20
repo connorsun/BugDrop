@@ -133,6 +133,7 @@ public class GameHandler : MonoBehaviour
             await Task.Yield();
         }
         placingBug.GetComponent<Bug>().SetSimulated(true);
+        _ = this.uiHandler.HideCurrentBugTooltip();
         // give the bug some time to start dropping
         await Task.Delay(TimeSpan.FromSeconds(0.2f));
         // wait until all bugs are stationary
@@ -268,7 +269,7 @@ public class GameHandler : MonoBehaviour
         for (rarity = 0; rarity < rarityChances.Length; rarity++)
         {
             rarityThreshold += rarityChances[rarity];
-            print(rarityThreshold);
+            //print(rarityThreshold);
             if (rarityThreshold > value)
             {
                 break;
