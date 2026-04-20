@@ -142,7 +142,7 @@ public abstract class Bug : MonoBehaviour
 
         _flashCTS?.Cancel();
         _flashCTS = new CancellationTokenSource();
-        _ = Flash(isPrimary ? GameHandler.PRIMARY_COLOR : GameHandler.SECONDARY_COLOR, 0.1f, 0.25f, isPrimary, _flashCTS.Token);
+        _ = Flash(isPrimary ? GameHandler.PRIMARY_COLOR : GameHandler.SECONDARY_COLOR, 0.2f, 0.1f, isPrimary, _flashCTS.Token);
         await this.Score(isPrimary);
         _flashCTS.Cancel();
         _ = LerpIntensityToZero(0.2f);
