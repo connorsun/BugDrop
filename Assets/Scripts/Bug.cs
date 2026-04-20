@@ -134,9 +134,15 @@ public abstract class Bug : MonoBehaviour
         tZap.end = (Vector2) center.position;
         tZap.timeToLive = isPrimary? 0.6f * GameHandler.GameSpeed : 0.4f * GameHandler.GameSpeed;
         tZap.Init();
+        GameObject particle = Instantiate(GameHandler.GetResource("Prefabs/ScoreParticle") as GameObject);
+        particle.transform.position = center.position;
+        ParticleSystem ps = particle.GetComponent<ParticleSystem>();
+        var main = ps.main;
+        main.startColor = zapColor;
+
         _flashCTS?.Cancel();
         _flashCTS = new CancellationTokenSource();
-        _ = Flash(isPrimary ? GameHandler.PRIMARY_COLOR : GameHandler.SECONDARY_COLOR, 0.3f, isPrimary, _flashCTS.Token);
+        _ = Flash(isPrimary ? GameHandler.PRIMARY_COLOR : GameHandler.SECONDARY_COLOR, 0.1f, 0.25f, isPrimary, _flashCTS.Token);
         await this.Score(isPrimary);
         _flashCTS.Cancel();
         _ = LerpIntensityToZero(0.2f);
@@ -271,12 +277,20 @@ public abstract class Bug : MonoBehaviour
         return GameHandler.AllBugs.OrderBy(x => (x.center.position - center.position).magnitude).ToArray();
     }
 
-    private async Task Flash(Color flashColor, float flashDuration, bool myTurn, CancellationToken ct = default)
+    private async Task Flash(Color flashColor, float holdDuration, float flashDuration, bool myTurn, CancellationToken ct = default)
     {
         foreach(Material mat in materials)
         {
             mat.SetColor(FlashColorID, flashColor);
             mat.SetFloat(FlashIntensityID, 1f);
+        }
+
+        float holdElapsed = 0f;
+        while (holdElapsed < holdDuration)
+        {
+            if (ct.IsCancellationRequested) return;
+            holdElapsed += Time.deltaTime;
+            await Task.Yield();
         }
         
         float elapsed = 0f;
