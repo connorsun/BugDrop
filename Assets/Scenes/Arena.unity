@@ -6356,9 +6356,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0.1751663
-    width: 2.0049877
-    height: 2.0055432
+    y: 0
+    width: 1
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -6406,9 +6406,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88b8e53c3d3f544d3b806f3152258977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameHandler
-  rarityChances:
-  - 0.6
-  - 0.4
   uiHandler: {fileID: 1860098344}
   audioSource: {fileID: 519420035}
 --- !u!114 &519420034
@@ -10596,6 +10593,7 @@ MonoBehaviour:
   - {fileID: 2084325513}
   - {fileID: 2006292883}
   - {fileID: 1249634799}
+  - {fileID: 130837668}
   loseElements:
   - {fileID: 237096179}
   - {fileID: 1476114835}
