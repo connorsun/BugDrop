@@ -41,6 +41,7 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private TextMeshProUGUI roundScoreNumberKnockout;
     // TODO: design and add progress bar
     [SerializeField] private TextMeshProUGUI thresholdLabel;
+    [SerializeField] private GameObject fastForward;
 
     // UI Elements - Lose Screen
     [SerializeField] private TextMeshProUGUI loseTitle;
@@ -152,6 +153,18 @@ public class UIHandler : MonoBehaviour
         Application.Quit();
     }
 
+    public void OnFastForwardButtonClicked()
+    {
+        GameHandler.FastForward = !GameHandler.FastForward;
+        if (GameHandler.FastForward)
+        {
+            GameHandler.GameSpeed = GameHandler.FAST_GAME_SPEED;
+        } else
+        {
+            GameHandler.GameSpeed = GameHandler.DefaultGameSpeed;
+        }
+    }
+
     // Score UI
     public void UpdateScoreState()
     {
@@ -197,7 +210,7 @@ public class UIHandler : MonoBehaviour
     // --- PRIVATE METHODS ---
 
     // Shows and hides elements based on UI Group Arrays assigned in editor
-    private async Task RenderState(UIState newState, Task additionalTask = null)
+    private async Task RenderState(UIState newState, params Task[] additionalTasks)
     {
         if (newState == uiState)
         {
@@ -222,9 +235,9 @@ public class UIHandler : MonoBehaviour
             animations.Add(element.Show());
         }
 
-        if (additionalTask != null)
+        if (additionalTasks != null)
         {
-            animations.Add(additionalTask);
+            animations.AddRange(additionalTasks);
         }
 
         await Task.WhenAll(animations);
