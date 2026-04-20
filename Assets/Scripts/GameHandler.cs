@@ -63,6 +63,8 @@ public class GameHandler : MonoBehaviour
 
     // --- PRIVATE STATE ---
     private bool trackingBug;
+    private Bug.BugInfo selectedBug;
+    private GameObject placingBug;
 
     // --- PUBLIC METHODS ---
 
@@ -106,19 +108,19 @@ public class GameHandler : MonoBehaviour
         uiHandler.UpdateScoreState();
         IsKnockout = Round % KNOCKOUT_ROUNDS == 0;
         try {
-        Bug.BugInfo selectedBug = PickRandomBug();
+        selectedBug = PickRandomBug();
         this.uiHandler.SetCurrentBugTooltip(selectedBug);
         await this.uiHandler.EnterPlacingState();
 
         // Spawn next bug in
-        GameObject bug = Instantiate(GetResource(BUG_PATH + "/" + selectedBug.name) as GameObject);
-        bug.transform.localScale = new Vector3(UnityEngine.Random.value > 0.5f ? -1 : 1, 
-        bug.transform.localScale.y, bug.transform.localScale.z);
+        placingBug = Instantiate(GetResource(BUG_PATH + "/" + selectedBug.name) as GameObject);
+        placingBug.transform.localScale = new Vector3(UnityEngine.Random.value > 0.5f ? -1 : 1, 
+        placingBug.transform.localScale.y, placingBug.transform.localScale.z);
         AllBugs = FindObjectsByType<Bug>(FindObjectsSortMode.None);
 
         // 1 - 0.6/(1+e^(4-0.4x))
         DefaultGameSpeed = 1 - 0.6f / (1 + Mathf.Exp(4 - AllBugs.Length * 0.2f));
-        bug.GetComponent<Bug>().SetSimulated(false);
+        placingBug.GetComponent<Bug>().SetSimulated(false);
         float safeWidth = EDGE_X - selectedBug.safeHorizRadius;
         this.trackingBug = true;
 
@@ -127,10 +129,10 @@ public class GameHandler : MonoBehaviour
         while (trackingBug)
         {
             Vector3 worldPosition = GetMouseWorldPos();
-            bug.transform.position = new Vector3(Mathf.Clamp(worldPosition.x, -safeWidth, safeWidth), DROP_Y);
+            placingBug.transform.position = new Vector3(Mathf.Clamp(worldPosition.x, -safeWidth, safeWidth), DROP_Y);
             await Task.Yield();
         }
-        bug.GetComponent<Bug>().SetSimulated(true);
+        placingBug.GetComponent<Bug>().SetSimulated(true);
         // give the bug some time to start dropping
         await Task.Delay(TimeSpan.FromSeconds(0.2f));
         // wait until all bugs are stationary
@@ -202,7 +204,33 @@ public class GameHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Keyboard.current.spaceKey.wasPressedThisFrame && this.trackingBug && this.placingBug != null)
+        {
+            // cycle bug
+            foreach (int rarity in BugRarityTypes.Keys)
+            {
+                int index = BugRarityTypes[rarity].IndexOf(this.selectedBug);
+                if (index != -1)
+                {
+                    this.placingBug.GetComponent<Bug>().Destroy();
+                    if (index == BugRarityTypes[rarity].Count - 1)
+                    {
+                        this.selectedBug = BugRarityTypes[rarity % BugRarityTypes.Keys.Count + 1][0];
+                    } else
+                    {
+                        this.selectedBug = BugRarityTypes[rarity][index + 1];
+                    }
+                    this.placingBug = Instantiate(GetResource(BUG_PATH + "/" + this.selectedBug.name) as GameObject);
+                    this.placingBug.transform.localScale = new Vector3(UnityEngine.Random.value > 0.5f ? -1 : 1, 
+                    this.placingBug.transform.localScale.y, this.placingBug.transform.localScale.z);
+                    AllBugs = FindObjectsByType<Bug>(FindObjectsSortMode.None);
+                    placingBug.GetComponent<Bug>().SetSimulated(false);
+                    float safeWidth = EDGE_X - this.selectedBug.safeHorizRadius;
+                    this.uiHandler.SetCurrentBugTooltip(this.selectedBug);
+                    break;
+                }
+            }
+        }
     }
 
     // --- PRIVATE METHODS ---

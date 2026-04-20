@@ -11,7 +11,7 @@ public class Fly : Bug
     // Gets metadata about this bug type
     public static BugInfo GetInfo()
     {
-        return new BugInfo("Fly", 1, 1, 1.5f, 0.5f, "+3 if not touching ground");
+        return new BugInfo("Fly", 1, 1, 1.5f, 0.5f, "+2 if not touching ground");
     }
 
     // --- PUBLIC METHODS ---
@@ -31,7 +31,7 @@ public class Fly : Bug
                 return this.baseScore;
             }
         }
-        return this.baseScore + 3;
+        return this.baseScore + 2;
     }
 
     protected override async Task Score(bool isPrimary)
