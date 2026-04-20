@@ -192,7 +192,7 @@ public class UIHandler : MonoBehaviour
     public void SetCurrentBugTooltip(Bug.BugInfo bugInfo)
     {
         currentBugTooltipTitle.text = bugInfo.name;
-        currentBugTooltipDescription.text = "[" + bugInfo.baseScore + "] " + bugInfo.tooltip;
+        currentBugTooltipDescription.text = "[Base " + bugInfo.baseScore + (bugInfo.baseScore == 1 ? " point] " : " points] ") + bugInfo.tooltip;
         currentBugTooltipDescription.ForceMeshUpdate(true);
         int lineCount = currentBugTooltipDescription.textInfo.lineCount;
         tooltipRectTransform.sizeDelta = new Vector2(tooltipRectTransform.sizeDelta.x, 25 + (lineCount * 8));

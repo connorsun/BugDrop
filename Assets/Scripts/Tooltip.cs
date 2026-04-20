@@ -46,7 +46,7 @@ public class Tooltip : MonoBehaviour
 
                 cg.alpha = 1;
                 titleText.text = bug.thisBugInfo.name;
-                tooltipText.text = "[" + bug.baseScore + "] " + bug.thisBugInfo.tooltip;
+                tooltipText.text = "[Base " + bug.baseScore + (bug.baseScore == 1 ? " point] " : " points] ") + bug.thisBugInfo.tooltip;
                 tooltipText.ForceMeshUpdate();
                 int lineCount = tooltipText.textInfo.lineCount;
                 rt.sizeDelta = new Vector2(rt.sizeDelta.x, 25 + (lineCount * 8));

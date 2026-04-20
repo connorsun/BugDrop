@@ -11,7 +11,7 @@ public class Mosquito : Bug
     // Gets metadata about this bug type
     public static BugInfo GetInfo()
     {
-        return new BugInfo("Mosquito", 1, 1, 1.5f, 0.5f, "-1 base from adjacent bugs, +2 base to self for each adjacent bug");
+        return new BugInfo("Mosquito", 1, 1, 1.5f, 0.5f, "-1 point from adjacent bugs' score, but +2 additional points to self for each adjacent bug");
     }
 
     // --- PUBLIC METHODS ---
