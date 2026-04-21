@@ -53,6 +53,7 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreDifference;
     [SerializeField] private GameObject retryButton;
     [SerializeField] private GameObject quitButton;
+    [SerializeField] private KnockoutProgressBar knockoutProgressBar;
 
     // UI Groups
     [SerializeField] private UIAnimatable[] placingElements;
@@ -93,6 +94,7 @@ public class UIHandler : MonoBehaviour
         UpdateScoreState();
         if (GameHandler.IsKnockout)
         {
+            LockProgressBar(false);
             await RenderState(UIState.ScoringKnockout, HideNextButton());
         } else
         {
@@ -175,6 +177,11 @@ public class UIHandler : MonoBehaviour
         {
             GameHandler.GameSpeed = GameHandler.DefaultGameSpeed;
         }
+    }
+
+    public void LockProgressBar(bool locked)
+    {
+        knockoutProgressBar.allowedToMove = !locked;
     }
 
     // Score UI

@@ -113,12 +113,12 @@ public class GameHandler : MonoBehaviour
         CurrentPhase = Phase.Placing;
         LastRoundScore = RoundScore;
         RoundScore = 0;
-        uiHandler.UpdateScoreState();
         IsKnockout = Round % KNOCKOUT_ROUNDS == 0;
         try {
         selectedBug = PickRandomBug();
         this.uiHandler.SetCurrentBugTooltip(selectedBug);
         await this.uiHandler.EnterPlacingState();
+        uiHandler.UpdateScoreState();
 
         // Spawn next bug in
         placingBug = Instantiate(GetResource(BUG_PATH + "/" + selectedBug.name) as GameObject);
@@ -204,6 +204,7 @@ public class GameHandler : MonoBehaviour
             await uiHandler.EnterLosingState();
             return;
         }
+        this.uiHandler.LockProgressBar(true);
         await this.uiHandler.ShowNextButton();
     }
 
