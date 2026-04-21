@@ -118,7 +118,7 @@ public class GameHandler : MonoBehaviour
         selectedBug = PickRandomBug();
         this.uiHandler.SetCurrentBugTooltip(selectedBug);
         await this.uiHandler.EnterPlacingState();
-        uiHandler.UpdateScoreState();
+        uiHandler.SetScoreState();
 
         // Spawn next bug in
         placingBug = Instantiate(GetResource(BUG_PATH + "/" + selectedBug.name) as GameObject);

@@ -21,6 +21,7 @@ public class KnockoutProgressBar : MonoBehaviour
             loadingBarLength = 256;
         } else
         {
+            allowedToMove = true;
             loadingBarLength = ((RectTransform) transform.parent).sizeDelta.x;
         }
     }

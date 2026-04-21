@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Collections;
 using System;
 using TMPro;
 using System.Linq;
@@ -62,6 +63,7 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private UIAnimatable[] loseElements;
 
     private UIState uiState = UIState.None;
+    private float lerpScore;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -74,7 +76,7 @@ public class UIHandler : MonoBehaviour
     {
         SetRoundLabel();
         SetFutureThreshold();
-        UpdateScoreState();
+        SetScoreState();
     }
 
     // -- OVERARCHING UI STATE CHANGES --
@@ -91,7 +93,8 @@ public class UIHandler : MonoBehaviour
 
     public async Task EnterScoringState()
     {
-        UpdateScoreState();
+        lerpScore = 0;
+        SetScoreState();
         if (GameHandler.IsKnockout)
         {
             LockProgressBar(false);
@@ -187,6 +190,13 @@ public class UIHandler : MonoBehaviour
     // Score UI
     public void UpdateScoreState()
     {
+        StopAllCoroutines();
+        StartCoroutine(LerpScore(GameHandler.RoundScore));
+    }
+
+    public void SetScoreState()
+    {
+        lerpScore = GameHandler.RoundScore;
         roundScoreNumber.text = GameHandler.RoundScore + "";
         roundScoreNumberKnockout.text = GameHandler.RoundScore + "";
         thresholdLabel.text = GameHandler.ScoreThreshold + "";
@@ -300,6 +310,24 @@ public class UIHandler : MonoBehaviour
                 return loseElements;
             default:
                 return new UIAnimatable[0];
+        }
+    }
+
+    // Score lerping
+    private IEnumerator LerpScore(float target)
+    {
+        float diff = Mathf.Abs(target - lerpScore);
+        float speed = Mathf.Max(8f /*MIN LERP SPEED*/, diff * 2f);
+
+        while (Mathf.Abs(lerpScore - target) > 0.01f)
+        {
+            lerpScore = Mathf.Lerp(lerpScore, target, Time.deltaTime * speed);
+            
+            roundScoreNumber.text = Mathf.CeilToInt(lerpScore) + "";
+            roundScoreNumberKnockout.text = Mathf.CeilToInt(lerpScore) + "";
+            thresholdLabel.text = Mathf.CeilToInt(lerpScore) + "";
+
+            yield return null;
         }
     }
 }
