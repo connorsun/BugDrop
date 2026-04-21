@@ -49,7 +49,8 @@ public class GameHandler : MonoBehaviour
     public static PlayState GameState;
     public static int Round; // starts at 1
     public static Phase CurrentPhase;
-    public static float RoundScore;
+    public static int RoundScore;
+    public static int LastRoundScore;
     public static int ScoreThreshold;
     public static bool IsKnockout;
     public static bool FastForward;
@@ -94,6 +95,7 @@ public class GameHandler : MonoBehaviour
         ScoreThreshold = THRESHOLD_BASE;
         DefaultGameSpeed = 1;
         RoundScore = 0;
+        LastRoundScore = 0;
         uiHandler.Init();
         _ = StartPlacing();
     }
@@ -104,6 +106,7 @@ public class GameHandler : MonoBehaviour
         BroadcastToBugs((Bug bug) => bug.Reset());
         Round++;
         CurrentPhase = Phase.Placing;
+        LastRoundScore = RoundScore;
         RoundScore = 0;
         uiHandler.UpdateScoreState();
         IsKnockout = Round % KNOCKOUT_ROUNDS == 0;
@@ -133,6 +136,7 @@ public class GameHandler : MonoBehaviour
             await Task.Yield();
         }
         placingBug.GetComponent<Bug>().SetSimulated(true);
+        _ = this.uiHandler.HideCurrentBugTooltip();
         // give the bug some time to start dropping
         await Task.Delay(TimeSpan.FromSeconds(0.2f));
         // wait until all bugs are stationary
@@ -268,7 +272,7 @@ public class GameHandler : MonoBehaviour
         for (rarity = 0; rarity < rarityChances.Length; rarity++)
         {
             rarityThreshold += rarityChances[rarity];
-            print(rarityThreshold);
+            //print(rarityThreshold);
             if (rarityThreshold > value)
             {
                 break;

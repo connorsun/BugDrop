@@ -32,10 +32,13 @@ public class UIHandler : MonoBehaviour
     // UI Elements - General
     [SerializeField] private TextMeshProUGUI roundLabel;
     // TODO: design and add round timeline widget
+    [SerializeField] private TextMeshProUGUI lastRoundScore;
     [SerializeField] private TextMeshProUGUI roundFutureThreshold;
     [SerializeField] private TextMeshProUGUI roundScoreNumber;
     [SerializeField] private TextMeshProUGUI roundScoreLabel;
-    [SerializeField] private TextMeshProUGUI currentBugTooltip;
+    [SerializeField] private RectTransform tooltipRectTransform;
+    [SerializeField] private TextMeshProUGUI currentBugTooltipTitle;
+    [SerializeField] private TextMeshProUGUI currentBugTooltipDescription;
     [SerializeField] private GameObject nextButton;
 
     // UI Elements - Knockout
@@ -79,6 +82,7 @@ public class UIHandler : MonoBehaviour
     {
         SetRoundLabel();
         SetFutureThreshold();
+        SetLastRoundScore();
         
     
         await RenderState(UIState.Placing, HideNextButton());
@@ -107,6 +111,11 @@ public class UIHandler : MonoBehaviour
     public void SetRoundLabel()
     {
         roundLabel.text = "Round " + GameHandler.Round;
+    }
+
+    public void SetLastRoundScore()
+    {
+        lastRoundScore.text = GameHandler.LastRoundScore + " points last round";
     }
 
     // Future Threshold
@@ -174,13 +183,24 @@ public class UIHandler : MonoBehaviour
         roundScoreNumberKnockout.text = GameHandler.RoundScore + "";
         thresholdLabel.text = GameHandler.ScoreThreshold + "";
     }
-    public void ClearCurrentBugTooltip()
-    {
-        currentBugTooltip.text = "";
-    }
+
+    // public void ClearCurrentBugTooltip()
+    // {
+    //     currentBugTooltipTitle.text = "";
+    // }
+
     public void SetCurrentBugTooltip(Bug.BugInfo bugInfo)
     {
-        currentBugTooltip.text = bugInfo.name + "\n[" + bugInfo.baseScore + "] " + bugInfo.tooltip;
+        currentBugTooltipTitle.text = bugInfo.name;
+        currentBugTooltipDescription.text = "[Base " + bugInfo.baseScore + (bugInfo.baseScore == 1 ? " point] " : " points] ") + bugInfo.tooltip;
+        currentBugTooltipDescription.ForceMeshUpdate(true);
+        int lineCount = currentBugTooltipDescription.textInfo.lineCount;
+        tooltipRectTransform.sizeDelta = new Vector2(tooltipRectTransform.sizeDelta.x, 25 + (lineCount * 8));
+    }
+
+    public async Task HideCurrentBugTooltip()
+    {
+        await tooltipRectTransform.gameObject.GetComponent<UIAnimatable>().Hide();
     }
 
     // -- INSTANTIATE WORLD SPACE UI --

@@ -45,6 +45,8 @@ public abstract class Bug : MonoBehaviour
     private static readonly int FlashColorID = Shader.PropertyToID("_FlashColor");
     private static readonly int FlashIntensityID = Shader.PropertyToID("_FlashIntensity");
     private CancellationTokenSource _flashCTS;
+    private Task _flashTask;
+    private Task _lerpTask;
 
     public void Awake()
     {
@@ -134,12 +136,20 @@ public abstract class Bug : MonoBehaviour
         tZap.end = (Vector2) center.position;
         tZap.timeToLive = isPrimary? 0.6f * GameHandler.GameSpeed : 0.4f * GameHandler.GameSpeed;
         tZap.Init();
+        GameObject particle = Instantiate(GameHandler.GetResource("Prefabs/ScoreParticle") as GameObject);
+        particle.transform.position = center.position;
+        ParticleSystem ps = particle.GetComponent<ParticleSystem>();
+        var main = ps.main;
+        main.startColor = zapColor;
+
         _flashCTS?.Cancel();
         _flashCTS = new CancellationTokenSource();
-        _ = Flash(isPrimary ? GameHandler.PRIMARY_COLOR : GameHandler.SECONDARY_COLOR, 0.3f, isPrimary, _flashCTS.Token);
+        _flashTask = Flash(isPrimary ? GameHandler.PRIMARY_COLOR : GameHandler.SECONDARY_COLOR, 0.2f, 0.1f, isPrimary, _flashCTS.Token);
+
         await this.Score(isPrimary);
         _flashCTS.Cancel();
-        _ = LerpIntensityToZero(0.2f);
+
+        _lerpTask = LerpIntensityToZero(0.2f);
         if (isPrimary) {
             Bug[] closest = GetClosestBugs();
             if (closest.Length > 0) {
@@ -157,6 +167,20 @@ public abstract class Bug : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+
+    public async Task Hover(bool on)
+    {
+        if (_flashTask != null && !_flashTask.IsCompleted)
+            await _flashTask;
+        if (_lerpTask != null && !_lerpTask.IsCompleted)
+            await _lerpTask;
+
+        for (int i = 0; i < materials.Length; i++)
+        {
+            materials[i].SetColor(FlashColorID, Color.white);
+            materials[i].SetFloat(FlashIntensityID, on? 0.3f : 0f);
         }
     }
 
@@ -271,12 +295,20 @@ public abstract class Bug : MonoBehaviour
         return GameHandler.AllBugs.OrderBy(x => (x.center.position - center.position).magnitude).ToArray();
     }
 
-    private async Task Flash(Color flashColor, float flashDuration, bool myTurn, CancellationToken ct = default)
+    private async Task Flash(Color flashColor, float holdDuration, float flashDuration, bool myTurn, CancellationToken ct = default)
     {
         foreach(Material mat in materials)
         {
             mat.SetColor(FlashColorID, flashColor);
             mat.SetFloat(FlashIntensityID, 1f);
+        }
+
+        float holdElapsed = 0f;
+        while (holdElapsed < holdDuration)
+        {
+            if (ct.IsCancellationRequested) return;
+            holdElapsed += Time.deltaTime;
+            await Task.Yield();
         }
         
         float elapsed = 0f;
