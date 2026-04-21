@@ -49,7 +49,7 @@ public class GameHandler : MonoBehaviour
     public static PlayState GameState;
     public static int Round; // starts at 1
     public static Phase CurrentPhase;
-    public static int RoundScore;
+    public static float RoundScore;
     public static int ScoreThreshold;
     public static bool IsKnockout;
     public static bool FastForward;
