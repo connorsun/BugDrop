@@ -1,5 +1,5 @@
 using UnityEngine;
-public abstract class KnockoutProgressBar : MonoBehaviour
+public class KnockoutProgressBar : MonoBehaviour
 {
     private Vector3 startingPos;
     private float loadingBarLength;

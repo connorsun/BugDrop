@@ -34,7 +34,7 @@ public class Ant : Bug
         return this.baseScore;
     }
 
-    protected override async Task Score(bool isPrimary)
+    protected override async Task Score(bool isPrimary, int recursiveSecondaries)
     {
         ScorePoints(CalculateOverallScore(), isPrimary);
     }

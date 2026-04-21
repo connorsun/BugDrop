@@ -38,7 +38,7 @@ public class Cockroach : Bug
         return totalScore;
     }
 
-    protected override async Task Score(bool isPrimary)
+    protected override async Task Score(bool isPrimary, int recursiveSecondaries)
     {
         ScorePoints(CalculateOverallScore(), isPrimary);
     }

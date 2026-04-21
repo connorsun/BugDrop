@@ -49,7 +49,7 @@ public class Mosquito : Bug
     //     await Task.Yield();
     // }
 
-    protected override async Task Score(bool isPrimary)
+    protected override async Task Score(bool isPrimary, int recursiveSecondaries)
     {
         ScorePoints(CalculateOverallScore(), isPrimary);
     }

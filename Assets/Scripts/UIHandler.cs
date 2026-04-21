@@ -102,6 +102,7 @@ public class UIHandler : MonoBehaviour
 
     public async Task EnterLosingState()
     {
+        UpdateLoseState();
         await RenderState(UIState.Lose, HideNextButton());
     }
 
@@ -184,10 +185,12 @@ public class UIHandler : MonoBehaviour
         thresholdLabel.text = GameHandler.ScoreThreshold + "";
     }
 
-    // public void ClearCurrentBugTooltip()
-    // {
-    //     currentBugTooltipTitle.text = "";
-    // }
+    // Lose UI
+    public void UpdateLoseState()
+    {
+        roundLabelLosing.text = "Round " + GameHandler.Round;
+        scoreDifference.text = "Score: " + GameHandler.RoundScore + " Needed: " + GameHandler.ScoreThreshold;
+    }
 
     public void SetCurrentBugTooltip(Bug.BugInfo bugInfo)
     {

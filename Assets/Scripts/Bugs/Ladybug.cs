@@ -26,7 +26,7 @@ public class Ladybug : Bug
         return this.baseScore + (int)(((Vector2)this.center.position - (Vector2)GameHandler.ZapperPos).magnitude / 4f);
     }
 
-    protected override async Task Score(bool isPrimary)
+    protected override async Task Score(bool isPrimary, int recursiveSecondaries)
     {
         ScorePoints(CalculateOverallScore(), isPrimary);
     }

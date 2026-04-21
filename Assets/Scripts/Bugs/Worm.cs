@@ -39,7 +39,7 @@ public class Worm : Bug
         // return totalScore;
     }
 
-    protected override async Task Score(bool isPrimary)
+    protected override async Task Score(bool isPrimary, int recursiveSecondaries)
     {
 
         ScorePoints(CalculateOverallScore(), isPrimary);
@@ -52,7 +52,7 @@ public class Worm : Bug
             Bug otherBug = contact.collider?.gameObject?.GetComponentInParent<Bug>();
             if (otherBug != null && !otherBug.secondaryTriggered)
             {
-                bugsToTrigger.Add(otherBug.Trigger(false, this.center.position));
+                bugsToTrigger.Add(otherBug.Trigger(false, this.center.position, recursiveSecondaries + 1));
             }
         }
         await Task.WhenAll(bugsToTrigger);

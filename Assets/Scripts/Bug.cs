@@ -104,7 +104,7 @@ public abstract class Bug : MonoBehaviour
 
     // Triggers this bug, resulting in the bug being scored. This sets it to this bug's
     // turn if it's a primary trigger.
-    public virtual async Task Trigger(bool isPrimary, Vector3 prevPos)
+    public virtual async Task Trigger(bool isPrimary, Vector3 prevPos, int recursiveSecondaries)
     {
         if (isPrimary)
         {
@@ -125,7 +125,8 @@ public abstract class Bug : MonoBehaviour
                 return;
             }
             this.secondaryTriggered = true;
-            await Task.Delay(TimeSpan.FromSeconds(0.4f * GameHandler.GameSpeed));
+            // print ("delay reduction: " + (-0.5f * Mathf.Atan(recursiveSecondaries - 1) + 1));
+            await Task.Delay(TimeSpan.FromSeconds(0.4f * GameHandler.GameSpeed * (-0.5f * Mathf.Atan(recursiveSecondaries - 1) + 1)));
         }
         GameObject zap = Instantiate(GameHandler.GetResource("Prefabs/TriggerZap") as GameObject);
         Color zapColor = isPrimary? GameHandler.PRIMARY_COLOR : GameHandler.SECONDARY_COLOR;
@@ -146,7 +147,7 @@ public abstract class Bug : MonoBehaviour
         _flashCTS = new CancellationTokenSource();
         _flashTask = Flash(isPrimary ? GameHandler.PRIMARY_COLOR : GameHandler.SECONDARY_COLOR, 0.2f, 0.1f, isPrimary, _flashCTS.Token);
 
-        await this.Score(isPrimary);
+        await this.Score(isPrimary, recursiveSecondaries);
         _flashCTS.Cancel();
 
         _lerpTask = LerpIntensityToZero(0.2f);
@@ -160,7 +161,7 @@ public abstract class Bug : MonoBehaviour
                     {
                         if (!bug.primaryTriggered)
                         {
-                            await bug.Trigger(true, center.position);
+                            await bug.Trigger(true, center.position, 0);
                             
                             return;
                         }
@@ -223,7 +224,7 @@ public abstract class Bug : MonoBehaviour
     // --- PRIVATE METHODS ---
 
     // Scores this bug. Runs all operations for scoring this bug's turn before returning.
-    protected abstract Task Score(bool isPrimary);
+    protected abstract Task Score(bool isPrimary, int recursiveSecondaries);
 
 
     // Scores a specific number of points for this round.

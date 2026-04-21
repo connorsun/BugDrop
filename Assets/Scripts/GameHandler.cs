@@ -34,8 +34,8 @@ public class GameHandler : MonoBehaviour
     public static Bug[] AllBugs;
     public const int KNOCKOUT_ROUNDS = 3;
     private float[] rarityChances = {0.8f, 0.2f};
-    public const int THRESHOLD_BASE = 1;
-    public const float THRESHOLD_SCALE = 1.1f;
+    public const int THRESHOLD_BASE = 6;
+    public const float THRESHOLD_SCALE = 1.6f;
     private const string BUG_PATH = "Prefabs/Bugs";
     public const float FAST_GAME_SPEED = 0.2f;
     private const float DROP_Y = 6.3f;
@@ -49,8 +49,8 @@ public class GameHandler : MonoBehaviour
     public static PlayState GameState;
     public static int Round; // starts at 1
     public static Phase CurrentPhase;
-    public static int RoundScore;
-    public static int LastRoundScore;
+    public static float RoundScore;
+    public static float LastRoundScore;
     public static int ScoreThreshold;
     public static bool IsKnockout;
     public static bool FastForward;
@@ -103,6 +103,11 @@ public class GameHandler : MonoBehaviour
     // Initiates the placing phase for a round
     public async Task StartPlacing()
     {
+        if (IsKnockout && Round > 0)
+        {
+            // set up for next knockout round
+            ScoreThreshold = (int)(ScoreThreshold * THRESHOLD_SCALE);
+        }
         BroadcastToBugs((Bug bug) => bug.Reset());
         Round++;
         CurrentPhase = Phase.Placing;
@@ -122,7 +127,10 @@ public class GameHandler : MonoBehaviour
         AllBugs = FindObjectsByType<Bug>(FindObjectsSortMode.None);
 
         // 1 - 0.6/(1+e^(4-0.4x))
-        DefaultGameSpeed = 1 - 0.6f / (1 + Mathf.Exp(4 - AllBugs.Length * 0.2f));
+        // DefaultGameSpeed = 1 - 0.6f / (1 + Mathf.Exp(4 - AllBugs.Length * 0.2f));
+        // 1 - 0.5arctan(x/10)
+        DefaultGameSpeed = 1 - Mathf.Atan(AllBugs.Length/10f)/2f;
+        // print("Game Speed: " + DefaultGameSpeed);
         placingBug.GetComponent<Bug>().SetSimulated(false);
         float safeWidth = EDGE_X - selectedBug.safeHorizRadius;
         this.trackingBug = true;
@@ -183,7 +191,7 @@ public class GameHandler : MonoBehaviour
         Bug[] sortedBugs = GetClosestBugs();
         if (sortedBugs.Length > 0)
         {
-            await sortedBugs[0].Trigger(true, ZapperPos);
+            await sortedBugs[0].Trigger(true, ZapperPos, 0);
         }
         float timestamp = Time.unscaledTime;
         while (Time.unscaledTime < timestamp + 0.5f)
@@ -197,11 +205,6 @@ public class GameHandler : MonoBehaviour
             return;
         }
         await this.uiHandler.ShowNextButton();
-        if (IsKnockout)
-        {
-            // set up for next knockout round
-            ScoreThreshold = (int)(ScoreThreshold * THRESHOLD_SCALE);
-        }
     }
 
 

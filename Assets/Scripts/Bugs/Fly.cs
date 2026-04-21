@@ -34,7 +34,7 @@ public class Fly : Bug
         return this.baseScore + 2;
     }
 
-    protected override async Task Score(bool isPrimary)
+    protected override async Task Score(bool isPrimary, int recursiveSecondaries)
     {
         // if not touching ground
         ScorePoints(CalculateOverallScore(), isPrimary);
