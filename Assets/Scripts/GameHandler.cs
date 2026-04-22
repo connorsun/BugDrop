@@ -28,6 +28,7 @@ public class GameHandler : MonoBehaviour
     public static GameHandler SingletonGameHandler;
     public static UIHandler SingletonUIHandler;
     public static AudioSource SingletonSFXSource;
+    public static GameObject SingletonCircleIndicator;
     public static Bug.BugInfo[] BugTypes;
     public static Dictionary<int, List<Bug.BugInfo>> BugRarityTypes = new Dictionary<int, List<Bug.BugInfo>>();
     public static Dictionary<string, GameObject> LoadedResources = new Dictionary<string, GameObject>();
@@ -90,6 +91,7 @@ public class GameHandler : MonoBehaviour
         SingletonGameHandler = this;
         SingletonUIHandler = uiHandler;
         SingletonSFXSource = audioSource;
+        SingletonCircleIndicator = GameObject.Find("CircleIndicator");
         InitializeBugTypes();
         GameState = PlayState.Playing;
         Round = 0;

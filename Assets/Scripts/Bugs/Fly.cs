@@ -21,7 +21,7 @@ public class Fly : Bug
         base.Start();
     }
 
-    public override int CalculateOverallScore()
+    public override float CalculateOverallScore()
     {
         ContactPoint2D[] contacts = this.GetContacts();
         foreach (ContactPoint2D contact in contacts)
@@ -31,7 +31,7 @@ public class Fly : Bug
                 return this.baseScore;
             }
         }
-        return this.baseScore + 2;
+        return (this.baseScore + 2) * this.multiplier;
     }
 
     protected override async Task Score(bool isPrimary, int recursiveSecondaries)

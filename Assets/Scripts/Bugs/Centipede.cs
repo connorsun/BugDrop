@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System;
 
 
-public class Worm : Bug
+public class Centipede : Bug
 {
     // --- CONSTANTS ---
     // --- OBJECT REFERENCES --- 
@@ -13,7 +13,7 @@ public class Worm : Bug
     // Gets metadata about this bug type
     public static BugInfo GetInfo()
     {
-        return new BugInfo("Worm", 3, 0, 3f, 0.5f, "Retriggers all adjacent bugs");
+        return new BugInfo("Centipede", 4, 0, 12f, 0.5f, "Retriggers all adjacent bugs");
     }
 
     // --- PUBLIC METHODS ---

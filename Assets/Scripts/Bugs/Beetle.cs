@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Threading.Tasks;
 
 
-public class Ladybug : Bug
+public class Beetle : Bug
 {
     // --- CONSTANTS ---
     // --- OBJECT REFERENCES --- 
@@ -11,7 +11,7 @@ public class Ladybug : Bug
     // Gets metadata about this bug type
     public static BugInfo GetInfo()
     {
-        return new BugInfo("Ladybug", 1, 1, 1.5f, 0.5f, "+1 additional point for every 4 cm away from the lightning rod");
+        return new BugInfo("Beetle", 1, 12, 5f, 0.5f, "");
     }
 
     // --- PUBLIC METHODS ---
@@ -23,7 +23,7 @@ public class Ladybug : Bug
 
     public override float CalculateOverallScore()
     {
-        return (this.baseScore + (int)(((Vector2)this.center.position - (Vector2)GameHandler.ZapperPos).magnitude / 4f)) * this.multiplier;
+        return this.baseScore * this.multiplier;
     }
 
     protected override async Task Score(bool isPrimary, int recursiveSecondaries)

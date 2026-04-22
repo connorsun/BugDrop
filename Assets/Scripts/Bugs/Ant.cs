@@ -21,7 +21,7 @@ public class Ant : Bug
         base.Start();
     }
 
-    public override int CalculateOverallScore()
+    public override float CalculateOverallScore()
     {
         ContactPoint2D[] contacts = this.GetContacts();
         foreach (ContactPoint2D contact in contacts)
@@ -31,7 +31,7 @@ public class Ant : Bug
                 return this.baseScore + 4;
             }
         }
-        return this.baseScore;
+        return this.baseScore * this.multiplier;
     }
 
     protected override async Task Score(bool isPrimary, int recursiveSecondaries)

@@ -196,14 +196,14 @@ public class UIHandler : MonoBehaviour
     public void UpdateScoreState()
     {
         StopAllCoroutines();
-        StartCoroutine(LerpScore(GameHandler.RoundScore));
+        StartCoroutine(LerpScore((int)GameHandler.RoundScore));
     }
 
     public void SetScoreState()
     {
-        lerpScore = GameHandler.RoundScore;
-        roundScoreNumber.text = GameHandler.RoundScore + "";
-        roundScoreNumberKnockout.text = GameHandler.RoundScore + "";
+        lerpScore = (int)GameHandler.RoundScore;
+        roundScoreNumber.text = (int)GameHandler.RoundScore + "";
+        roundScoreNumberKnockout.text = (int)GameHandler.RoundScore + "";
         thresholdLabel.text = GameHandler.ScoreThreshold + "";
     }
 
@@ -211,7 +211,7 @@ public class UIHandler : MonoBehaviour
     public void UpdateLoseState()
     {
         roundLabelLosing.text = "Round " + GameHandler.Round;
-        scoreDifference.text = "Score: " + GameHandler.RoundScore + " Needed: " + GameHandler.ScoreThreshold;
+        scoreDifference.text = "Score: " + (int)GameHandler.RoundScore + " Needed: " + GameHandler.ScoreThreshold;
     }
 
     public void SetCurrentBugTooltip(Bug.BugInfo bugInfo)
