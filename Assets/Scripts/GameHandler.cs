@@ -24,6 +24,7 @@ public class GameHandler : MonoBehaviour
     public delegate void BugAction(Bug bug);
     
     // --- CONSTANTS ---
+    public const bool BUILD_FLAG = false;
     public static GameHandler SingletonGameHandler;
     public static UIHandler SingletonUIHandler;
     public static AudioSource SingletonSFXSource;
@@ -212,30 +213,32 @@ public class GameHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Keyboard.current.spaceKey.wasPressedThisFrame && this.trackingBug && this.placingBug != null)
-        {
-            // cycle bug
-            foreach (int rarity in BugRarityTypes.Keys)
+        if (!BUILD_FLAG) {
+            if (Keyboard.current.spaceKey.wasPressedThisFrame && this.trackingBug && this.placingBug != null)
             {
-                int index = BugRarityTypes[rarity].IndexOf(this.selectedBug);
-                if (index != -1)
+                // cycle bug
+                foreach (int rarity in BugRarityTypes.Keys)
                 {
-                    this.placingBug.GetComponent<Bug>().Destroy();
-                    if (index == BugRarityTypes[rarity].Count - 1)
+                    int index = BugRarityTypes[rarity].IndexOf(this.selectedBug);
+                    if (index != -1)
                     {
-                        this.selectedBug = BugRarityTypes[rarity % BugRarityTypes.Keys.Count + 1][0];
-                    } else
-                    {
-                        this.selectedBug = BugRarityTypes[rarity][index + 1];
+                        this.placingBug.GetComponent<Bug>().Destroy();
+                        if (index == BugRarityTypes[rarity].Count - 1)
+                        {
+                            this.selectedBug = BugRarityTypes[rarity % BugRarityTypes.Keys.Count + 1][0];
+                        } else
+                        {
+                            this.selectedBug = BugRarityTypes[rarity][index + 1];
+                        }
+                        this.placingBug = Instantiate(GetResource(BUG_PATH + "/" + this.selectedBug.name) as GameObject);
+                        this.placingBug.transform.localScale = new Vector3(UnityEngine.Random.value > 0.5f ? -1 : 1, 
+                        this.placingBug.transform.localScale.y, this.placingBug.transform.localScale.z);
+                        AllBugs = FindObjectsByType<Bug>(FindObjectsSortMode.None);
+                        placingBug.GetComponent<Bug>().SetSimulated(false);
+                        float safeWidth = EDGE_X - this.selectedBug.safeHorizRadius;
+                        this.uiHandler.SetCurrentBugTooltip(this.selectedBug);
+                        break;
                     }
-                    this.placingBug = Instantiate(GetResource(BUG_PATH + "/" + this.selectedBug.name) as GameObject);
-                    this.placingBug.transform.localScale = new Vector3(UnityEngine.Random.value > 0.5f ? -1 : 1, 
-                    this.placingBug.transform.localScale.y, this.placingBug.transform.localScale.z);
-                    AllBugs = FindObjectsByType<Bug>(FindObjectsSortMode.None);
-                    placingBug.GetComponent<Bug>().SetSimulated(false);
-                    float safeWidth = EDGE_X - this.selectedBug.safeHorizRadius;
-                    this.uiHandler.SetCurrentBugTooltip(this.selectedBug);
-                    break;
                 }
             }
         }
