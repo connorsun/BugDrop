@@ -48,6 +48,7 @@ public abstract class Bug : MonoBehaviour
     private Collider2D[] colliders;
     private Rigidbody2D[] rigidbodies;
     private Material[] materials;
+    private List<Bug> initiatorsThisRound = new List<Bug>();
 
     private static readonly int FlashColorID = Shader.PropertyToID("_FlashColor");
     private static readonly int FlashIntensityID = Shader.PropertyToID("_FlashIntensity");
@@ -92,6 +93,7 @@ public abstract class Bug : MonoBehaviour
         this.baseScore = this.thisBugInfo.baseScore;
         this.multiplier = 1f;
         this.effects.Clear();
+        this.initiatorsThisRound.Clear();
     }
     
     // Reset round state on the start of a scoring round
@@ -111,6 +113,7 @@ public abstract class Bug : MonoBehaviour
         this.baseScore = this.thisBugInfo.baseScore;
         this.multiplier = 1f;
         this.effects.Clear();
+        this.initiatorsThisRound.Clear();
     }
 
     // Triggers this bug, resulting in the bug being scored. This sets it to this bug's
@@ -227,6 +230,17 @@ public abstract class Bug : MonoBehaviour
     public virtual void Destroy()
     {
         DestroyImmediate(gameObject);
+    }
+
+    // Determines the overall final score for this bug without performing any triggering logic.
+    public virtual float CalculateOverallScore(Bug initiator)
+    {
+        if (initiatorsThisRound.Contains(initiator))
+        {
+            return 0;
+        }
+        initiatorsThisRound.Add(initiator);
+        return CalculateOverallScore();
     }
 
     // Determines the overall final score for this bug without performing any triggering logic.

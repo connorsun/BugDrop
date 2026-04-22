@@ -81,6 +81,7 @@ public class GameHandler : MonoBehaviour
         this.controls.Player.Enable();
         GameSpeed = 1;
         FastForward = false;
+        InitializeBugTypes();
         Init();
     }
 
@@ -93,7 +94,6 @@ public class GameHandler : MonoBehaviour
         SingletonUIHandler = uiHandler;
         SingletonSFXSource = audioSource;
         SingletonCircleIndicator = circleIndicator;
-        InitializeBugTypes();
         GameState = PlayState.Playing;
         Round = 0;
         ScoreThreshold = THRESHOLD_BASE;

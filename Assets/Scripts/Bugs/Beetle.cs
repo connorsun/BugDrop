@@ -11,7 +11,7 @@ public class Beetle : Bug
     // Gets metadata about this bug type
     public static BugInfo GetInfo()
     {
-        return new BugInfo("Beetle", 1, 12, 5f, 0.5f, "");
+        return new BugInfo("Beetle", 2, 12, 5f, 0.5f, "");
     }
 
     // --- PUBLIC METHODS ---
