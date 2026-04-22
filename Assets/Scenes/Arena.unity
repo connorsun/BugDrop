@@ -1514,9 +1514,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0.7910112
-    width: 0.6295828
-    height: 0.62949437
+    y: 0
+    width: 1
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -7133,6 +7133,7 @@ MonoBehaviour:
   currentBugTooltipTitle: {fileID: 17727626}
   currentBugTooltipDescription: {fileID: 1650093958}
   nextButton: {fileID: 1243798480}
+  modeButtons: {fileID: 1208960417}
   roundScoreNumberKnockout: {fileID: 814544687}
   thresholdLabel: {fileID: 2006292881}
   fastForward: {fileID: 130837666}
