@@ -226,6 +226,7 @@ public class UIHandler : MonoBehaviour
     public async Task HideCurrentBugTooltip()
     {
         await tooltipRectTransform.gameObject.GetComponent<UIAnimatable>().Hide();
+        print("what the blug");
     }
 
     // -- INSTANTIATE WORLD SPACE UI --

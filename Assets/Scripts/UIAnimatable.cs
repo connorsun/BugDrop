@@ -48,7 +48,7 @@ public class UIAnimatable : MonoBehaviour
     {
         cg = GetComponent<CanvasGroup>();
         rt = GetComponent<RectTransform>();
-        if (hasOriginalPosition)
+        if (!hasOriginalPosition)
         {
             originalPosition = rt.anchoredPosition;
         }
