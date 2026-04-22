@@ -18,7 +18,7 @@ public abstract class Bug : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     // --- CONSTANTS ---
     private const int CONTACT_ARRAY_SIZE = 10;
-    private const float STATIONARY_MAG_THRESHOLD = 0.15f;
+    private const float STATIONARY_MAG_THRESHOLD = 0.25f;
     private const int STATIONARY_FRAMES_THRESHOLD = 15;
 
     // Recursive secondary triggering - if we want retriggers to be really strong
