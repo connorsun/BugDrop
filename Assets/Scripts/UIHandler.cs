@@ -19,7 +19,8 @@ public class UIHandler : MonoBehaviour
         Scoring,
         ScoringKnockout,
         Lose,
-        None
+        None,
+        Title
     }
 
     // --- OBJECT REFERENCES ---
@@ -41,6 +42,7 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private TextMeshProUGUI currentBugTooltipTitle;
     [SerializeField] private TextMeshProUGUI currentBugTooltipDescription;
     [SerializeField] private GameObject nextButton;
+    [SerializeField] private GameObject modeButtons;
 
     // UI Elements - Knockout
     [SerializeField] private TextMeshProUGUI roundScoreNumberKnockout;
@@ -63,6 +65,7 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private UIAnimatable[] scoringElements;
     [SerializeField] private UIAnimatable[] scoringKnockoutElements;
     [SerializeField] private UIAnimatable[] loseElements;
+    [SerializeField] private UIAnimatable[] titleElements;
 
     private UIState uiState = UIState.None;
     private float lerpScore;
@@ -71,7 +74,7 @@ public class UIHandler : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Start()
     {
-        Init();
+        //Init();
     }
 
     public void Init()
@@ -111,6 +114,11 @@ public class UIHandler : MonoBehaviour
     {
         UpdateLoseState();
         await RenderState(UIState.Lose, HideNextButton());
+    }
+
+    public async Task EnterTitleScreen()
+    {
+        await RenderState(UIState.Title);
     }
 
     // -- SETTERS/LOGIC FOR INDIVIDUAL ELEMENTS --
@@ -226,7 +234,11 @@ public class UIHandler : MonoBehaviour
     public async Task HideCurrentBugTooltip()
     {
         await tooltipRectTransform.gameObject.GetComponent<UIAnimatable>().Hide();
-        print("what the blug");
+    }
+
+    public async Task HideModeButtons()
+    {
+        await modeButtons.GetComponent<UIAnimatable>().Hide();
     }
 
     // -- INSTANTIATE WORLD SPACE UI --
@@ -314,6 +326,8 @@ public class UIHandler : MonoBehaviour
                 return scoringKnockoutElements;
             case UIState.Lose:
                 return loseElements;
+            case UIState.Title:
+                return titleElements;
             default:
                 return new UIAnimatable[0];
         }

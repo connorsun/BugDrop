@@ -84,12 +84,12 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 6441044220533707294, guid: d7be919a9cff444059dec33e7169ed75, type: 3}
+  m_Sprite: {fileID: -7335345776834287784, guid: 18fc262735f27412b8667d0d29a7a1db, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -156,7 +156,7 @@ CapsuleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0.08, y: -0.08}
-  m_Size: {x: 1.2, y: 0.75}
+  m_Size: {x: 1.1, y: 0.75}
   m_Direction: 1
 --- !u!114 &7411082326114533740
 MonoBehaviour:
@@ -173,6 +173,8 @@ MonoBehaviour:
   primaryTriggered: 0
   secondaryTriggered: 0
   baseScore: 0
+  multiplier: 0
+  effects: 
   center: {fileID: 850153518807848515}
   segments:
   - {fileID: 6312744160267363254}
