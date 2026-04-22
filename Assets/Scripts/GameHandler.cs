@@ -35,7 +35,7 @@ public class GameHandler : MonoBehaviour
     public static Dictionary<string, Sound> LoadedSounds = new Dictionary<string, Sound>();
     public static Bug[] AllBugs;
     public const int KNOCKOUT_ROUNDS = 3;
-    private float[] rarityChances = {0.8f, 0.2f};
+    private float[] rarityChances = {0.33f, 0.33f, 0.32f, 0.02f};
     public const int THRESHOLD_BASE = 6;
     public const float THRESHOLD_SCALE = 1.6f;
     private const string BUG_PATH = "Prefabs/Bugs";

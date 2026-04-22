@@ -1172,7 +1172,7 @@ GameObject:
   - component: {fileID: 464598679}
   - component: {fileID: 464598678}
   m_Layer: 0
-  m_Name: Circle
+  m_Name: CircleIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1513,10 +1513,10 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.71681416
+    x: 0
     y: 0
-    width: 1.2406237
-    height: 1.2404494
+    width: 1
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
