@@ -15,6 +15,11 @@ public abstract class Bug : MonoBehaviour
 
     // All Bug subclasses must implement the GetInfo static method to return their BugInfo!
     public record BugInfo(string name, int rarity, int baseScore, float safeHorizRadius, float safeVertRadius, string tooltip);
+
+    public enum Effect
+    {
+        Honeyed,
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     // --- CONSTANTS ---
     private const int CONTACT_ARRAY_SIZE = 10;
@@ -28,6 +33,8 @@ public abstract class Bug : MonoBehaviour
     public bool primaryTriggered;
     public bool secondaryTriggered;
     public int baseScore;
+    public float multiplier;
+    public List<Effect> effects = new List<Effect>();
     // --- PRIVATE STATE ---
 
     protected bool isActive;
@@ -83,6 +90,8 @@ public abstract class Bug : MonoBehaviour
     {
         this.stationaryFrames = 0;
         this.baseScore = this.thisBugInfo.baseScore;
+        this.multiplier = 1f;
+        this.effects.Clear();
     }
     
     // Reset round state on the start of a scoring round
@@ -100,6 +109,8 @@ public abstract class Bug : MonoBehaviour
         this.secondaryTriggered = false;
         this.stationaryFrames = 0;
         this.baseScore = this.thisBugInfo.baseScore;
+        this.multiplier = 1f;
+        this.effects.Clear();
     }
 
     // Triggers this bug, resulting in the bug being scored. This sets it to this bug's
@@ -219,7 +230,7 @@ public abstract class Bug : MonoBehaviour
     }
 
     // Determines the overall final score for this bug without performing any triggering logic.
-    public abstract int CalculateOverallScore();
+    public abstract float CalculateOverallScore();
 
     // --- PRIVATE METHODS ---
 
@@ -228,7 +239,7 @@ public abstract class Bug : MonoBehaviour
 
 
     // Scores a specific number of points for this round.
-    protected void ScorePoints(int score, bool isPrimary)
+    protected void ScorePoints(float score, bool isPrimary)
     {
         GameHandler.RoundScore += score;
         GameHandler.SingletonUIHandler.UpdateScoreState();
@@ -237,7 +248,7 @@ public abstract class Bug : MonoBehaviour
                     new Vector3(0.5f, 0.5f) +
                     //new Vector3(this.thisBugInfo.safeHorizRadius / 2f, this.thisBugInfo.safeVertRadius) +
                     new Vector3(UnityEngine.Random.Range(-0.1f, 0.1f), UnityEngine.Random.Range(-0.1f, 0.1f), 0f),
-            score, isPrimary);
+            (int)score, isPrimary);
         GameHandler.PlaySound("TextboxSkip");
     }
 

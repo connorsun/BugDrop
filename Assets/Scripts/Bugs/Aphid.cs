@@ -25,9 +25,9 @@ public class Aphid : Bug
         base.Start();
     }
     
-    public override int CalculateOverallScore()
+    public override float CalculateOverallScore()
     {
-        return this.baseScore;
+        return this.baseScore * this.multiplier;
     }
 
     protected override async Task Score(bool isPrimary, int recursiveSecondaries)
@@ -37,10 +37,10 @@ public class Aphid : Bug
 
         // Find bugs to retrigger
         List<Collider2D> overlapColliders = new List<Collider2D>();
-        Physics2D.OverlapCircle(transform.position, DETECTION_RADIUS, ContactFilter2D.noFilter, overlapColliders);
-        List<Collider2D> filteredBugs = overlapColliders.Where(bug => (transform.position - bug.transform.position).magnitude < DETECTION_RADIUS && 
-            bug.gameObject?.GetComponentInParent<Bug>() != null).ToList();
-        filteredBugs.Sort((Collider2D bug1, Collider2D bug2) => (int)Mathf.Sign((transform.position - bug1.transform.position).magnitude - (transform.position - bug2.transform.position).magnitude));
+        Physics2D.OverlapCircle(this.center.position, DETECTION_RADIUS, ContactFilter2D.noFilter, overlapColliders);
+        List<Collider2D> filteredBugs = overlapColliders.Where(bug => bug.gameObject?.GetComponentInParent<Bug>() != null && (this.center.position - bug.gameObject.GetComponentInParent<Bug>().center.position).magnitude < DETECTION_RADIUS
+            ).ToList();
+        filteredBugs.Sort((Collider2D bug1, Collider2D bug2) => (int)Mathf.Sign((this.center.position - bug1.gameObject.GetComponentInParent<Bug>().center.position).magnitude - (this.center.position - bug2.gameObject.GetComponentInParent<Bug>().center.position).magnitude));
 
         // Retrigger logic
         List<Task> bugTasksToTrigger = new List<Task>();

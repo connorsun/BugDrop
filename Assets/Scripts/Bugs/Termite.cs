@@ -21,10 +21,10 @@ public class Termite : Bug
         base.Start();
     }
 
-    public override int CalculateOverallScore()
+    public override float CalculateOverallScore()
     {
         Termite[] termites = FindObjectsByType<Termite>();
-        return this.baseScore + (termites.Length - 1);
+        return (this.baseScore + (termites.Length - 1)) * this.multiplier;
     }
 
     protected override async Task Score(bool isPrimary, int recursiveSecondaries)

@@ -23,7 +23,7 @@ public class Cockroach : Bug
         base.Start();
     }
 
-    public override int CalculateOverallScore()
+    public override float CalculateOverallScore()
     {
         ContactPoint2D[] contacts = this.GetContacts();
         int totalScore = this.baseScore;
@@ -35,7 +35,7 @@ public class Cockroach : Bug
                 totalScore += 2;
             }
         }
-        return totalScore;
+        return totalScore * this.multiplier;
     }
 
     protected override async Task Score(bool isPrimary, int recursiveSecondaries)

@@ -23,9 +23,9 @@ public class Worm : Bug
         base.Start();
     }
     
-    public override int CalculateOverallScore()
+    public override float CalculateOverallScore()
     {
-        return this.baseScore;
+        return this.baseScore * this.multiplier;
         // ContactPoint2D[] contacts = this.GetContacts();
         // int totalScore = this.baseScore;
         // foreach (ContactPoint2D contact in contacts)

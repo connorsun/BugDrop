@@ -21,9 +21,9 @@ public class Ladybug : Bug
         base.Start();
     }
 
-    public override int CalculateOverallScore()
+    public override float CalculateOverallScore()
     {
-        return this.baseScore + (int)(((Vector2)this.center.position - (Vector2)GameHandler.ZapperPos).magnitude / 4f);
+        return (this.baseScore + (int)(((Vector2)this.center.position - (Vector2)GameHandler.ZapperPos).magnitude / 4f)) * this.multiplier;
     }
 
     protected override async Task Score(bool isPrimary, int recursiveSecondaries)

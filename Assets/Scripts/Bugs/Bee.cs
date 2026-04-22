@@ -1,8 +1,9 @@
 using UnityEngine;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 
-public class Mosquito : Bug
+public class Bee : Bug
 {
     // --- CONSTANTS ---
     // --- OBJECT REFERENCES --- 
@@ -11,7 +12,7 @@ public class Mosquito : Bug
     // Gets metadata about this bug type
     public static BugInfo GetInfo()
     {
-        return new BugInfo("Mosquito", 1, 1, 1.5f, 0.5f, "-1 point from adjacent bugs' score, but +2 additional points to self for each adjacent bug");
+        return new BugInfo("Bee", 2, 3, 1.5f, 0.5f, "Honeys bug directly below, giving it x2 score");
     }
 
     // --- PUBLIC METHODS ---
@@ -29,25 +30,25 @@ public class Mosquito : Bug
     public override void StartScoring()
     {
         base.StartScoring();
-        ContactPoint2D[] contacts = this.GetContacts();
-        //print("reducing contacts" + contacts.Length);
-        foreach (ContactPoint2D contact in contacts)
+        List<RaycastHit2D> rayHits = new List<RaycastHit2D>();
+        Physics2D.Raycast(this.center.position, Vector2.down, ContactFilter2D.noFilter, rayHits);
+        foreach (RaycastHit2D rayHit in rayHits)
         {
-            Bug otherBug = contact.collider?.gameObject?.GetComponentInParent<Bug>();
+            Bug otherBug = rayHit.collider?.gameObject?.GetComponentInParent<Bug>();
             //print(otherBug);
-            if (otherBug != null)
+            if (otherBug != null && otherBug != this)
             {
-                otherBug.baseScore--;
-                this.baseScore += 2;
+                if (!otherBug.effects.Contains(Effect.Honeyed)) {
+                    otherBug.effects.Add(Effect.Honeyed);
+                    otherBug.multiplier *= 2;
+                }
+            }
+            if (otherBug != this)
+            {
+                break;
             }
         }
-        // _ = ReduceAdjacentBugScore();
     }
-
-    // private async Task ReduceAdjacentBugScore()
-    // {
-    //     await Task.Yield();
-    // }
 
     protected override async Task Score(bool isPrimary, int recursiveSecondaries)
     {
