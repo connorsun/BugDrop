@@ -38,7 +38,7 @@ public class Aphid : Bug
         // Find bugs to retrigger
         List<Collider2D> overlapColliders = new List<Collider2D>();
         Physics2D.OverlapCircle(this.center.position, DETECTION_RADIUS, ContactFilter2D.noFilter, overlapColliders);
-        List<Collider2D> filteredBugs = overlapColliders.Where(bug => bug.gameObject?.GetComponentInParent<Bug>() != null && (this.center.position - bug.gameObject.GetComponentInParent<Bug>().center.position).magnitude < DETECTION_RADIUS
+        List<Collider2D> filteredBugs = overlapColliders.Where(bug => bug.gameObject?.GetComponentInParent<Bug>() != null/* && (this.center.position - bug.gameObject.GetComponentInParent<Bug>().center.position).magnitude < DETECTION_RADIUS*/
             ).ToList();
         filteredBugs.Sort((Collider2D bug1, Collider2D bug2) => (int)Mathf.Sign((this.center.position - bug1.gameObject.GetComponentInParent<Bug>().center.position).magnitude - (this.center.position - bug2.gameObject.GetComponentInParent<Bug>().center.position).magnitude));
 
@@ -49,7 +49,7 @@ public class Aphid : Bug
         foreach (Collider2D bugCol in filteredBugs)
         {
             Bug otherBug = bugCol.gameObject?.GetComponentInParent<Bug>();
-            if (otherBug != null && !bugsToTrigger.Contains(otherBug) && !otherBug.secondaryTriggered)
+            if (otherBug != null && otherBug != this && !bugsToTrigger.Contains(otherBug) && !otherBug.secondaryTriggered)
             {
                 bugsToTrigger.Add(otherBug);
                 bugTasksToTrigger.Add(otherBug.Trigger(false, this.center.position, recursiveSecondaries + 1));
