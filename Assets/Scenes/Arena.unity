@@ -392,7 +392,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 16, y: -67}
+  m_AnchoredPosition: {x: 16, y: -48}
   m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &114537260
@@ -519,7 +519,7 @@ MonoBehaviour:
   slideOffset: {x: 0, y: -10}
   scaleFactor: 0.8
   hasOriginalPosition: 1
-  originalPosition: {x: 16, y: -67}
+  originalPosition: {x: 16, y: -48}
 --- !u!1 &130837666
 GameObject:
   m_ObjectHideFlags: 0
@@ -556,11 +556,11 @@ RectTransform:
   - {fileID: 574432783}
   m_Father: {fileID: 36460379}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -596, y: 15.999995}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 16, y: 15.999995}
   m_SizeDelta: {x: 32, y: 32}
-  m_Pivot: {x: 1, y: 0}
+  m_Pivot: {x: 0, y: 0}
 --- !u!114 &130837668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -582,7 +582,7 @@ MonoBehaviour:
   slideOffset: {x: 0, y: -20}
   scaleFactor: 0.8
   hasOriginalPosition: 1
-  originalPosition: {x: -596, y: 16}
+  originalPosition: {x: 16, y: 16}
 --- !u!114 &130837670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1513,10 +1513,10 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.71681416
-    y: 0
-    width: 1.2406237
-    height: 1.2404494
+    x: 0
+    y: 0.08981481
+    width: 0.7979167
+    height: 0.79791665
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -2437,7 +2437,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &883381794
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2972,7 +2972,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -16, y: -4}
+  m_AnchoredPosition: {x: -16, y: 16}
   m_SizeDelta: {x: 96, y: 32}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1243798482
@@ -6053,7 +6053,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 16, y: -55}
+  m_AnchoredPosition: {x: 16, y: -35}
   m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1596891584
@@ -6077,7 +6077,7 @@ MonoBehaviour:
   slideOffset: {x: 0, y: -10}
   scaleFactor: 0.8
   hasOriginalPosition: 1
-  originalPosition: {x: 16, y: -55}
+  originalPosition: {x: 16, y: -35}
 --- !u!114 &1596891585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7146,14 +7146,12 @@ MonoBehaviour:
   - {fileID: 814544690}
   placingElements:
   - {fileID: 838519635}
-  - {fileID: 883381797}
   - {fileID: 114537262}
   - {fileID: 944763529}
   - {fileID: 1596891584}
   - {fileID: 1208960419}
   scoringElements:
   - {fileID: 838519635}
-  - {fileID: 883381797}
   - {fileID: 114537262}
   - {fileID: 1596891584}
   - {fileID: 10641767}
