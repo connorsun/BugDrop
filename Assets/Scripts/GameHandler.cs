@@ -62,6 +62,7 @@ public class GameHandler : MonoBehaviour
     // --- OBJECT REFERENCES ---
     [SerializeField] private UIHandler uiHandler;
     [SerializeField] private AudioSource audioSource;
+    [SerializeField] private GameObject circleIndicator;
     private InputSystem_Actions controls;
 
     // --- PRIVATE STATE ---
@@ -91,7 +92,7 @@ public class GameHandler : MonoBehaviour
         SingletonGameHandler = this;
         SingletonUIHandler = uiHandler;
         SingletonSFXSource = audioSource;
-        SingletonCircleIndicator = GameObject.Find("CircleIndicator");
+        SingletonCircleIndicator = circleIndicator;
         InitializeBugTypes();
         GameState = PlayState.Playing;
         Round = 0;
