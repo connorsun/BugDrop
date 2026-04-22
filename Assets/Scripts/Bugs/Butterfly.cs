@@ -53,6 +53,15 @@ public class Butterfly : Bug
         return totalScore * this.multiplier;
     }
 
+    public override async Task Hover(bool on)
+    {
+        base.Hover(on);
+        GameHandler.SingletonCircleIndicator.GetComponent<SpriteRenderer>().enabled = on;
+        if (on) {
+            GameHandler.SingletonCircleIndicator.transform.position = center.position;GameHandler.SingletonCircleIndicator.transform.localScale = new Vector3(DETECTION_RADIUS, DETECTION_RADIUS, 1f);
+        }
+    }
+    
     protected override async Task Score(bool isPrimary, int recursiveSecondaries)
     {
         ScorePoints(CalculateOverallScore(), isPrimary);

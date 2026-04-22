@@ -182,7 +182,7 @@ public abstract class Bug : MonoBehaviour
         }
     }
 
-    public async Task Hover(bool on)
+    public virtual async Task Hover(bool on)
     {
         if (_flashTask != null && !_flashTask.IsCompleted)
             await _flashTask;
