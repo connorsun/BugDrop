@@ -148,6 +148,7 @@ public class GameHandler : MonoBehaviour
         }
         placingBug.GetComponent<Bug>().SetSimulated(true);
         _ = this.uiHandler.HideCurrentBugTooltip();
+        _ = this.uiHandler.HideModeButtons();
         // give the bug some time to start dropping
         await Task.Delay(TimeSpan.FromSeconds(0.2f));
         // wait until all bugs are stationary

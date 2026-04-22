@@ -41,6 +41,7 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private TextMeshProUGUI currentBugTooltipTitle;
     [SerializeField] private TextMeshProUGUI currentBugTooltipDescription;
     [SerializeField] private GameObject nextButton;
+    [SerializeField] private GameObject modeButtons;
 
     // UI Elements - Knockout
     [SerializeField] private TextMeshProUGUI roundScoreNumberKnockout;
@@ -226,7 +227,11 @@ public class UIHandler : MonoBehaviour
     public async Task HideCurrentBugTooltip()
     {
         await tooltipRectTransform.gameObject.GetComponent<UIAnimatable>().Hide();
-        print("what the blug");
+    }
+
+    public async Task HideModeButtons()
+    {
+        await modeButtons.GetComponent<UIAnimatable>().Hide();
     }
 
     // -- INSTANTIATE WORLD SPACE UI --
