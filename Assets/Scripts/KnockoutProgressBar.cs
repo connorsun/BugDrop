@@ -11,7 +11,8 @@ public class KnockoutProgressBar : MonoBehaviour
     private Vector3 startingPos;
     private float loadingBarLength;
     private UIAnimatable ui;
-    public bool allowedToMove;
+    private static bool allowedToMove;
+    private bool prevAllowedToMove;
     Vector3 targetPos;
 
     public void Start() {
@@ -21,21 +22,19 @@ public class KnockoutProgressBar : MonoBehaviour
             loadingBarLength = 256;
         } else
         {
-            allowedToMove = true;
             loadingBarLength = ((RectTransform) transform.parent).sizeDelta.x;
         }
+    }
+
+    public void Reset()
+    {
+        transform.localPosition = startingPos;
     }
 
     public void Update() {
         if (allowedToMove)
         {
-            if (type == Type.Label)
-            {
-                targetPos = new Vector3(-128, 152, 0) + Vector3.right * (loadingBarLength * Mathf.Min(GameHandler.RoundScore / GameHandler.ScoreThreshold, 1));
-            } else
-            {
-                targetPos = startingPos + Vector3.right * (loadingBarLength * GameHandler.RoundScore / GameHandler.ScoreThreshold);
-            }
+            UpdateTargetPosition();
         }
 
         if (type == Type.Lerp || type == Type.Label)
@@ -44,6 +43,26 @@ public class KnockoutProgressBar : MonoBehaviour
         } else
         {
             transform.localPosition = targetPos;
+        }
+    }
+
+    public void SetAllowedToMove(bool b)
+    {
+        allowedToMove = b;
+        if (b)
+        {
+            Reset();
+        }
+    }
+
+    public void UpdateTargetPosition()
+    {
+        if (type == Type.Label)
+        {
+            targetPos = new Vector3(-128, 148, 0) + Vector3.right * (loadingBarLength * Mathf.Min(GameHandler.RoundScore / GameHandler.ScoreThreshold, 1));
+        } else
+        {
+            targetPos = startingPos + Vector3.right * (loadingBarLength * GameHandler.RoundScore / GameHandler.ScoreThreshold);
         }
     }
 }

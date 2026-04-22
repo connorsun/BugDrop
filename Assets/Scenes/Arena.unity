@@ -557,7 +557,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -596, y: 16}
+  m_AnchoredPosition: {x: -596, y: 15.999995}
   m_SizeDelta: {x: 32, y: 32}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &130837668
@@ -2446,7 +2446,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::KnockoutProgressBar
   type: 2
-  allowedToMove: 0
 --- !u!1 &838519631
 GameObject:
   m_ObjectHideFlags: 0
@@ -2756,7 +2755,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 944763523}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -3101,7 +3100,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -16, y: 15.999999}
+  m_AnchoredPosition: {x: -16, y: -24}
   m_SizeDelta: {x: 96, y: 32}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1243798482
@@ -6523,7 +6522,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::KnockoutProgressBar
   type: 0
-  allowedToMove: 0
 --- !u!114 &1767709411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6887,7 +6885,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::KnockoutProgressBar
   type: 1
-  allowedToMove: 0
 --- !u!114 &1853667071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7063,7 +7060,10 @@ MonoBehaviour:
   scoreDifference: {fileID: 511466858}
   retryButton: {fileID: 686455030}
   quitButton: {fileID: 1380421614}
-  knockoutProgressBar: {fileID: 814544690}
+  knockoutProgressBar:
+  - {fileID: 1767709410}
+  - {fileID: 1853667070}
+  - {fileID: 814544690}
   placingElements:
   - {fileID: 838519635}
   - {fileID: 883381797}

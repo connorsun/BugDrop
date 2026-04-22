@@ -54,7 +54,9 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreDifference;
     [SerializeField] private GameObject retryButton;
     [SerializeField] private GameObject quitButton;
-    [SerializeField] private KnockoutProgressBar knockoutProgressBar;
+
+    // Knockout Bar
+    [SerializeField] private KnockoutProgressBar[] knockoutProgressBar;
 
     // UI Groups
     [SerializeField] private UIAnimatable[] placingElements;
@@ -184,7 +186,10 @@ public class UIHandler : MonoBehaviour
 
     public void LockProgressBar(bool locked)
     {
-        knockoutProgressBar.allowedToMove = !locked;
+        foreach (KnockoutProgressBar element in knockoutProgressBar)
+        {
+            element.SetAllowedToMove(!locked);
+        }
     }
 
     // Score UI
@@ -325,7 +330,7 @@ public class UIHandler : MonoBehaviour
             
             roundScoreNumber.text = Mathf.CeilToInt(lerpScore) + "";
             roundScoreNumberKnockout.text = Mathf.CeilToInt(lerpScore) + "";
-            thresholdLabel.text = Mathf.CeilToInt(lerpScore) + "";
+            thresholdLabel.text = GameHandler.ScoreThreshold + "";
 
             yield return null;
         }
