@@ -815,6 +815,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Aphid
       objectReference: {fileID: 0}
+    - target: {fileID: 6312744160267363254, guid: 97bc1c3120dc446a2baba4e9ba511232, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1636,9 +1640,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0.083146065
-    width: 2.0467763
-    height: 2.0464888
+    y: 0.08071749
+    width: 2.0491803
+    height: 2.0494676
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -1689,6 +1693,10 @@ MonoBehaviour:
   uiHandler: {fileID: 1860098344}
   audioSource: {fileID: 519420035}
   circleIndicator: {fileID: 464598677}
+  placingClickExcludeButtons:
+  - {fileID: 1933265007}
+  - {fileID: 1736686318}
+  - {fileID: 2140279833}
 --- !u!114 &519420034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2215,6 +2223,10 @@ PrefabInstance:
     - target: {fileID: 6312744160267363254, guid: f351771c3931e468bb22d816effe7e4e, type: 3}
       propertyPath: m_Name
       value: Beetle
+      objectReference: {fileID: 0}
+    - target: {fileID: 6312744160267363254, guid: f351771c3931e468bb22d816effe7e4e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3678,6 +3690,10 @@ PrefabInstance:
     - target: {fileID: 6312744160267363254, guid: 1923dd98992f942c8a768477d9512a9d, type: 3}
       propertyPath: m_Name
       value: Termite
+      objectReference: {fileID: 0}
+    - target: {fileID: 6312744160267363254, guid: 1923dd98992f942c8a768477d9512a9d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5836,6 +5852,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ladybug
       objectReference: {fileID: 0}
+    - target: {fileID: 6312744160267363254, guid: 4aa544ad6788947de881572d03f7955f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6947,7 +6967,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1860098344}
         m_TargetAssemblyTypeName: UIHandler, Assembly-CSharp
-        m_MethodName: OnNextButtonClicked
+        m_MethodName: OnMovePaletteClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7914,7 +7934,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1860098344}
         m_TargetAssemblyTypeName: UIHandler, Assembly-CSharp
-        m_MethodName: OnNextButtonClicked
+        m_MethodName: OnPlacePaletteClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9761,7 +9781,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1860098344}
         m_TargetAssemblyTypeName: UIHandler, Assembly-CSharp
-        m_MethodName: OnNextButtonClicked
+        m_MethodName: OnDeletePaletteClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

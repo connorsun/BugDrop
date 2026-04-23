@@ -8,7 +8,6 @@ public class Tooltip : MonoBehaviour
     [SerializeField] private TextMeshProUGUI tooltipText;
     [SerializeField] private float flipMarginX = 160f;
     [SerializeField] private float flipMarginY = 60f;
-    private const float DETECTION_RADIUS = 0.05f;
     private const float X_MARGIN = 16;
     private const float Y_MARGIN = 16;
     private Vector4 baseMargins;
@@ -31,7 +30,7 @@ public class Tooltip : MonoBehaviour
     {
         List<Collider2D> overlapColliders = new List<Collider2D>();
         Vector3 mouseWorldPos = GameHandler.GetMouseWorldPos();
-        Physics2D.OverlapCircle(mouseWorldPos, DETECTION_RADIUS, ContactFilter2D.noFilter, overlapColliders);
+        Physics2D.OverlapCircle(mouseWorldPos, GameHandler.MOUSE_DETECTION_RADIUS, ContactFilter2D.noFilter, overlapColliders);
         foreach (Collider2D col in overlapColliders)
         {
             Bug bug = col.gameObject?.GetComponentInParent<Bug>();

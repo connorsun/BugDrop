@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 using System;
 using System.Threading.Tasks;
 using System.Linq;
@@ -20,6 +21,12 @@ public class GameHandler : MonoBehaviour
         Playing,
         Paused,
         Lost
+    }
+    public enum PlaceMode
+    {
+        Placing,
+        Moving,
+        Deleting
     }
     public delegate void BugAction(Bug bug);
     
@@ -45,6 +52,7 @@ public class GameHandler : MonoBehaviour
     public static float[] CurrentRarityChances = {1f};
     public const int THRESHOLD_BASE = 6;
     public const float THRESHOLD_SCALE = 1.6f;
+    public const float MOUSE_DETECTION_RADIUS = 0.05f;
     private const string BUG_PATH = "Prefabs/Bugs";
     public const float FAST_GAME_SPEED = 0.2f;
     private const float DROP_Y = 6.3f;
@@ -65,15 +73,21 @@ public class GameHandler : MonoBehaviour
     public static bool FastForward;
     public static float DefaultGameSpeed;
     public static float GameSpeed;
+    public static PlaceMode PlacingMode;
+    public static Bug MovingBug;
+    public static Bug OriginalMovingBug;
+
 
     // --- OBJECT REFERENCES ---
     [SerializeField] private UIHandler uiHandler;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private GameObject circleIndicator;
+    [SerializeField] private GameObject[] placingClickExcludeButtons;
     private InputSystem_Actions controls;
 
     // --- PRIVATE STATE ---
     private bool trackingBug;
+    private float movingSafeWidth;
     private Bug.BugInfo selectedBug;
     private GameObject placingBug;
 
@@ -120,6 +134,7 @@ public class GameHandler : MonoBehaviour
             ScoreThreshold = (int)(ScoreThreshold * THRESHOLD_SCALE);
         }
         BroadcastToBugs((Bug bug) => bug.Reset());
+        PlacingMode = PlaceMode.Placing;
         Round++;
         int rarityRound = 0;
         foreach (int roundNum in RoundRarityChances.Keys)
@@ -130,7 +145,6 @@ public class GameHandler : MonoBehaviour
             }
         }
         CurrentRarityChances = RoundRarityChances[rarityRound];
-        print(string.Join(", ", CurrentRarityChances));
         CurrentPhase = Phase.Placing;
         LastRoundScore = RoundScore;
         RoundScore = 0;
@@ -158,13 +172,35 @@ public class GameHandler : MonoBehaviour
 
         //await placement
         // while (!Mouse.current.leftButton.wasPressedThisFrame)
+        MovingBug = null;
+        OriginalMovingBug = null;
         while (trackingBug)
         {
             Vector3 worldPosition = GetMouseWorldPos();
-            placingBug.transform.position = new Vector3(Mathf.Clamp(worldPosition.x, -safeWidth, safeWidth), DROP_Y);
+            if (PlacingMode == PlaceMode.Placing) {
+                placingBug.SetActive(true);
+                placingBug.transform.position = new Vector3(Mathf.Clamp(worldPosition.x, -safeWidth, safeWidth), DROP_Y);
+            } else if (PlacingMode == PlaceMode.Moving)
+            {
+                placingBug.SetActive(false);
+                if (MovingBug != null) {
+                    MovingBug.transform.position = new Vector3(Mathf.Clamp(worldPosition.x, -safeWidth, safeWidth), DROP_Y);
+                }
+            } else
+            {
+                placingBug.SetActive(false);
+            }
             await Task.Yield();
         }
-        placingBug.GetComponent<Bug>().SetSimulated(true);
+        if (PlacingMode == PlaceMode.Placing) {
+            placingBug.GetComponent<Bug>().SetSimulated(true);
+        } else if (PlacingMode == PlaceMode.Moving)
+        {
+            placingBug.GetComponent<Bug>().Destroy();
+            OriginalMovingBug.Destroy();
+            MovingBug.GetComponent<Bug>().SetSimulated(true);
+            AllBugs = FindObjectsByType<Bug>(FindObjectsSortMode.None);
+        }
         _ = this.uiHandler.HideCurrentBugTooltip();
         _ = this.uiHandler.HideModeButtons();
         // give the bug some time to start dropping
@@ -198,7 +234,81 @@ public class GameHandler : MonoBehaviour
     // Handles Drop input action
     private void OnDrop(InputAction.CallbackContext context)
     {
-        trackingBug = false;
+        PointerEventData pointerData = new PointerEventData(EventSystem.current)
+        {
+            position = Mouse.current.position.ReadValue()
+        };
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerData, results);
+        // ensure you did not just click a button
+        foreach (RaycastResult res in results) 
+        {
+            if (this.placingClickExcludeButtons.Contains(res.gameObject))
+            {
+                return;
+            }
+        }
+        if (PlacingMode == PlaceMode.Placing) {
+            trackingBug = false;
+        } else if (PlacingMode == PlaceMode.Moving)
+        {
+            if (MovingBug == null)
+            {
+                List<Collider2D> overlapColliders = new List<Collider2D>();
+                Vector3 mouseWorldPos = GameHandler.GetMouseWorldPos();
+                Physics2D.OverlapCircle(mouseWorldPos, MOUSE_DETECTION_RADIUS, ContactFilter2D.noFilter, overlapColliders);
+                foreach (Collider2D col in overlapColliders)
+                {
+                    Bug bug = col.gameObject?.GetComponentInParent<Bug>();
+                    if (bug != null)
+                    {
+                        OriginalMovingBug = bug;
+                        GameObject movingBug = Instantiate(bug.gameObject as GameObject);
+                        MovingBug = movingBug.GetComponent<Bug>();
+                        for (int i = 0; i < MovingBug.positions.Length; i++)
+                        {
+                            MovingBug.segments[i].transform.localPosition = bug.positions[i];
+                            MovingBug.positions[i] = bug.positions[i];
+                            MovingBug.segments[i].transform.rotation = bug.rotations[i];
+                            MovingBug.rotations[i] = bug.rotations[i];
+                            // HingeJoint2D hinge = MovingBug.segments[i].GetComponent<HingeJoint2D>();
+                            // if (hinge != null)
+                            // {
+                            //     var angles = hinge.limits;
+                            //     Destroy(hinge);
+                            //     HingeJoint2D newHinge = MovingBug.segments[i].AddComponent<HingeJoint2D>();
+                            //     newHinge.limits = angles;
+                            // }
+                        }
+                        MovingBug.Start();
+                        MovingBug.SetSimulated(false);
+                        this.movingSafeWidth = EDGE_X - MovingBug.thisBugInfo.safeHorizRadius;
+                        bug.Hover(true);
+                        break;
+                    }
+                }
+            } else
+            {
+                trackingBug = false;
+            }
+        } else
+        {
+            
+            List<Collider2D> overlapColliders = new List<Collider2D>();
+            Vector3 mouseWorldPos = GameHandler.GetMouseWorldPos();
+            Physics2D.OverlapCircle(mouseWorldPos, MOUSE_DETECTION_RADIUS, ContactFilter2D.noFilter, overlapColliders);
+            foreach (Collider2D col in overlapColliders)
+            {
+                Bug bug = col.gameObject?.GetComponentInParent<Bug>();
+                if (bug != null)
+                {
+                    bug.Destroy();
+                    AllBugs = FindObjectsByType<Bug>(FindObjectsSortMode.None);
+                    trackingBug = false;
+                    break;
+                }
+            }
+        }
     }
 
     // Initiates the scoring phase for a round and handles the flow of state

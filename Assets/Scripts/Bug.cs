@@ -44,10 +44,12 @@ public abstract class Bug : MonoBehaviour
     // Center must be used as the main transform to get the position of the bug, as the
     // parent object this script is on does not follow the position of the child segments
     [SerializeField] public Transform center;
-    [SerializeField] protected GameObject[] segments;
+    [SerializeField] public GameObject[] segments;
     private Collider2D[] colliders;
     private Rigidbody2D[] rigidbodies;
     private Material[] materials;
+    public Vector3[] positions;
+    public Quaternion[] rotations;
     private List<Bug> initiatorsThisRound = new List<Bug>();
 
     private static readonly int FlashColorID = Shader.PropertyToID("_FlashColor");
@@ -79,6 +81,8 @@ public abstract class Bug : MonoBehaviour
         colliders = segments.Select(seg => seg.GetComponent<Collider2D>()).ToArray();
         rigidbodies = segments.Select(seg => seg.GetComponent<Rigidbody2D>()).ToArray();
         materials = segments.Select(seg => seg.GetComponent<SpriteRenderer>().material).ToArray();
+        positions = segments.Select(seg => seg.transform.localPosition).ToArray();
+        rotations = segments.Select(seg => seg.transform.rotation).ToArray();
         for (int i = 0; i < materials.Length; i++)
         {
             materials[i].SetColor(FlashColorID, Color.white);

@@ -192,6 +192,31 @@ public class UIHandler : MonoBehaviour
         }
     }
 
+    public void OnPlacePaletteClicked()
+    {
+        GameHandler.PlacingMode = GameHandler.PlaceMode.Placing;
+        if (GameHandler.MovingBug != null) {
+            GameHandler.MovingBug.Destroy();
+            GameHandler.MovingBug = null;
+            GameHandler.OriginalMovingBug.Hover(false);
+        }
+    }
+
+    public void OnMovePaletteClicked()
+    {
+        GameHandler.PlacingMode = GameHandler.PlaceMode.Moving;
+    }
+
+    public void OnDeletePaletteClicked()
+    {
+        GameHandler.PlacingMode = GameHandler.PlaceMode.Deleting;
+        if (GameHandler.MovingBug != null) {
+            GameHandler.MovingBug.Destroy();
+            GameHandler.MovingBug = null;
+            GameHandler.OriginalMovingBug.Hover(false);
+        }
+    }
+
     public void LockProgressBar(bool locked)
     {
         foreach (KnockoutProgressBar element in knockoutProgressBar)
