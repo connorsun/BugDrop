@@ -576,6 +576,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ant
       objectReference: {fileID: 0}
+    - target: {fileID: 6312744160267363254, guid: 1fa4f3fc7330d43d0b6cdcf6a0981404, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1575,9 +1579,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0
-    width: 1
-    height: 1
+    y: 0.083146065
+    width: 2.0467763
+    height: 2.0464888
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -5712,6 +5716,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Worm
       objectReference: {fileID: 0}
+    - target: {fileID: 6312744160267363254, guid: 73f95fc08390e48779a850517632d20b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6589,6 +6597,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fly
       objectReference: {fileID: 0}
+    - target: {fileID: 6312744160267363254, guid: 0bb4efb5feb5b4e24802001bc700135c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6883,6 +6895,10 @@ PrefabInstance:
     - target: {fileID: 6312744160267363254, guid: 94ac18486b6574653b4af4cb3e126b27, type: 3}
       propertyPath: m_Name
       value: Cockroach
+      objectReference: {fileID: 0}
+    - target: {fileID: 6312744160267363254, guid: 94ac18486b6574653b4af4cb3e126b27, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8057,6 +8073,10 @@ PrefabInstance:
     - target: {fileID: 6312744160267363254, guid: ca04753292a364aa4b82701a0cd1d5f4, type: 3}
       propertyPath: m_Name
       value: Mosquito
+      objectReference: {fileID: 0}
+    - target: {fileID: 6312744160267363254, guid: ca04753292a364aa4b82701a0cd1d5f4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

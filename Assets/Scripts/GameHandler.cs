@@ -35,7 +35,14 @@ public class GameHandler : MonoBehaviour
     public static Dictionary<string, Sound> LoadedSounds = new Dictionary<string, Sound>();
     public static Bug[] AllBugs;
     public const int KNOCKOUT_ROUNDS = 3;
-    private float[] rarityChances = {0.33f, 0.33f, 0.32f, 0.02f};
+    public static Dictionary<int, float[]> RoundRarityChances = new Dictionary<int, float[]>
+    {
+        [0] = new[]{1f},
+        [10] = new[]{0.5f, 0.5f},
+        [20] = new[]{0.33f, 0.33f, 0.33f},
+        [25] = new[]{0.33f, 0.33f, 0.31f, 0.02f}
+    };
+    public static float[] CurrentRarityChances = {1f};
     public const int THRESHOLD_BASE = 6;
     public const float THRESHOLD_SCALE = 1.6f;
     private const string BUG_PATH = "Prefabs/Bugs";
@@ -114,6 +121,16 @@ public class GameHandler : MonoBehaviour
         }
         BroadcastToBugs((Bug bug) => bug.Reset());
         Round++;
+        int rarityRound = 0;
+        foreach (int roundNum in RoundRarityChances.Keys)
+        {
+            if (roundNum > rarityRound && roundNum <= Round)
+            {
+                rarityRound = roundNum;
+            }
+        }
+        CurrentRarityChances = RoundRarityChances[rarityRound];
+        print(string.Join(", ", CurrentRarityChances));
         CurrentPhase = Phase.Placing;
         LastRoundScore = RoundScore;
         RoundScore = 0;
@@ -280,9 +297,9 @@ public class GameHandler : MonoBehaviour
         float rarityThreshold = 0f;
         int rarity;
         //print("Random value: " + value);
-        for (rarity = 0; rarity < rarityChances.Length; rarity++)
+        for (rarity = 0; rarity < CurrentRarityChances.Length; rarity++)
         {
-            rarityThreshold += rarityChances[rarity];
+            rarityThreshold += CurrentRarityChances[rarity];
             //print(rarityThreshold);
             if (rarityThreshold > value)
             {
