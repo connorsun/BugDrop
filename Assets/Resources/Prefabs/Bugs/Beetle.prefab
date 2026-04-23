@@ -155,7 +155,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.08, y: -0.08}
+  m_Offset: {x: 0.08, y: -0.19}
   m_Size: {x: 5, y: 3}
   m_Direction: 1
 --- !u!114 &9123273197316225455
@@ -178,3 +178,5 @@ MonoBehaviour:
   center: {fileID: 850153518807848515}
   segments:
   - {fileID: 6312744160267363254}
+  positions: []
+  rotations: []
