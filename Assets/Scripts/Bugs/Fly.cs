@@ -11,7 +11,7 @@ public class Fly : Bug
     // Gets metadata about this bug type
     public static BugInfo GetInfo()
     {
-        return new BugInfo("Fly", 1, 1, 1.5f, 0.5f, "+2 additional points if not touching ground");
+        return new BugInfo("Fly", 1, 1, 0.68f, 0.5f, "+2 additional points if not touching ground");
     }
 
     // --- PUBLIC METHODS ---

@@ -485,6 +485,8 @@ MonoBehaviour:
   - {fileID: 4376688469383872990}
   - {fileID: 627027869656635002}
   - {fileID: 6581445316669771129}
+  positions: []
+  rotations: []
 --- !u!1 &6581445316669771129
 GameObject:
   m_ObjectHideFlags: 0
