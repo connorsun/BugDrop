@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using System.Threading.Tasks;
 
 public class UIAnimatable : MonoBehaviour
@@ -42,12 +43,16 @@ public class UIAnimatable : MonoBehaviour
     [SerializeField] private bool hasOriginalPosition = false;
     [SerializeField] private Vector2 originalPosition = Vector2.negativeInfinity;
 
+    private Button button;
+
     // -- PUBLIC METHODS --
 
     public void Awake()
     {
         cg = GetComponent<CanvasGroup>();
         rt = GetComponent<RectTransform>();
+        button = GetComponent<Button>();
+        
         if (!hasOriginalPosition)
         {
             originalPosition = rt.anchoredPosition;
@@ -57,6 +62,11 @@ public class UIAnimatable : MonoBehaviour
                 || hideAnimation == AnimationType.Fade || hideAnimation == AnimationType.FadeAndSlide))
         {
             cg = gameObject.AddComponent<CanvasGroup>();
+        }
+
+        if (button != null){
+            cg.interactable = false;
+            cg.blocksRaycasts = false;
         }
 
         if (showAnimation == AnimationType.Fade || showAnimation == AnimationType.FadeAndSlide)
@@ -84,11 +94,19 @@ public class UIAnimatable : MonoBehaviour
 
     public async Task Show()
     {
+        if (button != null){
+            cg.interactable = true;
+            cg.blocksRaycasts = true;
+        }
         await ShowRoutine();
     }
 
     public async Task Hide()
     {
+        if (button != null){
+            cg.interactable = false;
+            cg.blocksRaycasts = false;
+        }
         await HideRoutine();
     }
 

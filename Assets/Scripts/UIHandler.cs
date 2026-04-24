@@ -63,6 +63,7 @@ public class UIHandler : MonoBehaviour
     // Intro Cutscene
     [SerializeField] private TextMeshProUGUI introCutsceneDialogue;
     [SerializeField] private TextMeshProUGUI introCutsceneSpeaker;
+    [SerializeField] private UIAnimatable skipButton;
 
     // UI Groups
     [SerializeField] private UIAnimatable[] placingElements;
@@ -292,6 +293,11 @@ public class UIHandler : MonoBehaviour
     public async Task HideModeButtons()
     {
         await modeButtons.GetComponent<UIAnimatable>().Hide();
+    }
+
+    public async Task ShowSkipButton()
+    {
+        await skipButton.Show();
     }
 
     // -- INSTANTIATE WORLD SPACE UI --

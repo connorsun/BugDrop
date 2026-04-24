@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class IntroCutscene : MonoBehaviour
 {
@@ -23,19 +24,28 @@ public class IntroCutscene : MonoBehaviour
         dialogueIndex = 0;
         this.uiHandler.SetIntroCutsceneLine(lines[dialogueIndex].Dialogue, lines[dialogueIndex].Speaker);
         this.uiHandler.EnterTitleScreen();
-        
-        
     }
 
     public void NextLine()
     {
-        if (dialogueIndex > lines.Length)
+        if (dialogueIndex > lines.Length - 1)
         {
+            NextScene();
             return;
         }
 
         dialogueIndex++;
+
+        if (dialogueIndex == 1)
+        {
+            this.uiHandler.ShowSkipButton();
+        }
         this.uiHandler.NextIntroCutsceneLine(lines[dialogueIndex].Dialogue, lines[dialogueIndex].Speaker);
+    }
+
+    public void NextScene()
+    {
+        SceneManager.LoadScene("Title Screen");
     }
 
     // Update is called once per frame
