@@ -202,11 +202,12 @@ public abstract class Bug : MonoBehaviour
             if (intensity < -99f && on) {
                 // honey effect for bee
                 materials[i].SetColor(FlashColorID, Color.yellow);
+                materials[i].SetFloat(FlashIntensityID, 0.5f);
             } else
             {
                 materials[i].SetColor(FlashColorID, Color.white);
+                materials[i].SetFloat(FlashIntensityID, on? intensity : 0f);
             }
-            materials[i].SetFloat(FlashIntensityID, on? intensity : 0f);
         }
         if (affectOthers) {
             if (on) {
