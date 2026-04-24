@@ -60,12 +60,18 @@ public class UIHandler : MonoBehaviour
     // Knockout Bar
     [SerializeField] private KnockoutProgressBar[] knockoutProgressBar;
 
+    // Intro Cutscene
+    [SerializeField] private TextMeshProUGUI introCutsceneDialogue;
+    [SerializeField] private TextMeshProUGUI introCutsceneSpeaker;
+
     // UI Groups
     [SerializeField] private UIAnimatable[] placingElements;
     [SerializeField] private UIAnimatable[] scoringElements;
     [SerializeField] private UIAnimatable[] scoringKnockoutElements;
     [SerializeField] private UIAnimatable[] loseElements;
     [SerializeField] private UIAnimatable[] titleElements;
+
+    
 
     private UIState uiState = UIState.None;
     private float lerpScore;
@@ -119,6 +125,28 @@ public class UIHandler : MonoBehaviour
     public async Task EnterTitleScreen()
     {
         await RenderState(UIState.Title);
+    }
+
+    public void SetIntroCutsceneLine(string dialogue, string speaker)
+    {
+        introCutsceneDialogue.text = dialogue;
+        introCutsceneSpeaker.text = speaker;
+    }
+
+    public async Task NextIntroCutsceneLine(string dialogue, string speaker)
+    {
+        UIAnimatable dialogueAnimatable = introCutsceneDialogue.GetComponent<UIAnimatable>();
+        UIAnimatable speakerAnimatable = introCutsceneSpeaker.GetComponent<UIAnimatable>();
+        await Task.WhenAll(
+            dialogueAnimatable.Hide(),
+            speakerAnimatable.Hide()
+        );
+        introCutsceneDialogue.text = dialogue;
+        introCutsceneSpeaker.text = speaker;
+        await Task.WhenAll(
+            dialogueAnimatable.Show(),
+            speakerAnimatable.Show()
+        );
     }
 
     // -- SETTERS/LOGIC FOR INDIVIDUAL ELEMENTS --
