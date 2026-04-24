@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 
 public class Cockroach : Bug
@@ -23,18 +24,25 @@ public class Cockroach : Bug
         base.Start();
     }
 
-    public override float CalculateOverallScore()
+    public override Bug[] GetAffectedBugs()
     {
         ContactPoint2D[] contacts = this.GetContacts();
-        int totalScore = this.baseScore;
+        HashSet<Bug> allBugs = new HashSet<Bug>();
         foreach (ContactPoint2D contact in contacts)
         {
             Bug otherCockroach = contact.collider?.gameObject?.GetComponentInParent<Cockroach>();
             if (otherCockroach != null)
             {
-                totalScore += 2;
+                allBugs.Add(otherCockroach);
             }
         }
+        return allBugs.ToArray();
+    }
+
+    public override float CalculateOverallScore()
+    {
+        Bug[] allBugs = GetAffectedBugs();
+        float totalScore = this.baseScore + 2f * allBugs.Length;
         return totalScore * this.multiplier;
     }
 

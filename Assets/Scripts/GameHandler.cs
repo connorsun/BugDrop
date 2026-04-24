@@ -283,7 +283,7 @@ public class GameHandler : MonoBehaviour
                         MovingBug.Start();
                         MovingBug.SetSimulated(false);
                         this.movingSafeWidth = EDGE_X - MovingBug.thisBugInfo.safeHorizRadius;
-                        bug.Hover(true, 0.3f);
+                        bug.Hover(true, 0.6f, false);
                         break;
                     }
                 }
