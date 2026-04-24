@@ -221,7 +221,7 @@ MonoBehaviour:
   slideOffset: {x: 0, y: -10}
   scaleFactor: 0.8
   hasOriginalPosition: 1
-  originalPosition: {x: 0, y: 2}
+  originalPosition: {x: 0, y: -15}
 --- !u!224 &14021272
 RectTransform:
   m_ObjectHideFlags: 0
@@ -239,7 +239,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 2}
+  m_AnchoredPosition: {x: 0, y: -15}
   m_SizeDelta: {x: 128, y: 32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &14021273
@@ -264,7 +264,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.5019608, g: 0.48235294, b: 0.47843137, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0.5019608, g: 0.48235294, b: 0.47843137, a: 0.8156863}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -286,8 +286,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 698057308}
-        m_TargetAssemblyTypeName: TitleUIHandler, Assembly-CSharp
+      - m_Target: {fileID: 1449047151}
+        m_TargetAssemblyTypeName: TitleScreen, Assembly-CSharp
         m_MethodName: OnStartButtonClicked
         m_Mode: 1
         m_Arguments:
@@ -1763,7 +1763,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 42}
+  m_AnchoredPosition: {x: 0, y: 25}
   m_SizeDelta: {x: 300, y: 16}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &306371502
@@ -1795,7 +1795,7 @@ MonoBehaviour:
   slideOffset: {x: 0, y: -10}
   scaleFactor: 0.8
   hasOriginalPosition: 1
-  originalPosition: {x: 0, y: 42}
+  originalPosition: {x: 0, y: 25}
 --- !u!114 &306371504
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2408,7 +2408,6 @@ GameObject:
   - component: {fileID: 698057305}
   - component: {fileID: 698057304}
   - component: {fileID: 698057309}
-  - component: {fileID: 698057308}
   m_Layer: 5
   m_Name: UI Canvas
   m_TagString: Untagged
@@ -2500,18 +2499,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &698057308
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 698057302}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b728f140205e04f9e9e8559c43e70046, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TitleUIHandler
 --- !u!114 &698057309
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2545,6 +2532,9 @@ MonoBehaviour:
   retryButton: {fileID: 0}
   quitButton: {fileID: 0}
   knockoutProgressBar: []
+  introCutsceneDialogue: {fileID: 0}
+  introCutsceneSpeaker: {fileID: 0}
+  skipButton: {fileID: 0}
   placingElements: []
   scoringElements: []
   scoringKnockoutElements: []
@@ -2552,7 +2542,6 @@ MonoBehaviour:
   titleElements:
   - {fileID: 306371503}
   - {fileID: 14021271}
-  - {fileID: 822000956}
   - {fileID: 1247383815}
 --- !u!4 &780183500 stripped
 Transform:
@@ -2578,7 +2567,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &822000955
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2606,7 +2595,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 822000954}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c53bb23157fc94171b771e139378f123, type: 3}
   m_Name: 
@@ -5122,10 +5111,10 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.3453125
-    y: 0
-    width: 2.3555555
-    height: 2.3555555
+    x: 0
+    y: 0.15833333
+    width: 4.4500003
+    height: 4.4500003
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
