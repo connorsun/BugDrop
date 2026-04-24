@@ -75,6 +75,10 @@ public class Tooltip : MonoBehaviour
             }
 
             cg.alpha = 0;
+        } else
+        {
+            cg.alpha = 0;
+            prevBug = null;
         }
         //UpdateBounds();
     }

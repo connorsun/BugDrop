@@ -224,6 +224,7 @@ public class UIHandler : MonoBehaviour
     public void OnPlacePaletteClicked()
     {
         GameHandler.PlacingMode = GameHandler.PlaceMode.Placing;
+        ShowCurrentBugTooltip();
         if (GameHandler.MovingBug != null) {
             GameHandler.MovingBug.Destroy();
             GameHandler.MovingBug = null;
@@ -234,11 +235,13 @@ public class UIHandler : MonoBehaviour
     public void OnMovePaletteClicked()
     {
         GameHandler.PlacingMode = GameHandler.PlaceMode.Moving;
+        HideCurrentBugTooltip();
     }
 
     public void OnDeletePaletteClicked()
     {
         GameHandler.PlacingMode = GameHandler.PlaceMode.Deleting;
+        HideCurrentBugTooltip();
         if (GameHandler.MovingBug != null) {
             GameHandler.MovingBug.Destroy();
             GameHandler.MovingBug = null;
@@ -283,6 +286,11 @@ public class UIHandler : MonoBehaviour
         currentBugTooltipDescription.ForceMeshUpdate(true);
         int lineCount = currentBugTooltipDescription.textInfo.lineCount;
         tooltipRectTransform.sizeDelta = new Vector2(tooltipRectTransform.sizeDelta.x, 25 + (lineCount * 8));
+    }
+
+    public async Task ShowCurrentBugTooltip()
+    {
+        await tooltipRectTransform.gameObject.GetComponent<UIAnimatable>().Show();
     }
 
     public async Task HideCurrentBugTooltip()
