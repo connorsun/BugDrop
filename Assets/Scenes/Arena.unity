@@ -1227,12 +1227,12 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 101
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 845f0bc9816664934a2dba9158aaecc2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.45490196}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 8, y: 8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -8122,6 +8122,9 @@ MonoBehaviour:
   - {fileID: 1767709410}
   - {fileID: 1853667070}
   - {fileID: 814544690}
+  introCutsceneDialogue: {fileID: 0}
+  introCutsceneSpeaker: {fileID: 0}
+  skipButton: {fileID: 0}
   placingElements:
   - {fileID: 838519635}
   - {fileID: 114537262}

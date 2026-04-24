@@ -22,7 +22,6 @@ public class SpiderLine : MonoBehaviour
         {
             line.SetPosition(0, spider1.thoraxPoint.position);
             line.SetPosition(1, spider2.thoraxPoint.position);
-            
         }   
     }
     public void SetColor(Color color)
