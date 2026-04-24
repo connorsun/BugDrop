@@ -136,9 +136,13 @@ MonoBehaviour:
   primaryTriggered: 0
   secondaryTriggered: 0
   baseScore: 0
+  multiplier: 0
+  effects: 
   center: {fileID: 850153518807848515}
   segments:
   - {fileID: 6312744160267363254}
+  positions: []
+  rotations: []
 --- !u!70 &-7063600259111642731
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

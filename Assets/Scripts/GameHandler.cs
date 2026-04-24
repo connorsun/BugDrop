@@ -56,7 +56,7 @@ public class GameHandler : MonoBehaviour
     private const string BUG_PATH = "Prefabs/Bugs";
     public const float FAST_GAME_SPEED = 0.2f;
     private const float DROP_Y = 6.3f;
-    private const float EDGE_X = 12.5f;
+    private const float EDGE_X = 11.5f;
     public static Vector3 ZapperPos = new Vector3(0f, -7f, 0f);
     public static Color PRIMARY_COLOR = new Color(255f / 255f, 240f / 255f, 137f / 255f);
     public static Color SECONDARY_COLOR = new Color(115f / 255f, 239f / 255f, 232f / 255f);
