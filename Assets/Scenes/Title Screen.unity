@@ -4576,7 +4576,7 @@ MonoBehaviour:
   musicPlayers:
   - {fileID: 1496152711}
   - {fileID: 1496152710}
-  music: {fileID: 8300000, guid: ddba331ed9d9740019d9094900c55080, type: 3}
+  music: {fileID: 8300000, guid: 4f417e932f2d64ac6844c09c95448d15, type: 3}
 --- !u!4 &1496152713
 Transform:
   m_ObjectHideFlags: 0
