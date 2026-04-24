@@ -38,9 +38,9 @@ public class Tooltip : MonoBehaviour
             {
                 if (prevBug != bug)
                 {
-                    if (prevBug != null) _ = prevBug.Hover(false);
+                    if (prevBug != null) _ = prevBug.Hover(false, 0f);
                     prevBug = bug;
-                    _ = bug.Hover(true);
+                    _ = bug.Hover(true, 0.3f);
                 }
 
                 cg.alpha = 1;
@@ -69,7 +69,7 @@ public class Tooltip : MonoBehaviour
 
         if (prevBug != null)
         {
-            _ = prevBug.Hover(false);
+            _ = prevBug.Hover(false, 0f);
             prevBug = null;
         }
 

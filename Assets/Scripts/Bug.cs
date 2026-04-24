@@ -57,6 +57,7 @@ public abstract class Bug : MonoBehaviour
     private CancellationTokenSource _flashCTS;
     private Task _flashTask;
     private Task _lerpTask;
+    private Bug[] hoverAffectedBugs;
 
     public void Awake()
     {
@@ -189,7 +190,7 @@ public abstract class Bug : MonoBehaviour
         }
     }
 
-    public virtual async Task Hover(bool on)
+    public virtual async Task Hover(bool on, float intensity)
     {
         if (_flashTask != null && !_flashTask.IsCompleted)
             await _flashTask;
@@ -199,8 +200,27 @@ public abstract class Bug : MonoBehaviour
         for (int i = 0; i < materials.Length; i++)
         {
             materials[i].SetColor(FlashColorID, Color.white);
-            materials[i].SetFloat(FlashIntensityID, on? 0.3f : 0f);
+            materials[i].SetFloat(FlashIntensityID, on? intensity : 0f);
         }
+        if (on) {
+            this.hoverAffectedBugs = GetAffectedBugs();
+            foreach (Bug bug in this.hoverAffectedBugs)
+            {
+                bug.Hover(on, 0.1f);
+            }
+        } else
+        {
+            foreach (Bug bug in this.hoverAffectedBugs)
+            {
+                bug.Hover(on, 0f);
+            }
+            this.hoverAffectedBugs = null;
+        }
+    }
+
+    public virtual Bug[] GetAffectedBugs()
+    {
+        return new Bug[0];
     }
 
     // Checks if this bug is stationary
