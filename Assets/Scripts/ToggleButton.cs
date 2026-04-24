@@ -17,6 +17,11 @@ public class ToggleButton : MonoBehaviour
         UpdateToggleColors(toggle.isOn);
     }
 
+    public void ForceRefresh()
+    {
+        UpdateToggleColors(toggle.isOn);
+    }
+
     void UpdateToggleColors(bool isOn)
     {
         ColorBlock cb = toggle.colors;

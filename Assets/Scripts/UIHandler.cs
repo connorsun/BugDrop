@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System;
 using TMPro;
@@ -64,6 +65,7 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private TextMeshProUGUI introCutsceneDialogue;
     [SerializeField] private TextMeshProUGUI introCutsceneSpeaker;
     [SerializeField] private UIAnimatable skipButton;
+    [SerializeField] private ToggleGroupController tg;
 
     // UI Groups
     [SerializeField] private UIAnimatable[] placingElements;
@@ -99,6 +101,7 @@ public class UIHandler : MonoBehaviour
         SetFutureThreshold();
         SetLastRoundScore();
         
+        tg.SetSelection(0);
     
         await RenderState(UIState.Placing, HideNextButton());
     }
@@ -206,7 +209,8 @@ public class UIHandler : MonoBehaviour
 
     public void OnQuitButtonClicked()
     {
-        Application.Quit();
+        SceneManager.LoadScene("Title Screen");
+        //Application.Quit();
     }
 
     public void OnFastForwardButtonClicked()
@@ -224,7 +228,8 @@ public class UIHandler : MonoBehaviour
     public void OnPlacePaletteClicked()
     {
         GameHandler.PlacingMode = GameHandler.PlaceMode.Placing;
-        ShowCurrentBugTooltip();
+        tg.SetSelection(0);
+        _ = ShowCurrentBugTooltip();
         if (GameHandler.MovingBug != null) {
             GameHandler.MovingBug.Destroy();
             GameHandler.MovingBug = null;
@@ -235,13 +240,15 @@ public class UIHandler : MonoBehaviour
     public void OnMovePaletteClicked()
     {
         GameHandler.PlacingMode = GameHandler.PlaceMode.Moving;
-        HideCurrentBugTooltip();
+        tg.SetSelection(1);
+        _ = HideCurrentBugTooltip();
     }
 
     public void OnDeletePaletteClicked()
     {
         GameHandler.PlacingMode = GameHandler.PlaceMode.Deleting;
-        HideCurrentBugTooltip();
+        tg.SetSelection(2);
+        _ = HideCurrentBugTooltip();
         if (GameHandler.MovingBug != null) {
             GameHandler.MovingBug.Destroy();
             GameHandler.MovingBug = null;

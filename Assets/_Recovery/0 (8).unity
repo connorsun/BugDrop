@@ -694,7 +694,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ToggleButton
   toggle: {fileID: 130837672}
-  activeColor: {r: 0.42745098, g: 0.20392157, b: 0.105882354, a: 1}
+  activeColor: {r: 0.8867924, g: 0.55602586, b: 0.29699183, a: 1}
   inactiveColor: {r: 0.74509805, g: 0.41960785, b: 0.16470589, a: 1}
   hoverTint: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   pressTint: {r: 0.4, g: 0.4, b: 0.4, a: 1}
@@ -1651,9 +1651,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0
-    width: 1
-    height: 1
+    y: 0.029166669
+    width: 0.1
+    height: 0.075
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -2088,7 +2088,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.5019608, g: 0.48235294, b: 0.47843137, a: 1}
+    m_NormalColor: {r: 0.44054827, g: 0.4778844, b: 0.5660378, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -2198,7 +2198,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &718246729
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2981,7 +2981,6 @@ MonoBehaviour:
   - {fileID: 1933265014}
   - {fileID: 1736686325}
   - {fileID: 2140279840}
-  uiHandler: {fileID: 1860098344}
 --- !u!1 &1220836711
 GameObject:
   m_ObjectHideFlags: 0
@@ -3129,7 +3128,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1243798481
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6575,7 +6574,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.69803923, g: 0.32156864, b: 0.4, a: 1}
+    m_NormalColor: {r: 0.7490196, g: 0.19607842, b: 0.24114698, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -7794,7 +7793,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ToggleButton
   toggle: {fileID: 1736686325}
-  activeColor: {r: 0.42745098, g: 0.20392157, b: 0.105882354, a: 1}
+  activeColor: {r: 0.8867924, g: 0.55602586, b: 0.29699183, a: 1}
   inactiveColor: {r: 0.74509805, g: 0.41960785, b: 0.16470589, a: 1}
   hoverTint: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   pressTint: {r: 0.4, g: 0.4, b: 0.4, a: 1}
@@ -7844,7 +7843,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1860098344}
+        m_TargetAssemblyTypeName: UIHandler, Assembly-CSharp
+        m_MethodName: OnMovePaletteClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!1 &1767709408
 GameObject:
@@ -8836,7 +8847,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ToggleButton
   toggle: {fileID: 1933265014}
-  activeColor: {r: 0.4245283, g: 0.20063856, b: 0.10212708, a: 1}
+  activeColor: {r: 0.8867924, g: 0.55602586, b: 0.29699183, a: 1}
   inactiveColor: {r: 0.74509805, g: 0.41960785, b: 0.16470589, a: 1}
   hoverTint: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   pressTint: {r: 0.4, g: 0.4, b: 0.4, a: 1}
@@ -8886,7 +8897,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1860098344}
+        m_TargetAssemblyTypeName: UIHandler, Assembly-CSharp
+        m_MethodName: OnPlacePaletteClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!1 &1934027807
 GameObject:
@@ -10633,7 +10656,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ToggleButton
   toggle: {fileID: 2140279840}
-  activeColor: {r: 0.42745098, g: 0.20392157, b: 0.105882354, a: 1}
+  activeColor: {r: 0.8867924, g: 0.55602586, b: 0.29699183, a: 1}
   inactiveColor: {r: 0.74509805, g: 0.41960785, b: 0.16470589, a: 1}
   hoverTint: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   pressTint: {r: 0.4, g: 0.4, b: 0.4, a: 1}
@@ -10683,7 +10706,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1860098344}
+        m_TargetAssemblyTypeName: UIHandler, Assembly-CSharp
+        m_MethodName: OnDeletePaletteClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
