@@ -57,6 +57,10 @@ public class GameHandler : MonoBehaviour
     public const float FAST_GAME_SPEED = 0.2f;
     private const float DROP_Y = 6.3f;
     private const float EDGE_X = 11.5f;
+    private const float SCORE_PITCH_BASE = 1f;
+    private const float SCORE_PITCH_MAX = 4f;
+
+    private const float SCORE_PITCH_INCR = 0.1f;
     public static Vector3 ZapperPos = new Vector3(0f, -7f, 0f);
     public static Color PRIMARY_COLOR = new Color(255f / 255f, 240f / 255f, 137f / 255f);
     public static Color SECONDARY_COLOR = new Color(115f / 255f, 239f / 255f, 232f / 255f);
@@ -76,6 +80,8 @@ public class GameHandler : MonoBehaviour
     public static PlaceMode PlacingMode;
     public static Bug MovingBug;
     public static Bug OriginalMovingBug;
+    public static float ScorePitch;
+    public static HashSet<string> SoundsThisFrame = new HashSet<string>();
 
 
     // --- OBJECT REFERENCES ---
@@ -320,6 +326,7 @@ public class GameHandler : MonoBehaviour
         BroadcastToBugs((bug) => bug.StartScoring());
         // wait for UI
         await this.uiHandler.EnterScoringState();
+        ScorePitch = SCORE_PITCH_BASE;
         Bug[] sortedBugs = GetClosestBugs();
         if (sortedBugs.Length > 0)
         {
@@ -344,6 +351,7 @@ public class GameHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        SoundsThisFrame = new HashSet<string>();
         if (!BUILD_FLAG) {
             if (Keyboard.current.spaceKey.wasPressedThisFrame && this.trackingBug && this.placingBug != null)
             {
@@ -466,6 +474,25 @@ public class GameHandler : MonoBehaviour
     }
     public static void PlaySound(string sound)
     {
+        if (sound.StartsWith("Score "))
+        {
+            if (SoundsThisFrame.Contains("Score Sound"))
+            {
+                return;
+            }
+            SoundsThisFrame.Add("Score Sound");
+            SingletonSFXSource.pitch = ScorePitch;
+            if (ScorePitch < SCORE_PITCH_MAX) {
+                ScorePitch += SCORE_PITCH_INCR * (1/1.4f - Mathf.Atan(ScorePitch - 2f)/2.8f);
+            }
+        } else {
+            if (SoundsThisFrame.Contains(sound))
+            {
+                return;
+            }
+            SoundsThisFrame.Add(sound);
+            SingletonSFXSource.pitch = 1;
+        }
         Sound s = GetSound("Sounds/" + sound);
         SingletonSFXSource.PlayOneShot(s.clip);
     }
