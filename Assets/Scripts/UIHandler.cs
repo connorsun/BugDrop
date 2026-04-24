@@ -198,7 +198,7 @@ public class UIHandler : MonoBehaviour
         if (GameHandler.MovingBug != null) {
             GameHandler.MovingBug.Destroy();
             GameHandler.MovingBug = null;
-            GameHandler.OriginalMovingBug.Hover(false);
+            GameHandler.OriginalMovingBug.Hover(false, 0f);
         }
     }
 
@@ -213,7 +213,7 @@ public class UIHandler : MonoBehaviour
         if (GameHandler.MovingBug != null) {
             GameHandler.MovingBug.Destroy();
             GameHandler.MovingBug = null;
-            GameHandler.OriginalMovingBug.Hover(false);
+            GameHandler.OriginalMovingBug.Hover(false, 0f);
         }
     }
 

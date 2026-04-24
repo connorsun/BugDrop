@@ -7,7 +7,7 @@ public class Spider : Bug
 {
     // --- CONSTANTS ---
     // --- OBJECT REFERENCES --- 
-
+    public Transform thoraxPoint;
     // --- STATIC METADATA ---
     // Gets metadata about this bug type
     public static BugInfo GetInfo()
@@ -19,6 +19,7 @@ public class Spider : Bug
     public Spider pairedSpider;
     private bool isCached;
     private float cachedScore;
+    private GameObject spiderLine;
 
     // --- PUBLIC METHODS ---
     public override void Start()
@@ -35,11 +36,31 @@ public class Spider : Bug
                 {
                     this.pairedSpider = spider;
                     spider.pairedSpider = this;
+                    if (this.spiderLine == null) {
+                        this.spiderLine = Instantiate(GameHandler.GetResource("Prefabs/SpiderLine") as GameObject);
+                    }
+                    this.spiderLine.GetComponent<SpiderLine>().spider1 = this;
+                    this.spiderLine.GetComponent<SpiderLine>().spider2 = this.pairedSpider;
+                    this.spiderLine.GetComponent<SpiderLine>().SetColor(new Color(1f, 1f, 1f, 0.5f));
                     break;
                 }
             }
         }
         base.Start();
+    }
+
+    public override void Destroy()
+    {
+        if (spiderLine != null) {
+            DestroyImmediate(spiderLine);
+        }
+        base.Destroy();
+    }
+
+    public override async Task Hover(bool on, float intensity)
+    {
+        base.Hover(on, intensity);
+        this.spiderLine.GetComponent<SpiderLine>().SetColor(new Color(1f, 1f, 1f, on? 1f : 0.5f));
     }
 
     public override void Reset()
@@ -63,8 +84,8 @@ public class Spider : Bug
         } else {
             if (this.pairedSpider != null) {
                 List<RaycastHit2D> rayHits = new List<RaycastHit2D>();
-                Vector2 toOther = (Vector2) (this.pairedSpider.center.position - this.center.position);
-                Physics2D.Raycast(this.center.position, toOther.normalized, ContactFilter2D.noFilter, rayHits, toOther.magnitude);
+                Vector2 toOther = (Vector2) (this.pairedSpider.thoraxPoint.position - this.thoraxPoint.position);
+                Physics2D.Raycast(this.thoraxPoint.position, toOther.normalized, ContactFilter2D.noFilter, rayHits, toOther.magnitude);
                 List<Bug> bugsScored = new List<Bug>();
                 foreach (RaycastHit2D rayHit in rayHits)
                 {
