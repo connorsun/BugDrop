@@ -225,9 +225,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1449047150}
-        m_TargetAssemblyTypeName: TitleUIHandler, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 1449047153}
+        m_TargetAssemblyTypeName: IntroCutscene, Assembly-CSharp
+        m_MethodName: NextLine
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -425,6 +425,8 @@ MonoBehaviour:
   retryButton: {fileID: 0}
   quitButton: {fileID: 0}
   knockoutProgressBar: []
+  introCutsceneDialogue: {fileID: 827215243}
+  introCutsceneSpeaker: {fileID: 1731090471}
   placingElements: []
   scoringElements: []
   scoringKnockoutElements: []
@@ -434,8 +436,6 @@ MonoBehaviour:
   - {fileID: 1731090470}
   - {fileID: 14021271}
   - {fileID: 1629799276}
-  introCutsceneDialogue: {fileID: 0}
-  introCutsceneSpeaker: {fileID: 0}
 --- !u!1 &827215240
 GameObject:
   m_ObjectHideFlags: 0
@@ -1542,9 +1542,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0.029166669
-    width: 0.1
-    height: 0.075
+    y: 0.18333334
+    width: 2.5625
+    height: 2.5625
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
