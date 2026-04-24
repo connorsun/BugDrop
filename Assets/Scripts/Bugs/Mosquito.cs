@@ -1,11 +1,14 @@
 using UnityEngine;
 using System.Threading.Tasks;
+using System.Linq;
+using System.Collections.Generic;
 
 
 public class Mosquito : Bug
 {
     // --- CONSTANTS ---
     // --- OBJECT REFERENCES --- 
+    private Bug[] cachedAffectedBugs;
 
     // --- STATIC METADATA ---
     // Gets metadata about this bug type
@@ -21,6 +24,33 @@ public class Mosquito : Bug
         base.Start();
     }
 
+    public override Bug[] GetAffectedBugs()
+    {
+        if (this.cachedAffectedBugs != null)
+        {
+            return this.cachedAffectedBugs;
+        } else
+        {
+            ContactPoint2D[] contacts = this.GetContacts();
+            //print("reducing contacts" + contacts.Length);
+            HashSet<Bug> allBugs = new HashSet<Bug>();
+            foreach (ContactPoint2D contact in contacts)
+            {
+                Bug otherBug = contact.collider?.gameObject?.GetComponentInParent<Bug>();
+                if (otherBug != null) {
+                    allBugs.Add(otherBug);
+                }
+            }
+            return allBugs.ToArray();
+        }
+    }
+    
+    public override void Reset()
+    {
+        base.Reset();
+        this.cachedAffectedBugs = null;
+    }
+
     public override float CalculateOverallScore()
     {
         return this.baseScore * this.multiplier;
@@ -29,18 +59,14 @@ public class Mosquito : Bug
     public override void StartScoring()
     {
         base.StartScoring();
-        ContactPoint2D[] contacts = this.GetContacts();
-        //print("reducing contacts" + contacts.Length);
-        foreach (ContactPoint2D contact in contacts)
-        {
-            Bug otherBug = contact.collider?.gameObject?.GetComponentInParent<Bug>();
             //print(otherBug);
-            if (otherBug != null)
-            {
-                otherBug.baseScore--;
-                this.baseScore += 3;
-            }
+        Bug[] allBugs = GetAffectedBugs();
+        foreach (Bug bug in allBugs)
+        {
+            bug.baseScore--;
+            this.baseScore += 3;
         }
+        this.cachedAffectedBugs = allBugs;
         // _ = ReduceAdjacentBugScore();
     }
 

@@ -190,7 +190,7 @@ public abstract class Bug : MonoBehaviour
         }
     }
 
-    public virtual async Task Hover(bool on, float intensity)
+    public virtual async Task Hover(bool on, float intensity, bool affectOthers)
     {
         if (_flashTask != null && !_flashTask.IsCompleted)
             await _flashTask;
@@ -206,13 +206,13 @@ public abstract class Bug : MonoBehaviour
             this.hoverAffectedBugs = GetAffectedBugs();
             foreach (Bug bug in this.hoverAffectedBugs)
             {
-                bug.Hover(on, 0.1f);
+                bug.Hover(on, 0.1f, false);
             }
         } else
         {
             foreach (Bug bug in this.hoverAffectedBugs)
             {
-                bug.Hover(on, 0f);
+                bug.Hover(on, 0f, false);
             }
             this.hoverAffectedBugs = null;
         }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Threading.Tasks;
+using System.Linq;
 
 
 public class Termite : Bug
@@ -21,9 +22,15 @@ public class Termite : Bug
         base.Start();
     }
 
+    public override Bug[] GetAffectedBugs()
+    {
+        Termite[] termites = FindObjectsByType<Termite>(FindObjectsSortMode.None);
+        return termites.Where(bug => !bug.Equals(this)).ToArray();
+    }
+
     public override float CalculateOverallScore()
     {
-        Termite[] termites = FindObjectsByType<Termite>();
+        Termite[] termites = FindObjectsByType<Termite>(FindObjectsSortMode.None);
         return (this.baseScore + (termites.Length - 1)) * this.multiplier;
     }
 

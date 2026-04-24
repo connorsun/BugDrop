@@ -57,9 +57,9 @@ public class Spider : Bug
         base.Destroy();
     }
 
-    public override async Task Hover(bool on, float intensity)
+    public override async Task Hover(bool on, float intensity, bool affectOthers)
     {
-        base.Hover(on, intensity);
+        base.Hover(on, intensity, affectOthers);
         this.spiderLine.GetComponent<SpiderLine>().SetColor(new Color(1f, 1f, 1f, on? 1f : 0.5f));
     }
 

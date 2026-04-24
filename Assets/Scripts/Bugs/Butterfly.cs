@@ -53,9 +53,9 @@ public class Butterfly : Bug
         return totalScore * this.multiplier;
     }
 
-    public override async Task Hover(bool on, float intensity)
+    public override async Task Hover(bool on, float intensity, bool affectOthers)
     {
-        base.Hover(on, intensity);
+        base.Hover(on, intensity, affectOthers);
         GameHandler.SingletonCircleIndicator.GetComponent<SpriteRenderer>().enabled = on;
         if (on) {
             GameHandler.SingletonCircleIndicator.transform.position = center.position;GameHandler.SingletonCircleIndicator.transform.localScale = new Vector3(DETECTION_RADIUS, DETECTION_RADIUS, 1f);
