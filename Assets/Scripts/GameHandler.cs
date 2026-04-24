@@ -54,7 +54,7 @@ public class GameHandler : MonoBehaviour
     public const float THRESHOLD_SCALE = 1.6f;
     public const float MOUSE_DETECTION_RADIUS = 0.05f;
     private const string BUG_PATH = "Prefabs/Bugs";
-    public const float FAST_GAME_SPEED = 0.2f;
+    public const float FAST_GAME_SPEED = 0.25f;
     private const float DROP_Y = 6.3f;
     private const float EDGE_X = 11.5f;
     private const float SCORE_PITCH_BASE = 1f;
