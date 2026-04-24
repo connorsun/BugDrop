@@ -84,6 +84,11 @@ public abstract class Bug : MonoBehaviour
         materials = segments.Select(seg => seg.GetComponent<SpriteRenderer>().material).ToArray();
         positions = segments.Select(seg => seg.transform.localPosition).ToArray();
         rotations = segments.Select(seg => seg.transform.rotation).ToArray();
+        foreach (Rigidbody2D rb in rigidbodies)
+        {
+            rb.gameObject.AddComponent<BugCollision>();
+            rb.gameObject.GetComponent<BugCollision>().rb = rb;
+        }
         for (int i = 0; i < materials.Length; i++)
         {
             materials[i].SetColor(FlashColorID, Color.white);

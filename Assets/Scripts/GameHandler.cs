@@ -203,9 +203,11 @@ public class GameHandler : MonoBehaviour
             await Task.Yield();
         }
         if (PlacingMode == PlaceMode.Placing) {
+            PlaySound("Bug Drop");
             placingBug.GetComponent<Bug>().SetSimulated(true);
         } else if (PlacingMode == PlaceMode.Moving)
         {
+            PlaySound("Bug Drop");
             placingBug.GetComponent<Bug>().Destroy();
             OriginalMovingBug.Destroy();
             MovingBug.GetComponent<Bug>().SetSimulated(true);
