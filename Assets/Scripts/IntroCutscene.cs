@@ -28,7 +28,7 @@ public class IntroCutscene : MonoBehaviour
 
     public void NextLine()
     {
-        if (dialogueIndex > lines.Length - 1)
+        if (dialogueIndex >= lines.Length - 1)
         {
             NextScene();
             return;

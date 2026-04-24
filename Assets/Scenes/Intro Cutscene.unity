@@ -405,6 +405,7 @@ MonoBehaviour:
   introCutsceneDialogue: {fileID: 827215243}
   introCutsceneSpeaker: {fileID: 1731090471}
   skipButton: {fileID: 1629799276}
+  tg: {fileID: 0}
   placingElements: []
   scoringElements: []
   scoringKnockoutElements: []
@@ -1520,9 +1521,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0
-    width: 1
-    height: 1
+    y: 1.2067416
+    width: 1.0391909
+    height: 1.039045
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
