@@ -4521,7 +4521,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -5557653926949170580, guid: e0cc452bb20ec410cb9c4e1e26209a28, type: 2}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: ddba331ed9d9740019d9094900c55080, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -4622,7 +4622,7 @@ MonoBehaviour:
   musicPlayers:
   - {fileID: 1496152711}
   - {fileID: 1496152710}
-  music: {fileID: 8300000, guid: 45f3df6edb72c433a8802a7ed77c88ce, type: 3}
+  music: {fileID: 8300000, guid: ddba331ed9d9740019d9094900c55080, type: 3}
 --- !u!4 &1496152713
 Transform:
   m_ObjectHideFlags: 0
@@ -5502,10 +5502,10 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.71807843
+    x: 0
     y: 0
-    width: 1.2406237
-    height: 1.2404494
+    width: 1
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
