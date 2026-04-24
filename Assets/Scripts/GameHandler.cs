@@ -482,24 +482,32 @@ public class GameHandler : MonoBehaviour
     public static void PlaySound(string sound)
     {
         Sound s = GetSound("Sounds/" + sound);
+        if (SingletonSFXSource == null)
+        {
+            SingletonSFXSource = Camera.main.gameObject.GetComponent<AudioSource>();
+        }
         if (sound.StartsWith("Score "))
         {
-            if (SoundsThisFrame.Contains("Score Sound"))
-            {
-                return;
+            if (SoundsThisFrame != null) {
+                if (SoundsThisFrame.Contains("Score Sound"))
+                {
+                    return;
+                }
+                SoundsThisFrame.Add("Score Sound");
             }
-            SoundsThisFrame.Add("Score Sound");
             SingletonPitchedSource.pitch = ScorePitch;
             if (ScorePitch < SCORE_PITCH_MAX) {
                 ScorePitch += SCORE_PITCH_INCR * (1/1.4f - Mathf.Atan(ScorePitch - 2f)/2.8f);
             }
             SingletonPitchedSource.PlayOneShot(s.clip);
         } else {
-            if (SoundsThisFrame.Contains(sound))
-            {
-                return;
+            if (SoundsThisFrame != null) {
+                if (SoundsThisFrame.Contains(sound))
+                {
+                    return;
+                }
+                SoundsThisFrame.Add(sound);
             }
-            SoundsThisFrame.Add(sound);
             SingletonSFXSource.pitch = 1;
             SingletonSFXSource.PlayOneShot(s.clip);
         }
