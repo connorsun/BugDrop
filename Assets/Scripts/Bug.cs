@@ -213,7 +213,7 @@ public abstract class Bug : MonoBehaviour
                 this.hoverAffectedBugs = GetAffectedBugs();
                 foreach (Bug bug in this.hoverAffectedBugs)
                 {
-                    bug.Hover(on, 0.15f, false);
+                    bug.Hover(on, 0.1f, false);
                 }
             } else
             {
