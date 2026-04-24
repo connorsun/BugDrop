@@ -63,6 +63,29 @@ public class Spider : Bug
         this.spiderLine.GetComponent<SpiderLine>().SetColor(new Color(1f, 1f, 1f, on? 1f : 0.5f));
     }
 
+    public override Bug[] GetAffectedBugs()
+    {
+        if (this.pairedSpider != null) {
+            List<RaycastHit2D> rayHits = new List<RaycastHit2D>();
+            Vector2 toOther = (Vector2) (this.pairedSpider.thoraxPoint.position - this.thoraxPoint.position);
+            Physics2D.Raycast(this.thoraxPoint.position, toOther.normalized, ContactFilter2D.noFilter, rayHits, toOther.magnitude);
+            List<Bug> bugsScored = new List<Bug>();
+            foreach (RaycastHit2D rayHit in rayHits)
+            {
+                Bug otherBug = rayHit.collider?.gameObject?.GetComponentInParent<Bug>();
+                print(otherBug);
+                //print(otherBug);
+                if (otherBug != null && otherBug != this && otherBug != this.pairedSpider)
+                {
+                    bugsScored.Add(otherBug);
+                    
+                }
+            }
+            return bugsScored.ToArray();
+        }
+        return new Bug[0];
+    }
+
     public override void Reset()
     {
         base.Reset();
@@ -83,25 +106,9 @@ public class Spider : Bug
             totalScore = this.cachedScore;
         } else {
             if (this.pairedSpider != null) {
-                List<RaycastHit2D> rayHits = new List<RaycastHit2D>();
-                Vector2 toOther = (Vector2) (this.pairedSpider.thoraxPoint.position - this.thoraxPoint.position);
-                Physics2D.Raycast(this.thoraxPoint.position, toOther.normalized, ContactFilter2D.noFilter, rayHits, toOther.magnitude);
-                List<Bug> bugsScored = new List<Bug>();
-                foreach (RaycastHit2D rayHit in rayHits)
+                foreach (Bug bug in GetAffectedBugs())
                 {
-                    Bug otherBug = rayHit.collider?.gameObject?.GetComponentInParent<Bug>();
-                    print(otherBug);
-                    //print(otherBug);
-                    if (otherBug != null && otherBug != this && otherBug != this.pairedSpider)
-                    {
-                        // will need to add some anti recursive stuff
-                        bugsScored.Add(otherBug);
-                        totalScore += otherBug.CalculateOverallScore(this);
-                    }
-                    if (otherBug == this.pairedSpider)
-                    {
-                        break;
-                    }
+                    totalScore += bug.CalculateOverallScore(this);
                 }
                 this.cachedScore = totalScore;
                 isCached = true;
