@@ -78,6 +78,8 @@ public class UIHandler : MonoBehaviour
 
     private UIState uiState = UIState.None;
     private float lerpScore;
+    private const float LERP_SOUND_THRESH_RATIO = 0.05f;
+    private float lerpSoundThreshold;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -274,6 +276,7 @@ public class UIHandler : MonoBehaviour
     public void SetScoreState()
     {
         lerpScore = (int)GameHandler.RoundScore;
+        lerpSoundThreshold = lerpScore;
         roundScoreNumber.text = (int)GameHandler.RoundScore + "";
         roundScoreNumberKnockout.text = (int)GameHandler.RoundScore + "";
         thresholdLabel.text = GameHandler.ScoreThreshold + "";
@@ -410,13 +413,18 @@ public class UIHandler : MonoBehaviour
     // Score lerping
     private IEnumerator LerpScore(float target)
     {
+        float threshDiff = Mathf.Max(1f, GameHandler.ScoreThreshold * LERP_SOUND_THRESH_RATIO);
         float diff = Mathf.Abs(target - lerpScore);
         float speed = Mathf.Max(8f /*MIN LERP SPEED*/, diff * 2f);
 
         while (Mathf.Abs(lerpScore - target) > 0.01f)
         {
             lerpScore = Mathf.Lerp(lerpScore, target, Time.deltaTime * speed);
-            
+            if (lerpScore >= lerpSoundThreshold + threshDiff)
+            {
+                GameHandler.PlaySound("ScoreLerp");
+                lerpSoundThreshold = lerpScore;
+            }
             roundScoreNumber.text = Mathf.CeilToInt(lerpScore) + "";
             roundScoreNumberKnockout.text = Mathf.CeilToInt(lerpScore) + "";
             thresholdLabel.text = GameHandler.ScoreThreshold + "";

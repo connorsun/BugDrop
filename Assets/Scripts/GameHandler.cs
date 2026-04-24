@@ -35,13 +35,14 @@ public class GameHandler : MonoBehaviour
     public static GameHandler SingletonGameHandler;
     public static UIHandler SingletonUIHandler;
     public static AudioSource SingletonSFXSource;
+    public static AudioSource SingletonPitchedSource;
     public static GameObject SingletonCircleIndicator;
     public static Bug.BugInfo[] BugTypes;
     public static Dictionary<int, List<Bug.BugInfo>> BugRarityTypes = new Dictionary<int, List<Bug.BugInfo>>();
     public static Dictionary<string, GameObject> LoadedResources = new Dictionary<string, GameObject>();
     public static Dictionary<string, Sound> LoadedSounds = new Dictionary<string, Sound>();
     public static Bug[] AllBugs;
-    public const int KNOCKOUT_ROUNDS = 3;
+    public const int KNOCKOUT_ROUNDS = 5;
     public static Dictionary<int, float[]> RoundRarityChances = new Dictionary<int, float[]>
     {
         [0] = new[]{1f},
@@ -50,7 +51,7 @@ public class GameHandler : MonoBehaviour
         [25] = new[]{0.33f, 0.33f, 0.31f, 0.02f}
     };
     public static float[] CurrentRarityChances = {1f};
-    public const int THRESHOLD_BASE = 6;
+    public const int THRESHOLD_BASE = 10;
     public const float THRESHOLD_SCALE = 1.6f;
     public const float MOUSE_DETECTION_RADIUS = 0.05f;
     private const string BUG_PATH = "Prefabs/Bugs";
@@ -87,6 +88,7 @@ public class GameHandler : MonoBehaviour
     // --- OBJECT REFERENCES ---
     [SerializeField] private UIHandler uiHandler;
     [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioSource pitchedAudioSource;
     [SerializeField] private GameObject circleIndicator;
     [SerializeField] private GameObject[] placingClickExcludeButtons;
     private InputSystem_Actions controls;
@@ -120,6 +122,7 @@ public class GameHandler : MonoBehaviour
         SingletonGameHandler = this;
         SingletonUIHandler = uiHandler;
         SingletonSFXSource = audioSource;
+        SingletonPitchedSource = pitchedAudioSource;
         SingletonCircleIndicator = circleIndicator;
         GameState = PlayState.Playing;
         Round = 0;
@@ -137,6 +140,7 @@ public class GameHandler : MonoBehaviour
         if (IsKnockout && Round > 0)
         {
             // set up for next knockout round
+            // ScoreThreshold = (int)Mathf.Round(Mathf.Pow((float)Round/KNOCKOUT_ROUNDS + Mathf.Sqrt(10), 2));
             ScoreThreshold = (int)(ScoreThreshold * THRESHOLD_SCALE);
         }
         BroadcastToBugs((Bug bug) => bug.Reset());
@@ -474,6 +478,7 @@ public class GameHandler : MonoBehaviour
     }
     public static void PlaySound(string sound)
     {
+        Sound s = GetSound("Sounds/" + sound);
         if (sound.StartsWith("Score "))
         {
             if (SoundsThisFrame.Contains("Score Sound"))
@@ -481,10 +486,11 @@ public class GameHandler : MonoBehaviour
                 return;
             }
             SoundsThisFrame.Add("Score Sound");
-            SingletonSFXSource.pitch = ScorePitch;
+            SingletonPitchedSource.pitch = ScorePitch;
             if (ScorePitch < SCORE_PITCH_MAX) {
                 ScorePitch += SCORE_PITCH_INCR * (1/1.4f - Mathf.Atan(ScorePitch - 2f)/2.8f);
             }
+            SingletonPitchedSource.PlayOneShot(s.clip);
         } else {
             if (SoundsThisFrame.Contains(sound))
             {
@@ -492,9 +498,8 @@ public class GameHandler : MonoBehaviour
             }
             SoundsThisFrame.Add(sound);
             SingletonSFXSource.pitch = 1;
+            SingletonSFXSource.PlayOneShot(s.clip);
         }
-        Sound s = GetSound("Sounds/" + sound);
-        SingletonSFXSource.PlayOneShot(s.clip);
     }
 
     public static Vector3 GetMouseWorldPos()
