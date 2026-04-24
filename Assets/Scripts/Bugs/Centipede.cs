@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 
 public class Centipede : Bug
@@ -39,22 +40,32 @@ public class Centipede : Bug
         // return totalScore;
     }
 
+    public override Bug[] GetAffectedBugs()
+    {
+        ContactPoint2D[] contacts = this.GetContacts();
+        HashSet<Bug> bugsToTrigger = new HashSet<Bug>();
+        foreach (ContactPoint2D contact in contacts)
+        {
+            Bug otherBug = contact.collider?.gameObject?.GetComponentInParent<Bug>();
+            if (otherBug != null && !otherBug.secondaryTriggered)
+            {
+                bugsToTrigger.Add(otherBug);
+            }
+        }
+        return bugsToTrigger.ToArray();
+    }
+
     protected override async Task Score(bool isPrimary, int recursiveSecondaries)
     {
 
         ScorePoints(CalculateOverallScore(), isPrimary);
 
         // Retrigger logic
-        ContactPoint2D[] contacts = this.GetContacts();
-        List<Task> bugsToTrigger = new List<Task>();
-        foreach (ContactPoint2D contact in contacts)
+        List<Task> bugTasksToTrigger = new List<Task>();
+        foreach (Bug bug in GetAffectedBugs())
         {
-            Bug otherBug = contact.collider?.gameObject?.GetComponentInParent<Bug>();
-            if (otherBug != null && !otherBug.secondaryTriggered)
-            {
-                bugsToTrigger.Add(otherBug.Trigger(false, this.center.position, recursiveSecondaries + 1));
-            }
+            bugTasksToTrigger.Add(bug.Trigger(false, this.center.position, recursiveSecondaries + 1));
         }
-        await Task.WhenAll(bugsToTrigger);
+        await Task.WhenAll(bugTasksToTrigger);
     }
 }

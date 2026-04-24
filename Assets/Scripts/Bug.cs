@@ -199,22 +199,30 @@ public abstract class Bug : MonoBehaviour
 
         for (int i = 0; i < materials.Length; i++)
         {
-            materials[i].SetColor(FlashColorID, Color.white);
+            if (intensity < -99f && on) {
+                // honey effect for bee
+                materials[i].SetColor(FlashColorID, Color.yellow);
+            } else
+            {
+                materials[i].SetColor(FlashColorID, Color.white);
+            }
             materials[i].SetFloat(FlashIntensityID, on? intensity : 0f);
         }
-        if (on) {
-            this.hoverAffectedBugs = GetAffectedBugs();
-            foreach (Bug bug in this.hoverAffectedBugs)
+        if (affectOthers) {
+            if (on) {
+                this.hoverAffectedBugs = GetAffectedBugs();
+                foreach (Bug bug in this.hoverAffectedBugs)
+                {
+                    bug.Hover(on, 0.1f, false);
+                }
+            } else
             {
-                bug.Hover(on, 0.1f, false);
+                foreach (Bug bug in this.hoverAffectedBugs)
+                {
+                    bug.Hover(on, 0f, false);
+                }
+                this.hoverAffectedBugs = null;
             }
-        } else
-        {
-            foreach (Bug bug in this.hoverAffectedBugs)
-            {
-                bug.Hover(on, 0f, false);
-            }
-            this.hoverAffectedBugs = null;
         }
     }
 

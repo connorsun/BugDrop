@@ -24,16 +24,16 @@ public class Butterfly : Bug
         this.thisBugInfo = GetInfo();
         base.Start();
     }
-    
-    public override float CalculateOverallScore()
-    {
+
+    public override Bug[] GetAffectedBugs()
+    {   
         // Find bugs in radius
         List<Collider2D> overlapColliders = new List<Collider2D>();
         Physics2D.OverlapCircle(this.center.position, DETECTION_RADIUS, ContactFilter2D.noFilter, overlapColliders);
         List<Collider2D> filteredBugs = overlapColliders.Where(bug => bug.gameObject?.GetComponentInParent<Bug>() != null/* && (this.center.position - bug.gameObject.GetComponentInParent<Bug>().center.position).magnitude < DETECTION_RADIUS*/
             ).ToList();
         float totalScore = this.baseScore;
-        List<Bug> bugsScored = new List<Bug>();
+        HashSet<Bug> bugsScored = new HashSet<Bug>();
         print(filteredBugs.Count);
         foreach (Collider2D bugCol in filteredBugs)
         {
@@ -42,13 +42,20 @@ public class Butterfly : Bug
             {
                 if (otherBug is Butterfly)
                 {
-                    print(otherBug);
-                    totalScore = this.baseScore;
-                    break;
+                    return new Bug[0]{};
                 }
                 bugsScored.Add(otherBug);
-                totalScore += otherBug.CalculateOverallScore() / 2f;
             }
+        }
+        return bugsScored.ToArray();
+    }
+    
+    public override float CalculateOverallScore()
+    {
+        float totalScore = this.baseScore;
+        foreach (Bug bug in GetAffectedBugs())
+        {
+            totalScore += bug.CalculateOverallScore() / 2f;
         }
         return totalScore * this.multiplier;
     }
@@ -56,9 +63,11 @@ public class Butterfly : Bug
     public override async Task Hover(bool on, float intensity, bool affectOthers)
     {
         base.Hover(on, intensity, affectOthers);
-        GameHandler.SingletonCircleIndicator.GetComponent<SpriteRenderer>().enabled = on;
-        if (on) {
-            GameHandler.SingletonCircleIndicator.transform.position = center.position;GameHandler.SingletonCircleIndicator.transform.localScale = new Vector3(DETECTION_RADIUS, DETECTION_RADIUS, 1f);
+        if (affectOthers) {
+            GameHandler.SingletonCircleIndicator.GetComponent<SpriteRenderer>().enabled = on;
+            if (on) {
+                GameHandler.SingletonCircleIndicator.transform.position = center.position;GameHandler.SingletonCircleIndicator.transform.localScale = new Vector3(DETECTION_RADIUS, DETECTION_RADIUS, 1f);
+            }
         }
     }
 

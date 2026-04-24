@@ -33,17 +33,16 @@ public class Aphid : Bug
     public override async Task Hover(bool on, float intensity, bool affectOthers)
     {
         base.Hover(on, intensity, affectOthers);
-        GameHandler.SingletonCircleIndicator.GetComponent<SpriteRenderer>().enabled = on;
-        if (on) {
-            GameHandler.SingletonCircleIndicator.transform.position = center.position;GameHandler.SingletonCircleIndicator.transform.localScale = new Vector3(DETECTION_RADIUS, DETECTION_RADIUS, 1f);
+        if (affectOthers) {
+            GameHandler.SingletonCircleIndicator.GetComponent<SpriteRenderer>().enabled = on;
+            if (on) {
+                GameHandler.SingletonCircleIndicator.transform.position = center.position;GameHandler.SingletonCircleIndicator.transform.localScale = new Vector3(DETECTION_RADIUS, DETECTION_RADIUS, 1f);
+            }
         }
     }
 
-    protected override async Task Score(bool isPrimary, int recursiveSecondaries)
+    public override Bug[] GetAffectedBugs()
     {
-
-        ScorePoints(CalculateOverallScore(), isPrimary);
-
         // Find bugs to retrigger
         List<Collider2D> overlapColliders = new List<Collider2D>();
         Physics2D.OverlapCircle(this.center.position, DETECTION_RADIUS, ContactFilter2D.noFilter, overlapColliders);
@@ -52,8 +51,7 @@ public class Aphid : Bug
         filteredBugs.Sort((Collider2D bug1, Collider2D bug2) => (int)Mathf.Sign((this.center.position - bug1.gameObject.GetComponentInParent<Bug>().center.position).magnitude - (this.center.position - bug2.gameObject.GetComponentInParent<Bug>().center.position).magnitude));
 
         // Retrigger logic
-        List<Task> bugTasksToTrigger = new List<Task>();
-        List<Bug> bugsToTrigger = new List<Bug>();
+        HashSet<Bug> bugsToTrigger = new HashSet<Bug>();
         int i = 0;
         foreach (Collider2D bugCol in filteredBugs)
         {
@@ -61,13 +59,25 @@ public class Aphid : Bug
             if (otherBug != null && otherBug != this && !bugsToTrigger.Contains(otherBug) && !otherBug.secondaryTriggered)
             {
                 bugsToTrigger.Add(otherBug);
-                bugTasksToTrigger.Add(otherBug.Trigger(false, this.center.position, recursiveSecondaries + 1));
                 i++;
             }
             if (i >= MAX_TRIGGER)
             {
                 break;
             }
+        }
+        return bugsToTrigger.ToArray();
+    }
+
+    protected override async Task Score(bool isPrimary, int recursiveSecondaries)
+    {
+
+        ScorePoints(CalculateOverallScore(), isPrimary);
+
+        Bug[] allBugs = GetAffectedBugs();
+        List<Task> bugTasksToTrigger = new List<Task>();
+        foreach (Bug bug in allBugs) {
+            bugTasksToTrigger.Add(bug.Trigger(false, this.center.position, recursiveSecondaries + 1));
         }
         await Task.WhenAll(bugTasksToTrigger);
     }
