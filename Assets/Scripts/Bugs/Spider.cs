@@ -42,6 +42,7 @@ public class Spider : Bug
                     this.spiderLine.GetComponent<SpiderLine>().spider1 = this;
                     this.spiderLine.GetComponent<SpiderLine>().spider2 = this.pairedSpider;
                     this.spiderLine.GetComponent<SpiderLine>().SetColor(new Color(1f, 1f, 1f, 0.5f));
+                    this.pairedSpider.spiderLine = this.spiderLine;
                     break;
                 }
             }
