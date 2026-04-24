@@ -298,6 +298,16 @@ public class UIHandler : MonoBehaviour
         tooltipRectTransform.sizeDelta = new Vector2(tooltipRectTransform.sizeDelta.x, 25 + (lineCount * 8));
     }
 
+    public void ButtonHover()
+    {
+        GameHandler.PlaySound("Button Hover");
+    }
+
+    public void ButtonPress()
+    {
+        GameHandler.PlaySound("Button Press");
+    }
+
     public async Task ShowCurrentBugTooltip()
     {
         await tooltipRectTransform.gameObject.GetComponent<UIAnimatable>().Show();
