@@ -193,6 +193,7 @@ GameObject:
   - component: {fileID: 14021274}
   - component: {fileID: 14021273}
   - component: {fileID: 14021271}
+  - component: {fileID: 14021276}
   m_Layer: 5
   m_Name: Start Button
   m_TagString: Untagged
@@ -336,6 +337,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 14021270}
   m_CullTransparentMesh: 1
+--- !u!114 &14021276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 14021270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 698057309}
+          m_TargetAssemblyTypeName: UIHandler, Assembly-CSharp
+          m_MethodName: ButtonHover
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 698057309}
+          m_TargetAssemblyTypeName: UIHandler, Assembly-CSharp
+          m_MethodName: ButtonPress
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!4 &61282155 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 850153518807848515, guid: 73f95fc08390e48779a850517632d20b, type: 3}
@@ -5374,6 +5420,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameHandler
   uiHandler: {fileID: 0}
   audioSource: {fileID: 1853192942}
+  pitchedAudioSource: {fileID: 0}
   circleIndicator: {fileID: 0}
   placingClickExcludeButtons: []
 --- !u!114 &1853192945

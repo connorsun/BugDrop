@@ -346,6 +346,7 @@ public class GameHandler : MonoBehaviour
         // check for lose condition
         if (IsKnockout && RoundScore < ScoreThreshold)
         {
+            PlaySound("You Lose");
             await uiHandler.EnterLosingState();
             return;
         }
