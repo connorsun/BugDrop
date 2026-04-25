@@ -8,7 +8,7 @@ public class MusicHandler : MonoBehaviour
     [SerializeField] private AudioClip music;
     private int nextMusicPlayer;
     private const float preloadDelay = 1f;
-    private const string startScene = "Title Screen";
+    private const string startScene = "Arena";
     private bool notFirstLoad;
     private bool losing;
     private const float LOSE_VOLUME = 0f;
