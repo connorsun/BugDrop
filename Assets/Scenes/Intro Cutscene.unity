@@ -1343,6 +1343,7 @@ GameObject:
   - component: {fileID: 1853192944}
   - component: {fileID: 1853192943}
   - component: {fileID: 1853192942}
+  - component: {fileID: 1853192949}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1488,6 +1489,7 @@ MonoBehaviour:
   pitchedAudioSource: {fileID: 1853192942}
   circleIndicator: {fileID: 0}
   placingClickExcludeButtons: []
+  trackingBug: 0
 --- !u!114 &1853192945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1568,9 +1570,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0.0764045
-    width: 2.0581543
-    height: 2.0578651
+    y: 0
+    width: 1
+    height: 0.9998596
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -1606,6 +1608,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1853192949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1853192941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cc72bc40d9cf48e68bce85369f5ee6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!1 &1955609287
 GameObject:
   m_ObjectHideFlags: 0

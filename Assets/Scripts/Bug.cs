@@ -45,6 +45,7 @@ public abstract class Bug : MonoBehaviour
     // parent object this script is on does not follow the position of the child segments
     [SerializeField] public Transform center;
     [SerializeField] public GameObject[] segments;
+    [SerializeField] private bool notReal;
     private Collider2D[] colliders;
     private Rigidbody2D[] rigidbodies;
     private Material[] materials;
@@ -84,10 +85,12 @@ public abstract class Bug : MonoBehaviour
         materials = segments.Select(seg => seg.GetComponent<SpriteRenderer>().material).ToArray();
         positions = segments.Select(seg => seg.transform.localPosition).ToArray();
         rotations = segments.Select(seg => seg.transform.rotation).ToArray();
-        foreach (Rigidbody2D rb in rigidbodies)
-        {
-            rb.gameObject.AddComponent<BugCollision>();
-            rb.gameObject.GetComponent<BugCollision>().rb = rb;
+        if (!notReal) {
+            foreach (Rigidbody2D rb in rigidbodies)
+            {
+                rb.gameObject.AddComponent<BugCollision>();
+                rb.gameObject.GetComponent<BugCollision>().rb = rb;
+            }
         }
         for (int i = 0; i < materials.Length; i++)
         {
