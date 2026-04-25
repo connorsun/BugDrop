@@ -12,7 +12,7 @@ public class Termite : Bug
     // Gets metadata about this bug type
     public static BugInfo GetInfo()
     {
-        return new BugInfo("Termite", 2, 0, 1.25f, 0.5f, "1 point for each Termite in tank (max 15 points each)");
+        return new BugInfo("Termite", 2, 0, 1.25f, 0.5f, "1 point for each Termite in terrarium (max 15 points each)");
     }
 
     // --- PUBLIC METHODS ---

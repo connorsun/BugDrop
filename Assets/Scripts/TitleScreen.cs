@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class TitleScreen : MonoBehaviour
 {
@@ -13,7 +14,17 @@ public class TitleScreen : MonoBehaviour
 
     public void OnStartButtonClicked()
     {
-        SceneManager.LoadScene("Arena");
+        StartCoroutine(LoadScene());
+    }
+
+    IEnumerator LoadScene()
+    {
+        AsyncOperation op = SceneManager.LoadSceneAsync("Arena");
+        op.allowSceneActivation = true;
+        while (!op.isDone)
+        {
+            yield return null;
+        }
     }
 
     // Update is called once per frame

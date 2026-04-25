@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class IntroCutscene : MonoBehaviour
 {
@@ -45,7 +46,17 @@ public class IntroCutscene : MonoBehaviour
 
     public void NextScene()
     {
-        SceneManager.LoadScene("Title Screen");
+        StartCoroutine(LoadScene());
+    }
+
+    IEnumerator LoadScene()
+    {
+        AsyncOperation op = SceneManager.LoadSceneAsync("Title Screen");
+        op.allowSceneActivation = true;
+        while (!op.isDone)
+        {
+            yield return null;
+        }
     }
 
     // Update is called once per frame

@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.Threading.Tasks;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using System.Collections;
@@ -230,8 +231,17 @@ public class UIHandler : MonoBehaviour
         GameHandler.AllBugs = new Bug[0];
         //print(GameHandler.AllBugs.Length);
         gameHandler.ResetGlobals();
-        SceneManager.LoadScene("Title Screen");
-        //Application.Quit();
+        StartCoroutine(LoadScene());
+    }
+
+    IEnumerator LoadScene()
+    {
+        AsyncOperation op = SceneManager.LoadSceneAsync("Title Screen");
+        op.allowSceneActivation = true;
+        while (!op.isDone)
+        {
+            yield return null;
+        }
     }
 
     public void OnFastForwardButtonClicked()

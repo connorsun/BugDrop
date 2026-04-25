@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Collections;
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
@@ -14,6 +15,16 @@ public class TitleUIHandler : MonoBehaviour
 {
     public void OnStartButtonClicked()
     {
-        SceneManager.LoadScene("Arena");
+        StartCoroutine(LoadScene());
+    }
+
+    IEnumerator LoadScene()
+    {
+        AsyncOperation op = SceneManager.LoadSceneAsync("Arena");
+        op.allowSceneActivation = true;
+        while (!op.isDone)
+        {
+            yield return null;
+        }
     }
 }
