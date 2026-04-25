@@ -31,7 +31,7 @@ public class GameHandler : MonoBehaviour
     public delegate void BugAction(Bug bug);
     
     // --- CONSTANTS ---
-    public const bool BUILD_FLAG = false;
+    public const bool BUILD_FLAG = true;
     public static GameHandler SingletonGameHandler;
     public static UIHandler SingletonUIHandler;
     public static AudioSource SingletonSFXSource;
@@ -52,7 +52,9 @@ public class GameHandler : MonoBehaviour
     };
     public static float[] CurrentRarityChances = {1f};
     public const int THRESHOLD_BASE = 10;
-    public const float THRESHOLD_SCALE = 1.6f;
+    public const float THRESHOLD_SCALE = 2f;
+    public const float THRESHOLD_SCALE_35 = 4f;
+    public const float THRESHOLD_SCALE_60 = 10f;
     public const float MOUSE_DETECTION_RADIUS = 0.05f;
     private const string BUG_PATH = "Prefabs/Bugs";
     public const float FAST_GAME_SPEED = 0.25f;
@@ -65,6 +67,7 @@ public class GameHandler : MonoBehaviour
     public static Vector3 ZapperPos = new Vector3(0f, -7f, 0f);
     public static Color PRIMARY_COLOR = new Color(255f / 255f, 240f / 255f, 137f / 255f);
     public static Color SECONDARY_COLOR = new Color(115f / 255f, 239f / 255f, 232f / 255f);
+    public static float MAX_HEIGHT = 6f;
     
 
     // --- GLOBAL STATE ---
@@ -82,6 +85,7 @@ public class GameHandler : MonoBehaviour
     public static Bug MovingBug;
     public static Bug OriginalMovingBug;
     public static float ScorePitch;
+    public static bool CantPlace;
     public static HashSet<string> SoundsThisFrame = new HashSet<string>();
 
 
@@ -146,7 +150,15 @@ public class GameHandler : MonoBehaviour
         {
             // set up for next knockout round
             // ScoreThreshold = (int)Mathf.Round(Mathf.Pow((float)Round/KNOCKOUT_ROUNDS + Mathf.Sqrt(10), 2));
-            ScoreThreshold = (int)(ScoreThreshold * THRESHOLD_SCALE);
+            if (Round >= 60) {
+                ScoreThreshold = (int)(ScoreThreshold * THRESHOLD_SCALE_60);
+            } else if (Round >= 35)
+            {
+                ScoreThreshold = (int)(ScoreThreshold * THRESHOLD_SCALE_35);
+            } else
+            {
+                ScoreThreshold = (int)(ScoreThreshold * THRESHOLD_SCALE);
+            }
         }
         BroadcastToBugs((Bug bug) => bug.Reset());
         PlacingMode = PlaceMode.Placing;
@@ -160,6 +172,7 @@ public class GameHandler : MonoBehaviour
             }
         }
         CurrentRarityChances = RoundRarityChances[rarityRound];
+        print(CurrentRarityChances.Length);
         CurrentPhase = Phase.Placing;
         LastRoundScore = RoundScore;
         RoundScore = 0;
@@ -167,6 +180,14 @@ public class GameHandler : MonoBehaviour
         try {
         selectedBug = PickRandomBug();
         this.uiHandler.SetCurrentBugTooltip(selectedBug);
+        foreach (Bug bug in AllBugs) {
+            if (bug.placed && bug.overHeight)
+            {
+                CantPlace = true;
+                this.uiHandler.ShowCantPlace();
+                break;
+            }
+        }
         await this.uiHandler.EnterPlacingState();
         uiHandler.SetScoreState();
 
@@ -193,13 +214,36 @@ public class GameHandler : MonoBehaviour
         {
             Vector3 worldPosition = GetMouseWorldPos();
             if (PlacingMode == PlaceMode.Placing) {
-                placingBug.SetActive(true);
-                placingBug.transform.position = new Vector3(Mathf.Clamp(worldPosition.x, -safeWidth, safeWidth), DROP_Y);
+                bool found = false;
+                foreach (Bug bug in AllBugs) {
+                    if (bug.placed && bug.overHeight)
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+                if (found)
+                {
+                    if (!CantPlace)
+                    {
+                        this.uiHandler.ShowCantPlace();
+                    }
+                    CantPlace = true;
+                    placingBug.SetActive(false);
+                } else {
+                    if (CantPlace)
+                    {
+                        this.uiHandler.SetCurrentBugTooltip(selectedBug);
+                    }
+                    placingBug.SetActive(true);
+                    GameHandler.CantPlace = false;
+                    placingBug.transform.position = new Vector3(Mathf.Clamp(worldPosition.x, -safeWidth, safeWidth), DROP_Y);
+                }
             } else if (PlacingMode == PlaceMode.Moving)
             {
                 placingBug.SetActive(false);
                 if (MovingBug != null) {
-                    MovingBug.transform.position = new Vector3(Mathf.Clamp(worldPosition.x, -safeWidth, safeWidth), DROP_Y);
+                    MovingBug.transform.position = new Vector3(Mathf.Clamp(worldPosition.x, -this.movingSafeWidth, this.movingSafeWidth), DROP_Y);
                 }
             } else
             {
@@ -207,12 +251,14 @@ public class GameHandler : MonoBehaviour
             }
             await Task.Yield();
         }
+        CantPlace = false;
         if (PlacingMode == PlaceMode.Placing) {
             PlaySound("Bug Drop");
             if (placingBug.GetComponent<Bug>() is Spider)
             {
                 placingBug.GetComponent<Spider>().InitSpider();
             }
+            placingBug.GetComponent<Bug>().placed = true;
             placingBug.GetComponent<Bug>().SetSimulated(true);
         } else if (PlacingMode == PlaceMode.Moving)
         {
@@ -226,6 +272,7 @@ public class GameHandler : MonoBehaviour
             }
             placingBug.GetComponent<Bug>().Destroy();
             OriginalMovingBug.Destroy();
+            MovingBug.GetComponent<Bug>().placed = true;
             MovingBug.GetComponent<Bug>().SetSimulated(true);
             AllBugs = FindObjectsByType<Bug>(FindObjectsSortMode.None);
         }
@@ -278,7 +325,7 @@ public class GameHandler : MonoBehaviour
                 return;
             }
         }
-        if (PlacingMode == PlaceMode.Placing) {
+        if (PlacingMode == PlaceMode.Placing && !CantPlace) {
             trackingBug = false;
         } else if (PlacingMode == PlaceMode.Moving)
         {

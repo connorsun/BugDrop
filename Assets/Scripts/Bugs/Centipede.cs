@@ -14,7 +14,7 @@ public class Centipede : Bug
     // Gets metadata about this bug type
     public static BugInfo GetInfo()
     {
-        return new BugInfo("Centipede", 4, 0, 12f, 0.5f, "Retriggers all adjacent bugs");
+        return new BugInfo("Centipede", 4, 0, 9f, 0.5f, "Retriggers all adjacent bugs");
     }
 
     // --- PUBLIC METHODS ---

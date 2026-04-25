@@ -15,7 +15,7 @@ public class Butterfly : Bug
     // Gets metadata about this bug type
     public static BugInfo GetInfo()
     {
-        return new BugInfo("Butterfly", 3, 0, 3f, 0.5f, "Scores 50% of points of all bugs in 4 cm if no other Butterflies are in radius");
+        return new BugInfo("Butterfly", 3, 0, 3f, 0.5f, "Sums the points of all bugs in 4 cm if no other Butterflies are in radius");
     }
 
     // --- PUBLIC METHODS ---
@@ -59,7 +59,7 @@ public class Butterfly : Bug
         float totalScore = this.baseScore;
         foreach (Bug bug in GetAffectedBugs())
         {
-            totalScore += bug.CalculateOverallScore() / 2f;
+            totalScore += bug.CalculateOverallScore();
         }
         return totalScore * this.multiplier;
     }
@@ -70,11 +70,11 @@ public class Butterfly : Bug
         if (affectOthers) {
             GameHandler.SingletonCircleIndicator.GetComponent<SpriteRenderer>().enabled = on;
             if (on) {
-                GameHandler.SingletonCircleIndicator.transform.position = center.position;GameHandler.SingletonCircleIndicator.transform.localScale = new Vector3(1f, 1f, 1f);
+                GameHandler.SingletonCircleIndicator.transform.position = center.position;GameHandler.SingletonCircleIndicator.transform.localScale = new Vector3(2f, 2f, 1f);
             }
         }
     }
-    
+
     public override void Destroy()
     {
         GameHandler.SingletonCircleIndicator.GetComponent<SpriteRenderer>().enabled = false;

@@ -34,7 +34,6 @@ public class BugCollision : MonoBehaviour
             {
                 ContactPoint2D contactPoint = other.GetContact(0);
                 Vector2 pointDir = (contactPoint.point - (Vector2) transform.position).normalized;
-                print("bug " + Vector2.Dot(prevVel, pointDir));
                 if (Vector2.Dot(prevVel, pointDir) > BUG_HIT_BUG_THRESH)
                 {
                     GameHandler.PlaySound("Bug Hit Other Bug");
@@ -45,7 +44,6 @@ public class BugCollision : MonoBehaviour
             {
                 ContactPoint2D contactPoint = other.GetContact(0);
                 Vector2 pointDir = (contactPoint.point - (Vector2) transform.position).normalized;
-                print("ground " + Vector2.Dot(prevVel, pointDir));
                 if (Vector2.Dot(prevVel, pointDir) > BUG_HIT_GROUND_THRESH)
                 {
                     GameHandler.PlaySound("Bug Hit Ground");

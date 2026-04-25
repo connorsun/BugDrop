@@ -8,14 +8,14 @@ public class Aphid : Bug
 {
     // --- CONSTANTS ---
     private const float DETECTION_RADIUS = 3f;
-    private const int MAX_TRIGGER = 2;
+    private const int MAX_TRIGGER = 3;
     // --- OBJECT REFERENCES --- 
 
     // --- STATIC METADATA ---
     // Gets metadata about this bug type
     public static BugInfo GetInfo()
     {
-        return new BugInfo("Aphid", 2, 0, 3f, 0.5f, "Retriggers two closest bugs within 3 cm");
+        return new BugInfo("Aphid", 2, 0, 3f, 0.5f, "Retriggers three closest bugs within 3 cm");
     }
 
     // --- PUBLIC METHODS ---
@@ -36,7 +36,7 @@ public class Aphid : Bug
         if (affectOthers) {
             GameHandler.SingletonCircleIndicator.GetComponent<SpriteRenderer>().enabled = on;
             if (on) {
-                GameHandler.SingletonCircleIndicator.transform.position = center.position;GameHandler.SingletonCircleIndicator.transform.localScale = new Vector3(0.75f, 0.75f, 1f);
+                GameHandler.SingletonCircleIndicator.transform.position = center.position;GameHandler.SingletonCircleIndicator.transform.localScale = new Vector3(1.5f, 1.5f, 1f);
             }
         }
     }

@@ -59,6 +59,8 @@ public abstract class Bug : MonoBehaviour
     private Task _flashTask;
     private Task _lerpTask;
     private Bug[] hoverAffectedBugs;
+    public bool overHeight;
+    public bool placed;
 
     public void Awake()
     {
@@ -72,9 +74,16 @@ public abstract class Bug : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public virtual void Update()
     {
-        
+        overHeight = false;
+        foreach (Rigidbody2D rb in rigidbodies)
+        {
+            if (rb.transform.position.y > GameHandler.MAX_HEIGHT)
+            {
+                overHeight = true;
+            }
+        }
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -304,7 +313,12 @@ public abstract class Bug : MonoBehaviour
                     //new Vector3(this.thisBugInfo.safeHorizRadius / 2f, this.thisBugInfo.safeVertRadius) +
                     new Vector3(UnityEngine.Random.Range(-0.1f, 0.1f), UnityEngine.Random.Range(-0.1f, 0.1f), 0f),
             (int)score, isPrimary);
-        GameHandler.PlaySound("Score " + UnityEngine.Random.Range(1, 4));
+        if (isPrimary) {
+            GameHandler.PlaySound("Score " + UnityEngine.Random.Range(1, 4));
+        } else
+        {
+            GameHandler.PlaySound("Score 4");
+        }
     }
 
     protected ContactPoint2D[] GetContacts()

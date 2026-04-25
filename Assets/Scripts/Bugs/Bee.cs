@@ -13,7 +13,7 @@ public class Bee : Bug
     // Gets metadata about this bug type
     public static BugInfo GetInfo()
     {
-        return new BugInfo("Bee", 2, 3, 1.5f, 0.5f, "Honeys bug directly below, giving it x2 score");
+        return new BugInfo("Bee", 2, 3, 1.5f, 0.5f, "Honeys bug directly below, giving it x2.5 score");
     }
 
     // --- PUBLIC METHODS ---
@@ -45,9 +45,7 @@ public class Bee : Bug
                     //print(otherBug);
                     if (otherBug != null && otherBug != this)
                     {
-                        if (!otherBug.effects.Contains(Effect.Honeyed)) {
-                            otherBug.Hover(on, -100f, false);
-                        }
+                        otherBug.Hover(on, -100f, false);
                     }
                     if (otherBug != this)
                     {
@@ -71,9 +69,9 @@ public class Bee : Bug
             {
                 if (!otherBug.effects.Contains(Effect.Honeyed)) {
                     otherBug.effects.Add(Effect.Honeyed);
-                    otherBug.multiplier *= 2;
-                    this.cachedAffectedBug = otherBug;
                 }
+                otherBug.multiplier *= 2.5f;
+                this.cachedAffectedBug = otherBug;
             }
             if (otherBug != this)
             {

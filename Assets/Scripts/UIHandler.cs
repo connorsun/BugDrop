@@ -342,6 +342,15 @@ public class UIHandler : MonoBehaviour
         await tooltipRectTransform.gameObject.GetComponent<UIAnimatable>().Hide();
     }
 
+    public async Task ShowCantPlace()
+    {
+        currentBugTooltipTitle.text = "Warning:";
+        currentBugTooltipDescription.text = "Some bugs are too high, so you cannot place new ones right now! Move or delete bugs to go under the limit.";
+        currentBugTooltipDescription.ForceMeshUpdate(true);
+        int lineCount = currentBugTooltipDescription.textInfo.lineCount;
+        tooltipRectTransform.sizeDelta = new Vector2(tooltipRectTransform.sizeDelta.x, 25 + (lineCount * 8));
+    }
+
     public async Task HideModeButtons()
     {
         GameHandler.PlaySound("Whoosh");
@@ -452,7 +461,7 @@ public class UIHandler : MonoBehaviour
         float diff = Mathf.Abs(target - lerpScore);
         float speed = Mathf.Max(8f /*MIN LERP SPEED*/, diff * 2f);
 
-        while (Mathf.Abs(lerpScore - target) > 0.01f)
+        while (Mathf.Abs(lerpScore - target) > 0.01f && GameHandler.CurrentPhase != GameHandler.Phase.Placing)
         {
             lerpScore = Mathf.Lerp(lerpScore, target, Time.deltaTime * speed);
             if (lerpScore >= lerpSoundThreshold + threshDiff)
