@@ -52,9 +52,9 @@ public class GameHandler : MonoBehaviour
     };
     public static float[] CurrentRarityChances = {1f};
     public const int THRESHOLD_BASE = 10;
-    public const float THRESHOLD_SCALE = 2f;
-    public const float THRESHOLD_SCALE_35 = 4f;
-    public const float THRESHOLD_SCALE_60 = 10f;
+    public const float THRESHOLD_SCALE = 1.8f;
+    public const float THRESHOLD_SCALE_35 = 2.5f;
+    public const float THRESHOLD_SCALE_60 = 4f;
     public const float MOUSE_DETECTION_RADIUS = 0.05f;
     private const string BUG_PATH = "Prefabs/Bugs";
     public const float FAST_GAME_SPEED = 0.25f;
