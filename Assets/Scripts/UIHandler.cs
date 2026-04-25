@@ -168,7 +168,7 @@ public class UIHandler : MonoBehaviour
 
     public void SetLastRoundScore()
     {
-        lastRoundScore.text = GameHandler.LastRoundScore + " points last round";
+        lastRoundScore.text = (int)GameHandler.LastRoundScore + " points last round";
     }
 
     // Future Threshold
