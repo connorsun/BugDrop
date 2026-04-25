@@ -12,7 +12,7 @@ public class Termite : Bug
     // Gets metadata about this bug type
     public static BugInfo GetInfo()
     {
-        return new BugInfo("Termite", 2, 0, 1.25f, 0.5f, "1 point for each Termite in terrarium (max 15 points each)");
+        return new BugInfo("Termite", 2, 0, 1.25f, 0.5f, "3 point for each Termite in terrarium (max 30 points each)");
     }
 
     // --- PUBLIC METHODS ---
@@ -31,7 +31,7 @@ public class Termite : Bug
     public override float CalculateOverallScore()
     {
         Termite[] termites = FindObjectsByType<Termite>(FindObjectsSortMode.None);
-        return (this.baseScore + Mathf.Min(termites.Length, 15)) * this.multiplier;
+        return (this.baseScore + Mathf.Min(termites.Length * 3, 30)) * this.multiplier;
     }
 
     protected override async Task Score(bool isPrimary, int recursiveSecondaries)
