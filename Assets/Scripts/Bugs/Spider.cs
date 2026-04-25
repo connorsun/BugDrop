@@ -19,35 +19,40 @@ public class Spider : Bug
     public Spider pairedSpider;
     private bool isCached;
     private float cachedScore;
-    private GameObject spiderLine;
+    public GameObject spiderLine;
 
     // --- PUBLIC METHODS ---
     public override void Start()
     {
         this.thisBugInfo = GetInfo();
+        base.Start();
+    }
+
+    public void InitSpider() {
         Spider[] spiders = FindObjectsByType<Spider>();
         spiderNum = spiders.Length;
-        if (Mathf.Abs(spiderNum) % 2 == 0)
+        foreach (Spider spider in spiders)
         {
-            foreach (Spider spider in spiders)
+            // print(spider.spiderNum);
+            if (spider != this && spider.pairedSpider == null)
             {
-                // print(spider.spiderNum);
-                if (spider.spiderNum == spiderNum - 1)
-                {
-                    this.pairedSpider = spider;
-                    spider.pairedSpider = this;
-                    if (this.spiderLine == null) {
-                        this.spiderLine = Instantiate(GameHandler.GetResource("Prefabs/SpiderLine") as GameObject);
-                    }
-                    this.spiderLine.GetComponent<SpiderLine>().spider1 = this;
-                    this.spiderLine.GetComponent<SpiderLine>().spider2 = this.pairedSpider;
-                    this.spiderLine.GetComponent<SpiderLine>().SetColor(new Color(1f, 1f, 1f, 0.5f));
-                    this.pairedSpider.spiderLine = this.spiderLine;
-                    break;
-                }
+                PairSpider(spider);
+                break;
             }
         }
-        base.Start();
+    }
+
+    public void PairSpider(Spider spider)
+    {
+        this.pairedSpider = spider;
+        spider.pairedSpider = this;
+        if (this.spiderLine == null) {
+            this.spiderLine = Instantiate(GameHandler.GetResource("Prefabs/SpiderLine") as GameObject);
+        }
+        this.spiderLine.GetComponent<SpiderLine>().spider1 = this;
+        this.spiderLine.GetComponent<SpiderLine>().spider2 = this.pairedSpider;
+        this.spiderLine.GetComponent<SpiderLine>().SetColor(new Color(1f, 1f, 1f, 0.5f));
+        this.pairedSpider.spiderLine = this.spiderLine;
     }
 
     public override void Destroy()

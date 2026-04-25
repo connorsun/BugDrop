@@ -41,6 +41,12 @@ public class Aphid : Bug
         }
     }
 
+    public override void Destroy()
+    {
+        GameHandler.SingletonCircleIndicator.GetComponent<SpriteRenderer>().enabled = false;
+        base.Destroy();
+    }
+
     public override Bug[] GetAffectedBugs()
     {
         // Find bugs to retrigger

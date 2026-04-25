@@ -31,7 +31,7 @@ public class GameHandler : MonoBehaviour
     public delegate void BugAction(Bug bug);
     
     // --- CONSTANTS ---
-    public const bool BUILD_FLAG = true;
+    public const bool BUILD_FLAG = false;
     public static GameHandler SingletonGameHandler;
     public static UIHandler SingletonUIHandler;
     public static AudioSource SingletonSFXSource;
@@ -209,10 +209,21 @@ public class GameHandler : MonoBehaviour
         }
         if (PlacingMode == PlaceMode.Placing) {
             PlaySound("Bug Drop");
+            if (placingBug.GetComponent<Bug>() is Spider)
+            {
+                placingBug.GetComponent<Spider>().InitSpider();
+            }
             placingBug.GetComponent<Bug>().SetSimulated(true);
         } else if (PlacingMode == PlaceMode.Moving)
         {
             PlaySound("Bug Drop");
+            if (MovingBug is Spider)
+            {
+                ((Spider)MovingBug).spiderNum = ((Spider)OriginalMovingBug).spiderNum;
+                if (((Spider)OriginalMovingBug).pairedSpider != null) {
+                    ((Spider)MovingBug).PairSpider(((Spider)OriginalMovingBug).pairedSpider);
+                }
+            }
             placingBug.GetComponent<Bug>().Destroy();
             OriginalMovingBug.Destroy();
             MovingBug.GetComponent<Bug>().SetSimulated(true);
@@ -220,6 +231,7 @@ public class GameHandler : MonoBehaviour
         }
         _ = this.uiHandler.HideCurrentBugTooltip();
         _ = this.uiHandler.HideModeButtons();
+        PlacingMode = PlaceMode.Placing;
         // give the bug some time to start dropping
         await Task.Delay(TimeSpan.FromSeconds(0.2f));
         // wait until all bugs are stationary
@@ -282,23 +294,24 @@ public class GameHandler : MonoBehaviour
                     if (bug != null)
                     {
                         OriginalMovingBug = bug;
-                        GameObject movingBug = Instantiate(bug.gameObject as GameObject);
+                        GameObject movingBug = Instantiate(GetResource("Prefabs/Bugs/" + bug.thisBugInfo.name) as GameObject);
+                        // GameObject movingBug = Instantiate(bug.gameObject as GameObject);
                         MovingBug = movingBug.GetComponent<Bug>();
-                        for (int i = 0; i < MovingBug.positions.Length; i++)
-                        {
-                            MovingBug.segments[i].transform.localPosition = bug.positions[i];
-                            MovingBug.positions[i] = bug.positions[i];
-                            MovingBug.segments[i].transform.rotation = bug.rotations[i];
-                            MovingBug.rotations[i] = bug.rotations[i];
-                            // HingeJoint2D hinge = MovingBug.segments[i].GetComponent<HingeJoint2D>();
-                            // if (hinge != null)
-                            // {
-                            //     var angles = hinge.limits;
-                            //     Destroy(hinge);
-                            //     HingeJoint2D newHinge = MovingBug.segments[i].AddComponent<HingeJoint2D>();
-                            //     newHinge.limits = angles;
-                            // }
-                        }
+                        // for (int i = 0; i < MovingBug.positions.Length; i++)
+                        // {
+                        //     MovingBug.segments[i].transform.localPosition = bug.positions[i];
+                        //     MovingBug.positions[i] = bug.positions[i];
+                        //     MovingBug.segments[i].transform.rotation = bug.rotations[i];
+                        //     MovingBug.rotations[i] = bug.rotations[i];
+                        //     // HingeJoint2D hinge = MovingBug.segments[i].GetComponent<HingeJoint2D>();
+                        //     // if (hinge != null)
+                        //     // {
+                        //     //     var angles = hinge.limits;
+                        //     //     Destroy(hinge);
+                        //     //     HingeJoint2D newHinge = MovingBug.segments[i].AddComponent<HingeJoint2D>();
+                        //     //     newHinge.limits = angles;
+                        //     // }
+                        // }
                         MovingBug.Start();
                         MovingBug.SetSimulated(false);
                         this.movingSafeWidth = EDGE_X - MovingBug.thisBugInfo.safeHorizRadius;
@@ -322,6 +335,31 @@ public class GameHandler : MonoBehaviour
                 Bug bug = col.gameObject?.GetComponentInParent<Bug>();
                 if (bug != null)
                 {
+                    if (bug is Spider bugSpider)
+                    {
+                        if (bugSpider.pairedSpider != null) {
+                            bugSpider.pairedSpider.pairedSpider = null;
+                            bugSpider.pairedSpider.spiderLine = null;
+                            Spider[] spiders = FindObjectsByType<Spider>();
+                            print("finding unpaired");
+                            if (Mathf.Abs(spiders.Length) % 2 == 1)
+                            {
+                                // if there's an unpaired spider
+                                foreach (Spider spider in spiders)
+                                {
+                                    print("spider " + spider);
+                                    // print(spider.spiderNum);
+                                    if (spider.pairedSpider == null && spider != bugSpider.pairedSpider)
+                                    {
+                                        print("setting spider " + spider);
+                                        spider.spiderNum = bugSpider.spiderNum;
+                                        bugSpider.pairedSpider.PairSpider(spider);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
                     bug.Destroy();
                     print("bugs 1: " + AllBugs);
                     print("bugs 2: " + FindObjectsByType<Bug>(FindObjectsSortMode.None));

@@ -74,6 +74,12 @@ public class Butterfly : Bug
             }
         }
     }
+    
+    public override void Destroy()
+    {
+        GameHandler.SingletonCircleIndicator.GetComponent<SpriteRenderer>().enabled = false;
+        base.Destroy();
+    }
 
     protected override async Task Score(bool isPrimary, int recursiveSecondaries)
     {
