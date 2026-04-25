@@ -17,6 +17,7 @@ public class IntroCutscene : MonoBehaviour
         new("Think of it less as a bug problem... and more as a feature.", "Landlord"),
     };
     int dialogueIndex;
+    private bool load;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
 
@@ -46,22 +47,24 @@ public class IntroCutscene : MonoBehaviour
 
     public void NextScene()
     {
-        StartCoroutine(LoadScene());
+        load = true;
     }
 
-    IEnumerator LoadScene()
-    {
-        AsyncOperation op = SceneManager.LoadSceneAsync("Title Screen");
-        op.allowSceneActivation = true;
-        while (!op.isDone)
-        {
-            yield return null;
-        }
-    }
-
+    // IEnumerator LoadScene()
+    // {
+    //     AsyncOperation op = SceneManager.LoadScene("Title Screen");
+    //     op.allowSceneActivation = true;
+    //     while (!op.isDone)
+    //     {
+    //         yield return null;
+    //     }
+    // }
     // Update is called once per frame
     void Update()
     {
-        
+        if (load)
+        {
+            SceneManager.LoadScene("Title Screen");
+        }
     }
 }

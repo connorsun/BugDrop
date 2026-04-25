@@ -13,18 +13,26 @@ using System.Linq;
 // Provides methods for rendering title UI
 public class TitleUIHandler : MonoBehaviour
 {
+    private bool load;
     public void OnStartButtonClicked()
     {
-        StartCoroutine(LoadScene());
+        load = true;
     }
 
-    IEnumerator LoadScene()
+    // IEnumerator LoadScene()
+    // {
+    //     AsyncOperation op = SceneManager.LoadScene("Arena");
+    //     op.allowSceneActivation = true;
+    //     while (!op.isDone)
+    //     {
+    //         yield return null;
+    //     }
+    // }
+    public void Update()
     {
-        AsyncOperation op = SceneManager.LoadSceneAsync("Arena");
-        op.allowSceneActivation = true;
-        while (!op.isDone)
+        if (load)
         {
-            yield return null;
+            SceneManager.LoadScene("Arena");
         }
     }
 }
