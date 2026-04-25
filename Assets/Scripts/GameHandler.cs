@@ -280,6 +280,7 @@ public class GameHandler : MonoBehaviour
         _ = this.uiHandler.HideCurrentBugTooltip();
         _ = this.uiHandler.HideModeButtons();
         PlacingMode = PlaceMode.Placing;
+        MovingBug = null;
         // give the bug some time to start dropping
         await Task.Delay(TimeSpan.FromSeconds(0.2f));
         // wait until all bugs are stationary
