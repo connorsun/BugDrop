@@ -82,7 +82,7 @@ public class UIHandler : MonoBehaviour
     private const float LERP_SOUND_THRESH_RATIO = 0.05f;
     private float lerpSoundThreshold;
     private int sceneStartFrames;
-
+    private bool load;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Start()
@@ -231,18 +231,18 @@ public class UIHandler : MonoBehaviour
         GameHandler.AllBugs = new Bug[0];
         //print(GameHandler.AllBugs.Length);
         gameHandler.ResetGlobals();
-        StartCoroutine(LoadScene());
+        load = true;
     }
 
-    IEnumerator LoadScene()
-    {
-        AsyncOperation op = SceneManager.LoadSceneAsync("Title Screen");
-        op.allowSceneActivation = true;
-        while (!op.isDone)
-        {
-            yield return null;
-        }
-    }
+    // IEnumerator LoadScene()
+    // {
+    //     AsyncOperation op = SceneManager.LoadScene("Title Screen");
+    //     op.allowSceneActivation = true;
+    //     while (!op.isDone)
+    //     {
+    //         yield return null;
+    //     }
+    // }
 
     public void OnFastForwardButtonClicked()
     {
@@ -409,6 +409,10 @@ public class UIHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (load)
+        {
+            SceneManager.LoadScene("Title Screen");
+        }
         if (sceneStartFrames < 10)
         {
             sceneStartFrames++;

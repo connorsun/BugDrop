@@ -5,6 +5,7 @@ using System.Collections;
 public class TitleScreen : MonoBehaviour
 {
     [SerializeField] private UIHandler uiHandler;
+    private bool load;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -14,22 +15,25 @@ public class TitleScreen : MonoBehaviour
 
     public void OnStartButtonClicked()
     {
-        StartCoroutine(LoadScene());
+        load = true;
     }
 
-    IEnumerator LoadScene()
-    {
-        AsyncOperation op = SceneManager.LoadSceneAsync("Arena");
-        op.allowSceneActivation = true;
-        while (!op.isDone)
-        {
-            yield return null;
-        }
-    }
+    // IEnumerator LoadScene()
+    // {
+    //     AsyncOperation op = SceneManager.LoadScene("Arena");
+    //     op.allowSceneActivation = true;
+    //     while (!op.isDone)
+    //     {
+    //         yield return null;
+    //     }
+    // }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (load)
+        {
+            SceneManager.LoadScene("Arena");
+        }
     }
 }
