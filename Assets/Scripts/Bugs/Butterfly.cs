@@ -34,7 +34,6 @@ public class Butterfly : Bug
             ).ToList();
         float totalScore = this.baseScore;
         HashSet<Bug> bugsScored = new HashSet<Bug>();
-        print(filteredBugs.Count);
         foreach (Collider2D bugCol in filteredBugs)
         {
             Bug otherBug = bugCol?.gameObject?.GetComponentInParent<Bug>();

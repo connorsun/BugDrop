@@ -80,12 +80,14 @@ public class UIHandler : MonoBehaviour
     private float lerpScore;
     private const float LERP_SOUND_THRESH_RATIO = 0.05f;
     private float lerpSoundThreshold;
+    private int sceneStartFrames;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Start()
     {
         //Init();
+        sceneStartFrames = 0;
     }
 
     public void Init()
@@ -260,24 +262,28 @@ public class UIHandler : MonoBehaviour
 
     public void OnMovePaletteClicked()
     {
-        if (GameHandler.PlacingMode == GameHandler.PlaceMode.Placing) {
-            _ = HideCurrentBugTooltip();
+        if (sceneStartFrames > 3) {
+            if (GameHandler.PlacingMode == GameHandler.PlaceMode.Placing) {
+                _ = HideCurrentBugTooltip();
+            }
+            GameHandler.PlacingMode = GameHandler.PlaceMode.Moving;
+            tg.SetSelection(1);
         }
-        GameHandler.PlacingMode = GameHandler.PlaceMode.Moving;
-        tg.SetSelection(1);
     }
 
     public void OnDeletePaletteClicked()
     {
-        if (GameHandler.PlacingMode == GameHandler.PlaceMode.Placing) {
-            _ = HideCurrentBugTooltip();
-        }
-        GameHandler.PlacingMode = GameHandler.PlaceMode.Deleting;
-        tg.SetSelection(2);
-        if (GameHandler.MovingBug != null) {
-            GameHandler.MovingBug.Destroy();
-            GameHandler.MovingBug = null;
-            GameHandler.OriginalMovingBug.Hover(false, 0f, false);
+        if (sceneStartFrames > 3) {
+            if (GameHandler.PlacingMode == GameHandler.PlaceMode.Placing) {
+                _ = HideCurrentBugTooltip();
+            }
+            GameHandler.PlacingMode = GameHandler.PlaceMode.Deleting;
+            tg.SetSelection(2);
+            if (GameHandler.MovingBug != null) {
+                GameHandler.MovingBug.Destroy();
+                GameHandler.MovingBug = null;
+                GameHandler.OriginalMovingBug.Hover(false, 0f, false);
+            }
         }
     }
 
@@ -393,7 +399,10 @@ public class UIHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (sceneStartFrames < 10)
+        {
+            sceneStartFrames++;
+        }
     }
 
     // --- PRIVATE METHODS ---

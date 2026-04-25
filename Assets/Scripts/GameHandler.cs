@@ -311,7 +311,6 @@ public class GameHandler : MonoBehaviour
     // Handles Drop input action
     public void OnDrop(InputAction.CallbackContext context)
     {
-        print("on drop");
         PointerEventData pointerData = new PointerEventData(EventSystem.current)
         {
             position = Mouse.current.position.ReadValue()
@@ -332,7 +331,6 @@ public class GameHandler : MonoBehaviour
         {
             if (MovingBug == null)
             {
-                print("moving!");
                 List<Collider2D> overlapColliders = new List<Collider2D>();
                 Vector3 mouseWorldPos = GameHandler.GetMouseWorldPos();
                 Physics2D.OverlapCircle(mouseWorldPos, MOUSE_DETECTION_RADIUS, ContactFilter2D.noFilter, overlapColliders);
@@ -369,7 +367,6 @@ public class GameHandler : MonoBehaviour
                 }
             } else
             {
-                print("done");
                 trackingBug = false;
             }
         } else
@@ -389,17 +386,13 @@ public class GameHandler : MonoBehaviour
                             bugSpider.pairedSpider.pairedSpider = null;
                             bugSpider.pairedSpider.spiderLine = null;
                             Spider[] spiders = FindObjectsByType<Spider>();
-                            print("finding unpaired");
                             if (Mathf.Abs(spiders.Length) % 2 == 1)
                             {
                                 // if there's an unpaired spider
                                 foreach (Spider spider in spiders)
                                 {
-                                    print("spider " + spider);
-                                    // print(spider.spiderNum);
                                     if (spider.pairedSpider == null && spider != bugSpider.pairedSpider)
                                     {
-                                        print("setting spider " + spider);
                                         spider.spiderNum = bugSpider.spiderNum;
                                         bugSpider.pairedSpider.PairSpider(spider);
                                         break;
@@ -409,8 +402,6 @@ public class GameHandler : MonoBehaviour
                         }
                     }
                     bug.Destroy();
-                    print("bugs 1: " + AllBugs);
-                    print("bugs 2: " + FindObjectsByType<Bug>(FindObjectsSortMode.None));
                     AllBugs = FindObjectsByType<Bug>(FindObjectsSortMode.None);
                     trackingBug = false;
                     break;
