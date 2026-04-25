@@ -8,13 +8,14 @@ public class MusicHandler : MonoBehaviour
     [SerializeField] private AudioClip music;
     private int nextMusicPlayer;
     private const float preloadDelay = 1f;
-    private const string startScene = "Arena";
+    private const string startScene = "Title Screen";
     private bool notFirstLoad;
     private bool losing;
     private const float LOSE_VOLUME = 0f;
     private const float LOSE_VOLUME_DIFF = 0.2f;
     private const float LOSE_PITCH = 0.7f;
     private const float LOSE_PITCH_DIFF = 0.1f;
+    private bool queueActive = false;
 
     public void Awake()
     {
@@ -55,6 +56,7 @@ public class MusicHandler : MonoBehaviour
             source.volume = 1f;
         }
         musicPlayers[nextMusicPlayer].Play();
+        queueActive = false;
         QueueNextSong();
     }
 
@@ -69,14 +71,22 @@ public class MusicHandler : MonoBehaviour
         if (scene.name == startScene && !notFirstLoad) {
             notFirstLoad = true;
             musicPlayers[nextMusicPlayer].Play();
+            queueActive = false;
             QueueNextSong();
         }
     }
     
     async Awaitable QueueNextSong()
     {
+        queueActive = true;
+
+        while (music.loadState != AudioDataLoadState.Loaded)
+        {
+            await Awaitable.NextFrameAsync();
+        }
+
         double nextStartTime = AudioSettings.dspTime + ((double) music.samples) / music.frequency;
-        while (true) {
+        while (queueActive) {
             while (AudioSettings.dspTime < nextStartTime - preloadDelay)
             {
                 await Awaitable.NextFrameAsync();

@@ -162,7 +162,7 @@ public abstract class Bug : MonoBehaviour
             }
             this.secondaryTriggered = true;
             // print ("delay reduction: " + (-0.5f * Mathf.Atan(recursiveSecondaries - 1) + 1));
-            await Task.Delay(TimeSpan.FromSeconds(0.2f * GameHandler.GameSpeed * (-0.5f * Mathf.Atan(recursiveSecondaries - 1) + 1)));
+            await WaitForSeconds(0.2f * GameHandler.GameSpeed * (-0.5f * Mathf.Atan(recursiveSecondaries - 1) + 1));
         }
         GameObject zap = Instantiate(GameHandler.GetResource("Prefabs/TriggerZap") as GameObject);
         Color zapColor = isPrimary? GameHandler.PRIMARY_COLOR : GameHandler.SECONDARY_COLOR;
@@ -190,7 +190,7 @@ public abstract class Bug : MonoBehaviour
         if (isPrimary) {
             Bug[] closest = GetClosestBugs();
             if (closest.Length > 0) {
-                await Task.Delay(TimeSpan.FromSeconds(0.3f * GameHandler.GameSpeed));
+                await WaitForSeconds(0.3f * GameHandler.GameSpeed);
                 foreach (Bug bug in closest)
                 {
                     if (!bug.primaryTriggered)
@@ -369,6 +369,15 @@ public abstract class Bug : MonoBehaviour
         otherContacts.CopyTo(result, bugContacts.Count);
         
         return result;
+    }
+
+    private async Awaitable WaitForSeconds(float seconds)
+    {
+        float end = Time.unscaledTime + seconds;
+        while (Time.unscaledTime < end)
+        {
+            await Awaitable.NextFrameAsync();
+        }
     }
 
     private Bug[] GetClosestBugs()

@@ -282,7 +282,7 @@ public class GameHandler : MonoBehaviour
         PlacingMode = PlaceMode.Placing;
         MovingBug = null;
         // give the bug some time to start dropping
-        await Task.Delay(TimeSpan.FromSeconds(0.2f));
+        await WaitForSeconds(0.2f);
         // wait until all bugs are stationary
         BroadcastToBugs((Bug bug) => bug.StartPlacing());
         while (true) {
@@ -487,6 +487,15 @@ public class GameHandler : MonoBehaviour
 
     // Initialize the BugTypes and BugRarityTypes collections, which lists all of the info
     // about every type of bug
+    private async Awaitable WaitForSeconds(float seconds)
+    {
+        float end = Time.unscaledTime + seconds;
+        while (Time.unscaledTime < end)
+        {
+            await Awaitable.NextFrameAsync();
+        }
+    }
+
     private void InitializeBugTypes()
     {
         Type bugType = typeof(Bug);
