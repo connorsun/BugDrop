@@ -12,7 +12,7 @@ public class Spider : Bug
     // Gets metadata about this bug type
     public static BugInfo GetInfo()
     {
-        return new BugInfo("Spider", 3, 0, 1.5f, 1.5f, "Sums the score of all bugs between this and a paired Spider");
+        return new BugInfo("Spider", 3, 0, 1.35f, 1.5f, "Sums the score of all bugs between this and a paired Spider");
     }
     // --- PRIVATE STATE ---
     public int spiderNum;

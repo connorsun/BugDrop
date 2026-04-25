@@ -14,7 +14,7 @@ public class Worm : Bug
     // Gets metadata about this bug type
     public static BugInfo GetInfo()
     {
-        return new BugInfo("Worm", 3, 0, 3f, 0.5f, "Retriggers all adjacent bugs");
+        return new BugInfo("Worm", 3, 0, 2.3f, 0.5f, "Retriggers all adjacent bugs");
     }
 
     // --- PUBLIC METHODS ---

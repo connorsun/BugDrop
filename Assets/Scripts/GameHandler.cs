@@ -102,6 +102,7 @@ public class GameHandler : MonoBehaviour
     private float movingSafeWidth;
     private Bug.BugInfo selectedBug;
     private GameObject placingBug;
+    private float safeWidth;
 
     // --- PUBLIC METHODS ---
 
@@ -203,7 +204,7 @@ public class GameHandler : MonoBehaviour
         DefaultGameSpeed = 1 - Mathf.Atan(AllBugs.Length/10f)/2f;
         // print("Game Speed: " + DefaultGameSpeed);
         placingBug.GetComponent<Bug>().SetSimulated(false);
-        float safeWidth = EDGE_X - selectedBug.safeHorizRadius;
+        safeWidth = EDGE_X - selectedBug.safeHorizRadius;
         this.trackingBug = true;
 
         //await placement
@@ -481,7 +482,7 @@ public class GameHandler : MonoBehaviour
                         this.placingBug.transform.localScale.y, this.placingBug.transform.localScale.z);
                         AllBugs = FindObjectsByType<Bug>(FindObjectsSortMode.None);
                         placingBug.GetComponent<Bug>().SetSimulated(false);
-                        float safeWidth = EDGE_X - this.selectedBug.safeHorizRadius;
+                        this.safeWidth = EDGE_X - this.selectedBug.safeHorizRadius;
                         this.uiHandler.SetCurrentBugTooltip(this.selectedBug);
                         break;
                     }

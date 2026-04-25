@@ -15,7 +15,7 @@ public class Aphid : Bug
     // Gets metadata about this bug type
     public static BugInfo GetInfo()
     {
-        return new BugInfo("Aphid", 2, 0, 3f, 0.5f, "Retriggers three closest bugs within 3 cm");
+        return new BugInfo("Aphid", 2, 0, 0.55f, 0.5f, "Retriggers three closest bugs within 3 cm");
     }
 
     // --- PUBLIC METHODS ---

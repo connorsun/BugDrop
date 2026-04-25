@@ -11,7 +11,7 @@ public class Ladybug : Bug
     // Gets metadata about this bug type
     public static BugInfo GetInfo()
     {
-        return new BugInfo("Ladybug", 1, 1, 1.5f, 0.5f, "+1 additional point for every 3 cm away from the lightning rod");
+        return new BugInfo("Ladybug", 1, 1, 1.25f, 0.5f, "+1 additional point for every 3 cm away from the lightning rod");
     }
 
     // --- PUBLIC METHODS ---

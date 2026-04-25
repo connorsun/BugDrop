@@ -14,7 +14,7 @@ public class Cockroach : Bug
     // Gets metadata about this bug type
     public static BugInfo GetInfo()
     {
-        return new BugInfo("Cockroach", 1, 2, 1.8f, 0.5f, "+2 additional points for each adjacent Cockroach");
+        return new BugInfo("Cockroach", 1, 2, 1.6f, 0.5f, "+2 additional points for each adjacent Cockroach");
     }
 
     // --- PUBLIC METHODS ---

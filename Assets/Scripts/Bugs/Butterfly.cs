@@ -15,7 +15,7 @@ public class Butterfly : Bug
     // Gets metadata about this bug type
     public static BugInfo GetInfo()
     {
-        return new BugInfo("Butterfly", 3, 0, 3f, 0.5f, "Sums the points of all bugs in 4 cm if no other Butterflies are in radius");
+        return new BugInfo("Butterfly", 3, 0, 0.75f, 0.5f, "Sums the points of all bugs in 4 cm if no other Butterflies are in radius");
     }
 
     // --- PUBLIC METHODS ---
