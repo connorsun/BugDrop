@@ -31,7 +31,7 @@ public class Spider : Bug
         {
             foreach (Spider spider in spiders)
             {
-                print(spider.spiderNum);
+                // print(spider.spiderNum);
                 if (spider.spiderNum == spiderNum - 1)
                 {
                     this.pairedSpider = spider;
@@ -76,7 +76,7 @@ public class Spider : Bug
             foreach (RaycastHit2D rayHit in rayHits)
             {
                 Bug otherBug = rayHit.collider?.gameObject?.GetComponentInParent<Bug>();
-                print(otherBug);
+                // print(otherBug);
                 //print(otherBug);
                 if (otherBug != null && otherBug != this && otherBug != this.pairedSpider)
                 {

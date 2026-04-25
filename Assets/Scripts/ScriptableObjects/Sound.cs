@@ -4,4 +4,9 @@ using UnityEngine;
 public class Sound : ScriptableObject
 {
     [SerializeField] public AudioClip clip;
+    [SerializeField] public float volumeRatio = 1;
+    private void Reset()
+    {
+        volumeRatio = 1;
+    }
 }

@@ -31,7 +31,7 @@ public class GameHandler : MonoBehaviour
     public delegate void BugAction(Bug bug);
     
     // --- CONSTANTS ---
-    public const bool BUILD_FLAG = false;
+    public const bool BUILD_FLAG = true;
     public static GameHandler SingletonGameHandler;
     public static UIHandler SingletonUIHandler;
     public static AudioSource SingletonSFXSource;
@@ -91,10 +91,10 @@ public class GameHandler : MonoBehaviour
     [SerializeField] private AudioSource pitchedAudioSource;
     [SerializeField] private GameObject circleIndicator;
     [SerializeField] private GameObject[] placingClickExcludeButtons;
-    private InputSystem_Actions controls;
+    public static InputSystem_Actions Controls;
 
     // --- PRIVATE STATE ---
-    private bool trackingBug;
+    public bool trackingBug;
     private float movingSafeWidth;
     private Bug.BugInfo selectedBug;
     private GameObject placingBug;
@@ -105,9 +105,9 @@ public class GameHandler : MonoBehaviour
     public void Start()
     {
         // Setup control handling
-        this.controls = new InputSystem_Actions();
-        this.controls.Player.Drop.performed += OnDrop;
-        this.controls.Player.Enable();
+        Controls = new InputSystem_Actions();
+        Controls.Player.Drop.performed += OnDrop;
+        Controls.Player.Enable();
         GameSpeed = 1;
         FastForward = false;
         InitializeBugTypes();
@@ -116,6 +116,13 @@ public class GameHandler : MonoBehaviour
 
     // Initialize game state on startup
     public void Init()
+    {
+        ResetGlobals();
+        uiHandler.Init();
+        _ = StartPlacing();
+    }
+
+    public void ResetGlobals()
     {
         AllBugs = new Bug[0];
         LoadedResources = new Dictionary<string, GameObject>();
@@ -130,8 +137,6 @@ public class GameHandler : MonoBehaviour
         DefaultGameSpeed = 1;
         RoundScore = 0;
         LastRoundScore = 0;
-        uiHandler.Init();
-        _ = StartPlacing();
     }
 
     // Initiates the placing phase for a round
@@ -244,8 +249,9 @@ public class GameHandler : MonoBehaviour
     }
 
     // Handles Drop input action
-    private void OnDrop(InputAction.CallbackContext context)
+    public void OnDrop(InputAction.CallbackContext context)
     {
+        print("on drop");
         PointerEventData pointerData = new PointerEventData(EventSystem.current)
         {
             position = Mouse.current.position.ReadValue()
@@ -266,6 +272,7 @@ public class GameHandler : MonoBehaviour
         {
             if (MovingBug == null)
             {
+                print("moving!");
                 List<Collider2D> overlapColliders = new List<Collider2D>();
                 Vector3 mouseWorldPos = GameHandler.GetMouseWorldPos();
                 Physics2D.OverlapCircle(mouseWorldPos, MOUSE_DETECTION_RADIUS, ContactFilter2D.noFilter, overlapColliders);
@@ -301,6 +308,7 @@ public class GameHandler : MonoBehaviour
                 }
             } else
             {
+                print("done");
                 trackingBug = false;
             }
         } else
@@ -315,6 +323,8 @@ public class GameHandler : MonoBehaviour
                 if (bug != null)
                 {
                     bug.Destroy();
+                    print("bugs 1: " + AllBugs);
+                    print("bugs 2: " + FindObjectsByType<Bug>(FindObjectsSortMode.None));
                     AllBugs = FindObjectsByType<Bug>(FindObjectsSortMode.None);
                     trackingBug = false;
                     break;
@@ -347,6 +357,11 @@ public class GameHandler : MonoBehaviour
         if (IsKnockout && RoundScore < ScoreThreshold)
         {
             PlaySound("You Lose");
+            GameObject mp = GameObject.Find("MusicPlayer");
+            if (mp != null)
+            {
+                mp.GetComponent<MusicHandler>().Lose();
+            }
             await uiHandler.EnterLosingState();
             return;
         }
@@ -496,6 +511,7 @@ public class GameHandler : MonoBehaviour
                 SoundsThisFrame.Add("Score Sound");
             }
             SingletonPitchedSource.pitch = ScorePitch;
+            SingletonPitchedSource.volume = s.volumeRatio;
             if (ScorePitch < SCORE_PITCH_MAX) {
                 ScorePitch += SCORE_PITCH_INCR * (1/1.4f - Mathf.Atan(ScorePitch - 2f)/2.8f);
             }
@@ -509,6 +525,7 @@ public class GameHandler : MonoBehaviour
                 SoundsThisFrame.Add(sound);
             }
             SingletonSFXSource.pitch = 1;
+            SingletonSFXSource.volume = s.volumeRatio;
             SingletonSFXSource.PlayOneShot(s.clip);
         }
     }

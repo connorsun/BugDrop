@@ -182,11 +182,13 @@ public class UIHandler : MonoBehaviour
     // Button
     public async Task ShowNextButton()
     {
+        GameHandler.PlaySound("Whoosh");
         await nextButton.GetComponent<UIAnimatable>().Show();
     }
 
     public async Task HideNextButton()
     {
+        GameHandler.PlaySound("Whoosh");
         await nextButton.GetComponent<UIAnimatable>().Hide();
     }
 
@@ -203,6 +205,11 @@ public class UIHandler : MonoBehaviour
 
     public void OnRetryButtonClicked()
     {
+        GameObject mp = GameObject.Find("MusicPlayer");
+        if (mp != null)
+        {
+            mp.GetComponent<MusicHandler>().Unlose();
+        }
         GameHandler.BroadcastToBugs((Bug bug) => bug.Destroy());
         GameHandler.AllBugs = new Bug[0];
         //print(GameHandler.AllBugs.Length);
@@ -211,6 +218,16 @@ public class UIHandler : MonoBehaviour
 
     public void OnQuitButtonClicked()
     {
+        GameObject mp = GameObject.Find("MusicPlayer");
+        GameHandler.Controls.Player.Drop.performed -= GameHandler.SingletonGameHandler.OnDrop;
+        GameHandler.Controls.Player.Disable();
+        if (mp != null)
+        {
+            mp.GetComponent<MusicHandler>().Unlose();
+        }
+        GameHandler.AllBugs = new Bug[0];
+        //print(GameHandler.AllBugs.Length);
+        gameHandler.ResetGlobals();
         SceneManager.LoadScene("Title Screen");
         //Application.Quit();
     }
@@ -229,9 +246,11 @@ public class UIHandler : MonoBehaviour
 
     public void OnPlacePaletteClicked()
     {
+        if (GameHandler.PlacingMode != GameHandler.PlaceMode.Placing) {
+            _ = ShowCurrentBugTooltip();
+        }
         GameHandler.PlacingMode = GameHandler.PlaceMode.Placing;
         tg.SetSelection(0);
-        _ = ShowCurrentBugTooltip();
         if (GameHandler.MovingBug != null) {
             GameHandler.MovingBug.Destroy();
             GameHandler.MovingBug = null;
@@ -241,16 +260,20 @@ public class UIHandler : MonoBehaviour
 
     public void OnMovePaletteClicked()
     {
+        if (GameHandler.PlacingMode == GameHandler.PlaceMode.Placing) {
+            _ = HideCurrentBugTooltip();
+        }
         GameHandler.PlacingMode = GameHandler.PlaceMode.Moving;
         tg.SetSelection(1);
-        _ = HideCurrentBugTooltip();
     }
 
     public void OnDeletePaletteClicked()
     {
+        if (GameHandler.PlacingMode == GameHandler.PlaceMode.Placing) {
+            _ = HideCurrentBugTooltip();
+        }
         GameHandler.PlacingMode = GameHandler.PlaceMode.Deleting;
         tg.SetSelection(2);
-        _ = HideCurrentBugTooltip();
         if (GameHandler.MovingBug != null) {
             GameHandler.MovingBug.Destroy();
             GameHandler.MovingBug = null;
@@ -310,6 +333,7 @@ public class UIHandler : MonoBehaviour
 
     public async Task ShowCurrentBugTooltip()
     {
+        GameHandler.PlaySound("Whoosh");
         await tooltipRectTransform.gameObject.GetComponent<UIAnimatable>().Show();
     }
 
@@ -320,6 +344,7 @@ public class UIHandler : MonoBehaviour
 
     public async Task HideModeButtons()
     {
+        GameHandler.PlaySound("Whoosh");
         await modeButtons.GetComponent<UIAnimatable>().Hide();
     }
 

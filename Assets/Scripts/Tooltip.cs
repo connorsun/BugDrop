@@ -41,6 +41,7 @@ public class Tooltip : MonoBehaviour
                     {
                         if (prevBug != null) _ = prevBug.Hover(false, 0f, true);
                         prevBug = bug;
+                        GameHandler.PlaySound("Button Hover");
                         _ = bug.Hover(true, 0.3f, true);
                     }
 
