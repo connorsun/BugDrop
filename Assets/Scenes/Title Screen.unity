@@ -4714,7 +4714,7 @@ MonoBehaviour:
   musicPlayers:
   - {fileID: 1496152711}
   - {fileID: 1496152710}
-  music: {fileID: 8300000, guid: 4f417e932f2d64ac6844c09c95448d15, type: 3}
+  music: {fileID: 8300000, guid: 5f07395c9f0554dc1968b6c8b2bd29ad, type: 3}
 --- !u!4 &1496152713
 Transform:
   m_ObjectHideFlags: 0
@@ -5619,7 +5619,7 @@ Camera:
     x: 0
     y: 0
     width: 1
-    height: 0.9998596
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
