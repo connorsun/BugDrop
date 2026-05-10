@@ -36,7 +36,9 @@ public class Aphid : Bug
         if (affectOthers) {
             GameHandler.SingletonCircleIndicator.GetComponent<SpriteRenderer>().enabled = on;
             if (on) {
-                GameHandler.SingletonCircleIndicator.transform.position = center.position;GameHandler.SingletonCircleIndicator.transform.localScale = new Vector3(1.5f, 1.5f, 1f);
+                GameHandler.SingletonCircleIndicator.transform.position = center.position;
+                GameHandler.SingletonCircleIndicator.transform.localScale = new Vector3(1f, 1f, 1f);
+                GameHandler.SingletonCircleIndicator.GetComponent<SpriteRenderer>().sprite = GameHandler.SingletonAphidCircleSprite;
             }
         }
     }

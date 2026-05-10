@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class BugCollision : MonoBehaviour
 {
-    private const float BUG_HIT_BUG_THRESH = 0.5f;
-    private const float BUG_HIT_GROUND_THRESH = 0.5f;
+    private const float BUG_HIT_BUG_THRESH = 4f;
+    private const float BUG_HIT_GROUND_THRESH = 4f;
     public Rigidbody2D rb;
     private Vector2 vel;
     private Vector2 prevVel;

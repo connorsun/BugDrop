@@ -37,6 +37,8 @@ public class GameHandler : MonoBehaviour
     public static AudioSource SingletonSFXSource;
     public static AudioSource SingletonPitchedSource;
     public static GameObject SingletonCircleIndicator;
+    public static Sprite SingletonButterflyCircleSprite;
+    public static Sprite SingletonAphidCircleSprite;
     public static Bug.BugInfo[] BugTypes;
     public static Dictionary<int, List<Bug.BugInfo>> BugRarityTypes = new Dictionary<int, List<Bug.BugInfo>>();
     public static Dictionary<string, GameObject> LoadedResources = new Dictionary<string, GameObject>();
@@ -94,6 +96,8 @@ public class GameHandler : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioSource pitchedAudioSource;
     [SerializeField] private GameObject circleIndicator;
+    [SerializeField] private Sprite butterflyCircleSprite;
+    [SerializeField] private Sprite aphidCircleSprite;
     [SerializeField] private GameObject[] placingClickExcludeButtons;
     public static InputSystem_Actions Controls;
 
@@ -136,6 +140,8 @@ public class GameHandler : MonoBehaviour
         SingletonSFXSource = audioSource;
         SingletonPitchedSource = pitchedAudioSource;
         SingletonCircleIndicator = circleIndicator;
+        SingletonAphidCircleSprite = aphidCircleSprite;
+        SingletonButterflyCircleSprite = butterflyCircleSprite;
         GameState = PlayState.Playing;
         Round = 0;
         ScoreThreshold = THRESHOLD_BASE;
