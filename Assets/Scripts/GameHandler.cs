@@ -89,6 +89,7 @@ public class GameHandler : MonoBehaviour
     public static float ScorePitch;
     public static bool CantPlace;
     public static HashSet<string> SoundsThisFrame = new HashSet<string>();
+    public static bool MuteSound;
 
 
     // --- OBJECT REFERENCES ---
@@ -591,6 +592,10 @@ public class GameHandler : MonoBehaviour
     public static void PlaySound(string sound)
     {
         Sound s = GetSound("Sounds/" + sound);
+        if (MuteSound && !s.bypassMute)
+        {
+            return;
+        }
         if (SingletonSFXSource == null)
         {
             SingletonSFXSource = Camera.main.gameObject.GetComponent<AudioSource>();

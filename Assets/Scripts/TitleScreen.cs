@@ -11,6 +11,7 @@ public class TitleScreen : MonoBehaviour
     void Start()
     {
         this.uiHandler.EnterTitleScreen();
+        GameHandler.MuteSound = true;
     }
 
     public void OnStartButtonClicked()
@@ -33,6 +34,7 @@ public class TitleScreen : MonoBehaviour
     {
         if (load)
         {
+            GameHandler.MuteSound = false;
             SceneManager.LoadScene("Arena");
         }
     }

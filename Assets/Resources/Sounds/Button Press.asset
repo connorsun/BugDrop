@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: Button Press
   m_EditorClassIdentifier: Assembly-CSharp::Sound
   clip: {fileID: 8300000, guid: 69f2cf3bbfc8545bfa38b2fbab2566ed, type: 3}
+  volumeRatio: 1
+  bypassMute: 1

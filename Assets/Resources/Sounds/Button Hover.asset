@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: Button Hover
   m_EditorClassIdentifier: Assembly-CSharp::Sound
   clip: {fileID: 8300000, guid: 61c5664dde44a4b64a33abde531af588, type: 3}
+  volumeRatio: 1
+  bypassMute: 1
