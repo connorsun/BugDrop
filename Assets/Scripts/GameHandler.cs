@@ -347,6 +347,7 @@ public class GameHandler : MonoBehaviour
                     if (bug != null)
                     {
                         OriginalMovingBug = bug;
+                        OriginalMovingBug.Hover(false, 0f, true);
                         GameObject movingBug = Instantiate(GetResource("Prefabs/Bugs/" + bug.thisBugInfo.name) as GameObject);
                         // GameObject movingBug = Instantiate(bug.gameObject as GameObject);
                         MovingBug = movingBug.GetComponent<Bug>();
