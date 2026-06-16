@@ -59,10 +59,10 @@ public class KnockoutProgressBar : MonoBehaviour
     {
         if (type == Type.Label)
         {
-            targetPos = new Vector3(-128, 148, 0) + Vector3.right * (loadingBarLength * Mathf.Min(GameHandler.RoundScore / GameHandler.ScoreThreshold, 1));
+            targetPos = new Vector3(-128, 148, 0) + Vector3.right * loadingBarLength * Mathf.Min(GameHandler.RoundScore / GameHandler.ScoreThreshold, 1);
         } else
         {
-            targetPos = startingPos + Vector3.right * (loadingBarLength * GameHandler.RoundScore / GameHandler.ScoreThreshold);
+            targetPos = startingPos + Vector3.right * loadingBarLength * Mathf.Min(GameHandler.RoundScore / GameHandler.ScoreThreshold, 2f);
         }
     }
 }
