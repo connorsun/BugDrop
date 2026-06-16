@@ -28,7 +28,7 @@ public class Ant : Bug
         {
             if (contact.collider?.gameObject.CompareTag("Ground") == true)
             {
-                return this.baseScore + 4;
+                return (this.baseScore + 4) * this.multiplier;
             }
         }
         return this.baseScore * this.multiplier;

@@ -31,7 +31,7 @@ public class GameHandler : MonoBehaviour
     public delegate void BugAction(Bug bug);
     
     // --- CONSTANTS ---
-    public const bool BUILD_FLAG = true;
+    public const bool BUILD_FLAG = false;
     public static GameHandler SingletonGameHandler;
     public static UIHandler SingletonUIHandler;
     public static AudioSource SingletonSFXSource;

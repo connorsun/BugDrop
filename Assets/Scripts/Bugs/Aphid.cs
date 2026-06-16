@@ -56,7 +56,7 @@ public class Aphid : Bug
         Physics2D.OverlapCircle(this.center.position, DETECTION_RADIUS, ContactFilter2D.noFilter, overlapColliders);
         List<Collider2D> filteredBugs = overlapColliders.Where(bug => bug.gameObject?.GetComponentInParent<Bug>() != null/* && (this.center.position - bug.gameObject.GetComponentInParent<Bug>().center.position).magnitude < DETECTION_RADIUS*/
             ).ToList();
-        filteredBugs.Sort((Collider2D bug1, Collider2D bug2) => (int)Mathf.Sign((this.center.position - bug1.gameObject.GetComponentInParent<Bug>().center.position).magnitude - (this.center.position - bug2.gameObject.GetComponentInParent<Bug>().center.position).magnitude));
+        filteredBugs.Sort((Collider2D bug1, Collider2D bug2) => (int)Mathf.Sign((this.center.position - (Vector3) bug1.ClosestPoint(this.center.position)).magnitude - (this.center.position - (Vector3) bug2.ClosestPoint(this.center.position)).magnitude));
 
         // Retrigger logic
         HashSet<Bug> bugsToTrigger = new HashSet<Bug>();
@@ -64,9 +64,13 @@ public class Aphid : Bug
         foreach (Collider2D bugCol in filteredBugs)
         {
             Bug otherBug = bugCol.gameObject?.GetComponentInParent<Bug>();
-            if (otherBug != null && otherBug != this && !bugsToTrigger.Contains(otherBug) && !otherBug.secondaryTriggered)
+            if (otherBug != null && otherBug != this && !bugsToTrigger.Contains(otherBug))
             {
-                bugsToTrigger.Add(otherBug);
+                if (!otherBug.secondaryTriggered) {
+                    // closest 3 bugs still count as the closest 3, but we don't
+                    // retrigger them if they've already been retriggered
+                    bugsToTrigger.Add(otherBug);
+                }
                 i++;
             }
             if (i >= MAX_TRIGGER)

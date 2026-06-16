@@ -28,7 +28,7 @@ public class Fly : Bug
         {
             if (contact.collider?.gameObject.CompareTag("Ground") == true)
             {
-                return this.baseScore;
+                return this.baseScore * this.multiplier;
             }
         }
         return (this.baseScore + 2) * this.multiplier;
