@@ -55,6 +55,7 @@ public abstract class Bug : MonoBehaviour
 
     private static readonly int FlashColorID = Shader.PropertyToID("_FlashColor");
     private static readonly int FlashIntensityID = Shader.PropertyToID("_FlashIntensity");
+    private static System.Random Rand = new System.Random();
     private CancellationTokenSource _flashCTS;
     private Task _flashTask;
     private Task _lerpTask;
@@ -311,10 +312,10 @@ public abstract class Bug : MonoBehaviour
             center.transform.position + 
                     new Vector3(0.5f, 0.5f) +
                     //new Vector3(this.thisBugInfo.safeHorizRadius / 2f, this.thisBugInfo.safeVertRadius) +
-                    new Vector3(UnityEngine.Random.Range(-0.1f, 0.1f), UnityEngine.Random.Range(-0.1f, 0.1f), 0f),
+                    new Vector3((float)Rand.NextDouble() * 0.2f - 0.1f, (float)Rand.NextDouble() * 0.2f - 0.1f, 0f),
             (int)score, isPrimary);
         if (isPrimary) {
-            GameHandler.PlaySound("Score " + UnityEngine.Random.Range(1, 4));
+            GameHandler.PlaySound("Score " + Rand.Next(1, 4));
         } else
         {
             GameHandler.PlaySound("Score 4");

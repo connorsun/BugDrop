@@ -90,6 +90,7 @@ public class GameHandler : MonoBehaviour
     public static bool CantPlace;
     public static HashSet<string> SoundsThisFrame = new HashSet<string>();
     public static bool MuteSound;
+    public static int Seed;
 
 
     // --- OBJECT REFERENCES ---
@@ -527,8 +528,7 @@ public class GameHandler : MonoBehaviour
 
     private Bug.BugInfo PickRandomBug()
     {
-        System.Random rand = new System.Random();
-        float value = (float)rand.NextDouble();
+        float value = UnityEngine.Random.Range(0f, 1f);
         float rarityThreshold = 0f;
         int rarity;
         //print("Random value: " + value);
@@ -542,7 +542,7 @@ public class GameHandler : MonoBehaviour
             }
         }
         List<Bug.BugInfo> bugList = BugRarityTypes[rarity + 1];
-        Bug.BugInfo selectedBug = bugList[rand.Next(0, bugList.Count)];
+        Bug.BugInfo selectedBug = bugList[UnityEngine.Random.Range(0, bugList.Count)];
         return selectedBug;
     }
     

@@ -22,7 +22,8 @@ public class UIHandler : MonoBehaviour
         ScoringKnockout,
         Lose,
         None,
-        Title
+        Title,
+        TitleSeeded
     }
 
     // --- OBJECT REFERENCES ---
@@ -74,6 +75,7 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private UIAnimatable[] scoringKnockoutElements;
     [SerializeField] private UIAnimatable[] loseElements;
     [SerializeField] private UIAnimatable[] titleElements;
+    [SerializeField] private UIAnimatable[] titleSeededElements;
 
     
 
@@ -134,6 +136,11 @@ public class UIHandler : MonoBehaviour
     public async Task EnterTitleScreen()
     {
         await RenderState(UIState.Title);
+    }
+
+    public async Task EnterTitleSeededScreen()
+    {
+        await RenderState(UIState.TitleSeeded);
     }
 
     public void SetIntroCutsceneLine(string dialogue, string speaker)
@@ -216,6 +223,8 @@ public class UIHandler : MonoBehaviour
         GameHandler.BroadcastToBugs((Bug bug) => bug.Destroy());
         GameHandler.AllBugs = new Bug[0];
         //print(GameHandler.AllBugs.Length);
+        GameHandler.Seed = Guid.NewGuid().GetHashCode();
+        UnityEngine.Random.InitState(GameHandler.Seed);
         gameHandler.Init();
     }
 
@@ -472,6 +481,8 @@ public class UIHandler : MonoBehaviour
                 return loseElements;
             case UIState.Title:
                 return titleElements;
+            case UIState.TitleSeeded:
+                return titleSeededElements;
             default:
                 return new UIAnimatable[0];
         }
