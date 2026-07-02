@@ -3599,7 +3599,7 @@ MonoBehaviour:
   m_CharacterValidation: 0
   m_RegexValue: 
   m_GlobalPointSize: 14
-  m_CharacterLimit: 0
+  m_CharacterLimit: 50
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls:
@@ -6830,7 +6830,7 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 0.9997173
+    width: 0.99943596
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
