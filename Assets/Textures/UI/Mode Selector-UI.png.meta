@@ -184,6 +184,28 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Mode Selector-UI_3
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cefd8e33628f24020a45c8402571626f
+      internalID: 1430515032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -203,6 +225,7 @@ TextureImporter:
       Mode Selector-UI_0: 9066786153215694693
       Mode Selector-UI_1: 7287356789620143099
       Mode Selector-UI_2: 1967865982557638023
+      Mode Selector-UI_3: 1430515032
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
