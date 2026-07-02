@@ -50,7 +50,6 @@ public class TitleScreen : MonoBehaviour
         string dateString = DateTime.Today.ToString(System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
         GameHandler.Seed = dateString.GetHashCode();
         GameHandler.VisualSeed = GameHandler.Seed + "";
-        print("set daily seed: " + GameHandler.Seed + " " + dateString);
         UnityEngine.Random.InitState(GameHandler.Seed);
         GameHandler.Seeded = true;
         load = true;
@@ -60,7 +59,6 @@ public class TitleScreen : MonoBehaviour
     {
         GameHandler.Seed = Guid.NewGuid().GetHashCode();
         GameHandler.VisualSeed = GameHandler.Seed + "";
-        print("set random seed: " + GameHandler.Seed);
         UnityEngine.Random.InitState(GameHandler.Seed);
         GameHandler.Seeded = false;
         load = true;
@@ -68,42 +66,25 @@ public class TitleScreen : MonoBehaviour
 
     public void OnStartButtonClickedSeeded()
     {
-        print(seed);
-        print(BitConverter.ToString(Encoding.ASCII.GetBytes(seed)));
-        print(int.TryParse(seed, out int sn));
-        print(int.TryParse("2041278274", out int bkjndls));
         if (seed == null || seed == "")
         {
             GameHandler.Seed = Guid.NewGuid().GetHashCode();
             GameHandler.VisualSeed = GameHandler.Seed + "";
             GameHandler.Seeded = false;
-            print("set rrrrrandom seed: " + GameHandler.Seed);
         } else if (int.TryParse(seed, out int seedNum)) {
             GameHandler.Seed = seedNum;
             GameHandler.VisualSeed = GameHandler.Seed + "";
             GameHandler.Seeded = true;
-            print("set int seed: " + GameHandler.Seed);
         } else
         {
             GameHandler.Seed = seed.GetHashCode();
             GameHandler.VisualSeed = seed;
             GameHandler.Seeded = true;
-            print("set set seed: " + GameHandler.Seed);
         }
         UnityEngine.Random.InitState(GameHandler.Seed);
         load = true;
 
     }
-
-    // IEnumerator LoadScene()
-    // {
-    //     AsyncOperation op = SceneManager.LoadScene("Arena");
-    //     op.allowSceneActivation = true;
-    //     while (!op.isDone)
-    //     {
-    //         yield return null;
-    //     }
-    // }
 
     // Update is called once per frame
     void Update()

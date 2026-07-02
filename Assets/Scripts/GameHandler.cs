@@ -49,8 +49,8 @@ public class GameHandler : MonoBehaviour
     {
         [0] = new[]{1f},
         [10] = new[]{0.5f, 0.5f},
-        [20] = new[]{0.33f, 0.33f, 0.33f},
-        [25] = new[]{0.33f, 0.33f, 0.31f, 0.02f}
+        [20] = new[]{0.33f, 0.33f, 0.34f},
+        [25] = new[]{0.33f, 0.33f, 0.32f, 0.02f}
     };
     public static float[] CurrentRarityChances = {1f};
     public const int THRESHOLD_BASE = 10;
@@ -534,12 +534,12 @@ public class GameHandler : MonoBehaviour
         float value = UnityEngine.Random.Range(0f, 1f);
         float rarityThreshold = 0f;
         int rarity;
-        //print("Random value: " + value);
+        // print("Random value: " + value);
         for (rarity = 0; rarity < CurrentRarityChances.Length; rarity++)
         {
             rarityThreshold += CurrentRarityChances[rarity];
             //print(rarityThreshold);
-            if (rarityThreshold > value)
+            if (rarityThreshold > value || rarity == CurrentRarityChances.Length)
             {
                 break;
             }
