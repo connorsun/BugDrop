@@ -89,7 +89,15 @@ public class MusicHandler : MonoBehaviour
         while (queueActive) {
             while (AudioSettings.dspTime < nextStartTime - preloadDelay)
             {
+                if (losing)
+                {
+                    return;
+                }
                 await Awaitable.NextFrameAsync();
+            }
+            if (losing)
+            {
+                return;
             }
             nextMusicPlayer = (nextMusicPlayer + 1) % musicPlayers.Length;
             musicPlayers[nextMusicPlayer].clip = music;

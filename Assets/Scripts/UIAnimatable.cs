@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System.Threading.Tasks;
+using TMPro;
 
 public class UIAnimatable : MonoBehaviour
 {
@@ -66,6 +67,10 @@ public class UIAnimatable : MonoBehaviour
 
         if (button != null){
             cg.interactable = false;
+            cg.blocksRaycasts = false;
+        }
+        if (GetComponent<TMP_InputField>() != null)
+        {
             cg.blocksRaycasts = false;
         }
 

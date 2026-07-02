@@ -91,6 +91,8 @@ public class GameHandler : MonoBehaviour
     public static HashSet<string> SoundsThisFrame = new HashSet<string>();
     public static bool MuteSound;
     public static int Seed;
+    public static string VisualSeed;
+    public static bool Seeded;
 
 
     // --- OBJECT REFERENCES ---
@@ -130,6 +132,7 @@ public class GameHandler : MonoBehaviour
     {
         ResetGlobals();
         uiHandler.Init();
+        UnityEngine.Random.InitState(GameHandler.Seed);
         _ = StartPlacing();
     }
 

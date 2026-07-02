@@ -59,6 +59,7 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreDifference;
     [SerializeField] private GameObject retryButton;
     [SerializeField] private GameObject quitButton;
+    [SerializeField] private TextMeshProUGUI seedText;
 
     // Knockout Bar
     [SerializeField] private KnockoutProgressBar[] knockoutProgressBar;
@@ -223,7 +224,10 @@ public class UIHandler : MonoBehaviour
         GameHandler.BroadcastToBugs((Bug bug) => bug.Destroy());
         GameHandler.AllBugs = new Bug[0];
         //print(GameHandler.AllBugs.Length);
-        GameHandler.Seed = Guid.NewGuid().GetHashCode();
+        if (!GameHandler.Seeded) {
+            GameHandler.Seed = Guid.NewGuid().GetHashCode();
+            GameHandler.VisualSeed = GameHandler.Seed + "";
+        }
         UnityEngine.Random.InitState(GameHandler.Seed);
         gameHandler.Init();
     }
@@ -335,6 +339,7 @@ public class UIHandler : MonoBehaviour
     {
         roundLabelLosing.text = "Round " + GameHandler.Round;
         scoreDifference.text = "Score: " + (int)GameHandler.RoundScore + " Needed: " + GameHandler.ScoreThreshold;
+        seedText.text = "Seed: " + GameHandler.VisualSeed;
     }
 
     public void SetCurrentBugTooltip(Bug.BugInfo bugInfo)
@@ -344,6 +349,11 @@ public class UIHandler : MonoBehaviour
         currentBugTooltipDescription.ForceMeshUpdate(true);
         int lineCount = currentBugTooltipDescription.textInfo.lineCount;
         tooltipRectTransform.sizeDelta = new Vector2(tooltipRectTransform.sizeDelta.x, 25 + (lineCount * 8));
+    }
+    
+    public void OnSeedCopyClicked()
+    {
+        GUIUtility.systemCopyBuffer = GameHandler.VisualSeed; 
     }
 
     public void ButtonHover()
