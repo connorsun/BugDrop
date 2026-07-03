@@ -17,7 +17,8 @@ public class TitleScreen : MonoBehaviour
     void Start()
     {
         this.uiHandler.EnterTitleScreen();
-        GameHandler.MuteSound = true;
+        // GameHandler.MuteSound = true;
+        GameHandler.MuteSound = false;
 
     }
 
