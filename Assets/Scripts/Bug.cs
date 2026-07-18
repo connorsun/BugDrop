@@ -111,7 +111,7 @@ public abstract class Bug : MonoBehaviour
     }
 
     // Reset round state on the start of a placing round
-    public virtual void StartPlacing()
+    public virtual void StartDropDetection()
     {
         this.stationaryFrames = 0;
         this.baseScore = this.thisBugInfo.baseScore;

@@ -295,7 +295,7 @@ public class GameHandler : MonoBehaviour
         // give the bug some time to start dropping
         await WaitForSeconds(0.2f);
         // wait until all bugs are stationary
-        BroadcastToBugs((Bug bug) => bug.StartPlacing());
+        BroadcastToBugs((Bug bug) => bug.StartDropDetection());
         while (true) {
             //print(AllBugs.Length);
             bool allStationary = true;
