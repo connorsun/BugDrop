@@ -178,5 +178,9 @@ MonoBehaviour:
   center: {fileID: 850153518807848515}
   segments:
   - {fileID: 6312744160267363254}
+  notReal: 0
   positions: []
   rotations: []
+  overHeight: 0
+  placed: 0
+  col: {fileID: -7063600259111642731}

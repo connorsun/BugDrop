@@ -100,9 +100,9 @@ public class Spider : Bug
         this.isCached = false;
     }
 
-    public override void StartPlacing()
+    public override void StartDropDetection()
     {
-        base.StartPlacing();
+        base.StartDropDetection();
         this.isCached = false;
     }
 
