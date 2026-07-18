@@ -457,6 +457,11 @@ MonoBehaviour:
   - {fileID: 7075240013564813581}
   - {fileID: 3431610868223851209}
   - {fileID: 4402893420842068959}
+  notReal: 0
+  positions: []
+  rotations: []
+  overHeight: 0
+  placed: 0
 --- !u!1 &7075240013564813581
 GameObject:
   m_ObjectHideFlags: 0
@@ -540,7 +545,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.8
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1

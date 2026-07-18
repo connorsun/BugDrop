@@ -106,7 +106,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.35
   m_LinearDamping: 0
   m_AngularDamping: 0.5
   m_GravityScale: 1
@@ -181,8 +181,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.8, y: 0.8}
+  m_Offset: {x: -0.05, y: 0}
+  m_Size: {x: 0.8, y: 0.9}
   m_Direction: 1
 --- !u!1 &6312744160267363254
 GameObject:
@@ -299,8 +299,11 @@ MonoBehaviour:
   segments:
   - {fileID: 6581445316669771129}
   - {fileID: 4376688469383872990}
+  notReal: 0
   positions: []
   rotations: []
+  overHeight: 0
+  placed: 0
 --- !u!1 &6581445316669771129
 GameObject:
   m_ObjectHideFlags: 0
