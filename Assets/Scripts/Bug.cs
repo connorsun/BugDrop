@@ -39,6 +39,7 @@ public abstract class Bug : MonoBehaviour
 
     protected bool isActive;
     private int stationaryFrames;
+    private float collisionSoundTimestamp;
     // --- OBJECT REFERENCES ---
 
     // Center must be used as the main transform to get the position of the bug, as the
@@ -296,6 +297,10 @@ public abstract class Bug : MonoBehaviour
 
     // Determines the overall final score for this bug without performing any triggering logic.
     public abstract float CalculateOverallScore();
+
+    // Getter and setter for collision sound timestamp
+    public float GetCollisionSoundTimestamp() {return collisionSoundTimestamp;}
+    public void SetCollisionSoundTimestamp(float stamp) {collisionSoundTimestamp = stamp;}
 
     // --- PRIVATE METHODS ---
 
