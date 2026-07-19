@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 
 public class Spider : Bug
@@ -74,22 +75,26 @@ public class Spider : Bug
     public override Bug[] GetAffectedBugs()
     {
         if (this.pairedSpider != null) {
-            List<RaycastHit2D> rayHits = new List<RaycastHit2D>();
-            Vector2 toOther = (Vector2) (this.pairedSpider.thoraxPoint.position - this.thoraxPoint.position);
-            Physics2D.Raycast(this.thoraxPoint.position, toOther.normalized, ContactFilter2D.noFilter, rayHits, toOther.magnitude);
-            List<Bug> bugsScored = new List<Bug>();
-            foreach (RaycastHit2D rayHit in rayHits)
-            {
-                Bug otherBug = rayHit.collider?.gameObject?.GetComponentInParent<Bug>();
-                // print(otherBug);
-                //print(otherBug);
-                if (otherBug != null && otherBug != this && otherBug != this.pairedSpider)
-                {
-                    bugsScored.Add(otherBug);
+            List<Bug> ignore = new List<Bug>();
+            ignore.Add(this);
+            ignore.Add(this.pairedSpider);
+            return spiderLine.GetComponent<SpiderLine>().GetSpiderLineBugs(ignore).ToArray();
+            // List<RaycastHit2D> rayHits = new List<RaycastHit2D>();
+            // Vector2 toOther = (Vector2) (this.pairedSpider.thoraxPoint.position - this.thoraxPoint.position);
+            // Physics2D.Raycast(this.thoraxPoint.position, toOther.normalized, ContactFilter2D.noFilter, rayHits, toOther.magnitude);
+            // List<Bug> bugsScored = new List<Bug>();
+            // foreach (RaycastHit2D rayHit in rayHits)
+            // {
+            //     Bug otherBug = rayHit.collider?.gameObject?.GetComponentInParent<Bug>();
+            //     // print(otherBug);
+            //     //print(otherBug);
+            //     if (otherBug != null && otherBug != this && otherBug != this.pairedSpider)
+            //     {
+            //         bugsScored.Add(otherBug);
                     
-                }
-            }
-            return bugsScored.ToArray();
+            //     }
+            // }
+            // return bugsScored.ToArray();
         }
         return new Bug[0];
     }
