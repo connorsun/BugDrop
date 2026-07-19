@@ -39,7 +39,7 @@ public abstract class Bug : MonoBehaviour
 
     protected bool isActive;
     private int stationaryFrames;
-    private float collisionSoundTimestamp;
+    private float collisionSoundTimestamp = -1f;
     // --- OBJECT REFERENCES ---
 
     // Center must be used as the main transform to get the position of the bug, as the
