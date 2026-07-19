@@ -465,8 +465,9 @@ public class GameHandler : MonoBehaviour
     {
         SoundsThisFrame = new HashSet<string>();
         if (!BUILD_FLAG) {
-            if (Keyboard.current.spaceKey.wasPressedThisFrame && this.trackingBug && this.placingBug != null)
+            if ((Keyboard.current.leftArrowKey.wasPressedThisFrame || Keyboard.current.rightArrowKey.wasPressedThisFrame) && this.trackingBug && this.placingBug != null)
             {
+                bool isRight = Keyboard.current.rightArrowKey.wasPressedThisFrame;
                 // cycle bug
                 foreach (int rarity in BugRarityTypes.Keys)
                 {
@@ -474,12 +475,16 @@ public class GameHandler : MonoBehaviour
                     if (index != -1)
                     {
                         this.placingBug.GetComponent<Bug>().Destroy();
-                        if (index == BugRarityTypes[rarity].Count - 1)
+                        if (isRight && index == BugRarityTypes[rarity].Count - 1)
                         {
                             this.selectedBug = BugRarityTypes[rarity % BugRarityTypes.Keys.Count + 1][0];
+                        } else if (!isRight && index == 0)
+                        {
+                            List<Bug.BugInfo> BugInRarityTypes = BugRarityTypes[(rarity + BugRarityTypes.Keys.Count - 2) % BugRarityTypes.Keys.Count + 1];
+                            this.selectedBug = BugInRarityTypes[BugInRarityTypes.Count - 1];
                         } else
                         {
-                            this.selectedBug = BugRarityTypes[rarity][index + 1];
+                            this.selectedBug = BugRarityTypes[rarity][isRight? (index + 1):(index - 1)];
                         }
                         this.placingBug = Instantiate(GetResource(BUG_PATH + "/" + this.selectedBug.name) as GameObject);
                         this.placingBug.transform.localScale = new Vector3(UnityEngine.Random.value > 0.5f ? -1 : 1, 
